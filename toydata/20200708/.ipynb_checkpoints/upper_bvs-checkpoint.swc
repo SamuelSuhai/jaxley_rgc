@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head data-suburl="">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	
+		<meta name="author" content="eulerlab"/>
+		<meta name="description" content="s-on-alpha-regional - This repository contains the data and models underlying the analyses published in Oesterle, Ran et al. (2024)"/>
+		<meta name="keywords" content="gin, data, sharing, science git">
+	
+	<meta name="referrer" content="no-referrer" />
+	<meta name="_csrf" content="ZvEzJYwq-isUWTVyTFiISZ-vcXg6MTczNjUyNTE2NDk4MjQ5ODc4Mw" />
+	<meta name="_suburl" content="" />
+	
+	
+	
+		<meta property="og:url" content="https://gin.g-node.org/eulerlab/s-on-alpha-regional" />
+		<meta property="og:type" content="object" />
+		<meta property="og:title" content="eulerlab/s-on-alpha-regional">
+		<meta property="og:description" content="This repository contains the data and models underlying the analyses published in Oesterle, Ran et al. (2024)">
+		<meta property="og:image" content="https://gin.g-node.org/avatars/9791" />
+	
+
+	<link rel="shortcut icon" href="/img/favicon.png" />
+
+	<script src="/js/jquery-1.11.3.min.js"></script>
+	<script src="/js/libs/jquery.are-you-sure.js"></script>
+	<link rel="stylesheet" href="/assets/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/octicons-4.3.0/octicons.min.css">
+
+	
+	
+
+	
+
+	
+	<link rel="stylesheet" href="/css/semantic-2.3.1.min.css">
+	<link rel="stylesheet" href="/css/gogs.css?v=0b67f1414e0be5c3bab3905fe172c80e">
+	<noscript>
+		<style>
+			.dropdown:hover > .menu { display: block; }
+			.ui.secondary.menu .dropdown.item > .menu { margin-top: 0; }
+		 </style>
+	</noscript>
+
+	
+	<script src="/js/semantic-2.3.1.min.js"></script>
+	<script src="/js/gogs.js?v=0b67f1414e0be5c3bab3905fe172c80e"></script>
+
+	<title>eulerlab/s-on-alpha-regional: This repository contains the data and models underlying the analyses published in Oesterle, Ran et al. (2024) - G-Node GIN</title>
+
+	<meta name="theme-color" content="#ffffff">
+
+	
+<link rel="stylesheet" href="/css/custom.css">
+
+
+	<meta name="robots" content="noindex,nofollow"/>
+
+
+
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@gnode" />
+<meta name="twitter:title" content="GIN" />
+<meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
+<meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
+
+
+
+
+
+
+
+
+
+	<script src="/js/libs/js.cookie.js"></script>
+	<div class="ui inline cookie nag">
+		<span class="title">We use cookies to ensure you get the best experience on our website</span>
+		<i class="nag close icon"></i>
+	</div>
+
+
+</head>
+<body>
+	<div class="full height">
+		<noscript>This website works better with JavaScript</noscript>
+
+		
+			<div class="following bar light">
+				<div class="ui container">
+					<div class="ui grid">
+						<div class="column">
+
+
+							<div class="ui top secondary menu">
+								<a class="item brand" href="/">
+									<img class="ui mini image" src="/img/favicon.png">
+								</a>
+
+								
+									<a class="item" href="/">Home</a>
+								
+
+								<a class="item" href="/explore/repos"><i class="octicon octicon-search"></i>Explore</a>
+								
+
+								<a class="item" href="/G-Node/info/wiki" rel="noreferrer"><i class="octicon octicon-question"></i>Help</a>
+								<a class="item" href="/G-Node/Info/wiki/News">News</a>
+								
+
+									<div class="right menu">
+										
+											<a class="item" href="/user/sign_up">
+												<i class="octicon octicon-person"></i> Register
+											</a>
+										
+										<a class="item" href="/user/login?redirect_to=%2feulerlab%2fs-on-alpha-regional%2fsrc%2fmaster%2fdata%2fRan%2fsONa_calcium%2f20200708%2f1%2fMorph%2fupper_bvs.swc">
+											<i class="octicon octicon-sign-in"></i> Sign In
+										</a>
+									</div>
+
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+
+		
+
+
+<div class="repository file list">
+	<div class="header-wrapper">
+
+	<div class="ui container">
+		<div class="ui vertically padded grid head">
+			<div class="column">
+				<div class="ui header">
+					<div class="ui huge breadcrumb">
+						
+							<i class="mega-octicon octicon-repo"></i>
+						
+						<a href="/eulerlab">eulerlab</a>
+						<div class="divider"> / </div>
+						<a href="/eulerlab/s-on-alpha-regional">s-on-alpha-regional</a>
+						
+						
+					</div>
+
+					
+						<div class="ui right">
+							
+	 
+					 
+					 
+						<div class="ui labeled button" tabindex="0">
+							<a href="https://doi.org/10.12751/g-node.7g8dd6">
+								<div class="gin doi">DOI</div>
+								<div class="gin doinr">10.12751/g-node.7g8dd6</div>
+							</a>
+						</div>
+					 
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui container">
+		<div class="ui vertically padded grid head">
+			<div class="column">
+				<div class="ui header">
+					<div class="ui right">
+	
+
+
+							<form class="display inline" action="/eulerlab/s-on-alpha-regional/action/watch?redirect_to=%2feulerlab%2fs-on-alpha-regional%2fsrc%2fmaster%2fdata%2fRan%2fsONa_calcium%2f20200708%2f1%2fMorph%2fupper_bvs.swc" method="POST">
+								<input type="hidden" name="_csrf" value="ZvEzJYwq-isUWTVyTFiISZ-vcXg6MTczNjUyNTE2NDk4MjQ5ODc4Mw">
+								<div class="ui labeled button" tabindex="0">
+									<button class="ui basic button">
+										<i class="eye slash outline icon"></i>Watch
+									</button>
+									<a class="ui basic label" href="/eulerlab/s-on-alpha-regional/watchers">
+										3
+									</a>
+								</div>
+							</form>
+							<form class="display inline" action="/eulerlab/s-on-alpha-regional/action/star?redirect_to=%2feulerlab%2fs-on-alpha-regional%2fsrc%2fmaster%2fdata%2fRan%2fsONa_calcium%2f20200708%2f1%2fMorph%2fupper_bvs.swc" method="POST">
+								<input type="hidden" name="_csrf" value="ZvEzJYwq-isUWTVyTFiISZ-vcXg6MTczNjUyNTE2NDk4MjQ5ODc4Mw">
+								<div class="ui labeled button" tabindex="0">
+									<button class="ui basic button">
+										<i class="star outline icon"></i>Star
+									</button>
+									<a class="ui basic label" href="/eulerlab/s-on-alpha-regional/stars">
+										0
+									</a>
+								</div>
+							</form>
+							
+							<div class="ui labeled button" tabindex="0" data-tooltip="Please note: annexed file content will not be forked" data-position="bottom center">
+									<a class="ui basic button " href="/repo/fork/11599">
+										<i class="octicon octicon-repo-forked"></i>Fork
+									</a>
+									<a class="ui basic label" href="/eulerlab/s-on-alpha-regional/forks">
+										1
+									</a>
+								</div>
+							
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="ui tabs container">
+		<div class="ui tabular menu navbar">
+			
+				<a class="active item" href="/eulerlab/s-on-alpha-regional">
+					<i class="octicon octicon-file-text"></i> Files
+				</a>
+			
+			
+				<a class=" item" href="/eulerlab/s-on-alpha-regional/issues">
+					<i class="octicon octicon-issue-opened"></i> Issues <span class="ui gray small label">0</span>
+				</a>
+			
+			
+				<a class=" item" href="/eulerlab/s-on-alpha-regional/pulls">
+					<i class="octicon octicon-git-pull-request"></i> Pull Requests <span class="ui gray small label">0</span>
+				</a>
+			
+			
+				<a class=" item" href="/eulerlab/s-on-alpha-regional/wiki">
+					<i class="octicon octicon-book"></i> Wiki
+				</a>
+			
+			
+		</div>
+	</div>
+	<div class="ui tabs divider"></div>
+
+</div>
+
+	<div class="ui container">
+		
+
+
+
+
+		
+		<div class="ui secondary menu">
+			
+			<div class="fitted item choose reference">
+	<div class="ui floating filter dropdown" data-no-results="No results found.">
+			<div class="ui basic small button">
+			<span class="text">
+				<i class="octicon octicon-git-branch"></i>
+				Branch:
+				<strong>master</strong>
+			</span>
+			<i class="dropdown icon"></i>
+		</div>
+		<div class="menu">
+			<div class="ui icon search input">
+				<i class="filter icon"></i>
+				<input name="search" placeholder="Filter branch or tag...">
+			</div>
+			<div class="header">
+				<div class="ui grid">
+					<div class="two column row">
+						<a class="reference column" href="#" data-target="#branch-list">
+							<span class="text black">
+								Branches
+							</span>
+						</a>
+						<a class="reference column" href="#" data-target="#tag-list">
+							<span class="text ">
+								Tags
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div id="branch-list" class="scrolling menu" >
+				
+					<div class="item " data-url="/eulerlab/s-on-alpha-regional/src/git-annex/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">git-annex</div>
+				
+					<div class="item selected" data-url="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">master</div>
+				
+					<div class="item " data-url="/eulerlab/s-on-alpha-regional/src/synced/git-annex/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">synced/git-annex</div>
+				
+					<div class="item " data-url="/eulerlab/s-on-alpha-regional/src/synced/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">synced/master</div>
+				
+			</div>
+			<div id="tag-list" class="scrolling menu" style="display: none">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+			<div class="fitted item">
+				<div class="ui breadcrumb">
+					<a class="section" href="/eulerlab/s-on-alpha-regional/src/master">s-on-alpha-r...</a>
+					
+					
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/eulerlab/s-on-alpha-regional/src/master/data">data</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/eulerlab/s-on-alpha-regional/src/master/data/Ran">Ran</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium">sONa_calcium</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708">20200708</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1">1</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph">Morph</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							<span class="active section">upper_bvs.swc</span>
+						
+					
+				</div>
+			</div>
+			<div class="right fitted item">
+				
+					<div id="file-buttons" class="ui tiny blue buttons">
+						
+						
+					</div>
+				
+
+				
+				
+			</div>
+		</div>
+		
+			<div id="file-content" class="tab-size-8">
+	<h4 class="ui top attached header" id="repo-read-file">
+		
+			<i class="octicon octicon-file-text ui left"></i>
+			<strong>upper_bvs.swc</strong> <span class="text grey normal">7.5 KB</span>
+		
+		
+			<div class="ui right file-actions">
+				<div class="ui buttons">
+					
+						<a class="ui button" href="/eulerlab/s-on-alpha-regional/src/c307f2d048145ab19ce3386baaf129441a6b0f04/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">Permalink</a>
+					
+					<a class="ui button" href="/eulerlab/s-on-alpha-regional/commits/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">History</a>
+					<a class="ui button" href="/eulerlab/s-on-alpha-regional/raw/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc">Download</a>
+				</div>
+				
+					
+						<i class="octicon octicon-pencil btn-octicon poping up disabled" data-content="You must fork this repository before editing the file" data-position="bottom center" data-variation="tiny inverted"></i>
+					
+					
+						<i class="octicon octicon-trashcan btn-octicon poping up disabled" data-content="You must have write access to make or propose changes to this file" data-position="bottom center" data-variation="tiny inverted"></i>
+					
+				
+			</div>
+		
+	</h4>
+	
+	<div class="ui attached table segment">
+		<div id="" class="file-view code-view has-emoji">
+			
+			<table>
+				<tbody>
+					<tr>
+						
+							<td class="lines-num"><span id="L1">1</span><span id="L2">2</span><span id="L3">3</span><span id="L4">4</span><span id="L5">5</span><span id="L6">6</span><span id="L7">7</span><span id="L8">8</span><span id="L9">9</span><span id="L10">10</span><span id="L11">11</span><span id="L12">12</span><span id="L13">13</span><span id="L14">14</span><span id="L15">15</span><span id="L16">16</span><span id="L17">17</span><span id="L18">18</span><span id="L19">19</span><span id="L20">20</span><span id="L21">21</span><span id="L22">22</span><span id="L23">23</span><span id="L24">24</span><span id="L25">25</span><span id="L26">26</span><span id="L27">27</span><span id="L28">28</span><span id="L29">29</span><span id="L30">30</span><span id="L31">31</span><span id="L32">32</span><span id="L33">33</span><span id="L34">34</span><span id="L35">35</span><span id="L36">36</span><span id="L37">37</span><span id="L38">38</span><span id="L39">39</span><span id="L40">40</span><span id="L41">41</span><span id="L42">42</span><span id="L43">43</span><span id="L44">44</span><span id="L45">45</span><span id="L46">46</span><span id="L47">47</span><span id="L48">48</span><span id="L49">49</span><span id="L50">50</span><span id="L51">51</span><span id="L52">52</span><span id="L53">53</span><span id="L54">54</span><span id="L55">55</span><span id="L56">56</span><span id="L57">57</span><span id="L58">58</span><span id="L59">59</span><span id="L60">60</span><span id="L61">61</span><span id="L62">62</span><span id="L63">63</span><span id="L64">64</span><span id="L65">65</span><span id="L66">66</span><span id="L67">67</span><span id="L68">68</span><span id="L69">69</span><span id="L70">70</span><span id="L71">71</span><span id="L72">72</span><span id="L73">73</span><span id="L74">74</span><span id="L75">75</span><span id="L76">76</span><span id="L77">77</span><span id="L78">78</span><span id="L79">79</span><span id="L80">80</span><span id="L81">81</span><span id="L82">82</span><span id="L83">83</span><span id="L84">84</span><span id="L85">85</span><span id="L86">86</span><span id="L87">87</span><span id="L88">88</span><span id="L89">89</span><span id="L90">90</span><span id="L91">91</span><span id="L92">92</span><span id="L93">93</span><span id="L94">94</span><span id="L95">95</span><span id="L96">96</span><span id="L97">97</span><span id="L98">98</span><span id="L99">99</span><span id="L100">100</span><span id="L101">101</span><span id="L102">102</span><span id="L103">103</span><span id="L104">104</span><span id="L105">105</span><span id="L106">106</span><span id="L107">107</span><span id="L108">108</span><span id="L109">109</span><span id="L110">110</span><span id="L111">111</span><span id="L112">112</span><span id="L113">113</span><span id="L114">114</span><span id="L115">115</span><span id="L116">116</span><span id="L117">117</span><span id="L118">118</span><span id="L119">119</span><span id="L120">120</span><span id="L121">121</span><span id="L122">122</span><span id="L123">123</span><span id="L124">124</span><span id="L125">125</span><span id="L126">126</span><span id="L127">127</span><span id="L128">128</span><span id="L129">129</span><span id="L130">130</span><span id="L131">131</span><span id="L132">132</span><span id="L133">133</span><span id="L134">134</span><span id="L135">135</span><span id="L136">136</span><span id="L137">137</span><span id="L138">138</span><span id="L139">139</span><span id="L140">140</span><span id="L141">141</span><span id="L142">142</span><span id="L143">143</span><span id="L144">144</span><span id="L145">145</span><span id="L146">146</span><span id="L147">147</span><span id="L148">148</span><span id="L149">149</span><span id="L150">150</span><span id="L151">151</span><span id="L152">152</span><span id="L153">153</span><span id="L154">154</span><span id="L155">155</span><span id="L156">156</span><span id="L157">157</span><span id="L158">158</span><span id="L159">159</span><span id="L160">160</span><span id="L161">161</span><span id="L162">162</span><span id="L163">163</span><span id="L164">164</span><span id="L165">165</span><span id="L166">166</span><span id="L167">167</span><span id="L168">168</span><span id="L169">169</span><span id="L170">170</span><span id="L171">171</span><span id="L172">172</span><span id="L173">173</span><span id="L174">174</span><span id="L175">175</span><span id="L176">176</span><span id="L177">177</span><span id="L178">178</span><span id="L179">179</span><span id="L180">180</span><span id="L181">181</span><span id="L182">182</span><span id="L183">183</span><span id="L184">184</span><span id="L185">185</span><span id="L186">186</span></td>
+							<td class="lines-code"><pre><code class=""><ol class="linenums"><li class="L1" rel="L1"># Generated by neuTube (http://www.neutracing.com)</li>
+<li class="L2" rel="L2">1 0 186.032 98.8886 91.4732 2.83376 -1</li>
+<li class="L3" rel="L3">2 0 185.593 91.7357 93.6429 2.45049 1</li>
+<li class="L4" rel="L4">3 0 183.98 84.4235 93.5553 2.61508 2</li>
+<li class="L5" rel="L5">4 0 186.089 75.006 92.8691 2.98946 3</li>
+<li class="L6" rel="L6">5 0 190.389 68.9158 93.1623 2.58691 4</li>
+<li class="L7" rel="L7">6 0 193.85 65.3286 93.5536 1.96648 5</li>
+<li class="L8" rel="L8">7 0 198.275 63.0133 93.3177 2.26435 6</li>
+<li class="L9" rel="L9">8 0 203.235 62.494 92.9497 1.73155 7</li>
+<li class="L10" rel="L10">9 0 208.128 63.4715 92.6251 1.73155 8</li>
+<li class="L11" rel="L11">10 0 213.02 64.4489 92.3005 1.73155 9</li>
+<li class="L12" rel="L12">11 0 142.331 63.9946 94.4111 2.19632 -1</li>
+<li class="L13" rel="L13">12 0 138.502 61.6533 96.616 2.0405 11</li>
+<li class="L14" rel="L14">13 0 134.279 59.6361 98.3763 1.58332 12</li>
+<li class="L15" rel="L15">14 0 129.9 57.6427 99.7349 1.55223 13</li>
+<li class="L16" rel="L16">15 0 125.42 55.4404 100.022 1.58582 14</li>
+<li class="L17" rel="L17">16 0 122.064 51.7394 99.831 2.3777 15</li>
+<li class="L18" rel="L18">17 0 117.898 45.5274 99.3331 2.65644 16</li>
+<li class="L19" rel="L19">18 0 113.096 39.8279 99.7961 2.94536 17</li>
+<li class="L20" rel="L20">19 0 109.413 36.4879 99.261 1.83278 18</li>
+<li class="L21" rel="L21">20 0 106.425 32.5692 98.4161 1.69516 19</li>
+<li class="L22" rel="L22">21 0 103.492 28.6144 97.5459 1.46124 20</li>
+<li class="L23" rel="L23">22 0 100.559 24.6596 96.6757 1.46124 21</li>
+<li class="L24" rel="L24">23 0 97.3807 21.0116 95.4151 1.70106 22</li>
+<li class="L25" rel="L25">24 0 94.3296 17.0864 94.8822 1.71837 23</li>
+<li class="L26" rel="L26">25 0 90.2407 14.2792 94.2497 2.29934 24</li>
+<li class="L27" rel="L27">26 0 86.1517 11.472 93.6171 1.82181 25</li>
+<li class="L28" rel="L28">27 0 82.3779 8.42283 92.4083 1.67519 26</li>
+<li class="L29" rel="L29">28 0 78.2303 6.08115 90.8873 1.74103 27</li>
+<li class="L30" rel="L30">29 0 73.9992 4.18171 89.0192 1.68258 28</li>
+<li class="L31" rel="L31">30 0 68.4997 1.54408 83.8425 1.68258 29</li>
+<li class="L32" rel="L32">31 0 326.891 99.075 100.991 1.65168 -1</li>
+<li class="L33" rel="L33">32 0 331.112 96.4632 100.392 1.51622 31</li>
+<li class="L34" rel="L34">33 0 335.441 93.9684 100.209 1.43519 32</li>
+<li class="L35" rel="L35">34 0 339.861 91.63 100.244 1.43519 33</li>
+<li class="L36" rel="L36">35 0 344.27 89.3183 100.709 0.910283 34</li>
+<li class="L37" rel="L37">36 0 348.647 87.0235 101.467 1.3479 35</li>
+<li class="L38" rel="L38">37 0 392.643 161.968 108.92 1.51206 -1</li>
+<li class="L39" rel="L39">38 0 395.077 157.693 109.813 1.5391 37</li>
+<li class="L40" rel="L40">39 0 396.591 152.941 110.166 1.82394 38</li>
+<li class="L41" rel="L41">40 0 397.703 148.066 110.199 1.18655 39</li>
+<li class="L42" rel="L42">41 0 397.916 143.188 109.125 1.84517 40</li>
+<li class="L43" rel="L43">42 0 397.902 138.231 108.467 1.99036 41</li>
+<li class="L44" rel="L44">43 0 398.173 133.24 108.598 1.78798 42</li>
+<li class="L45" rel="L45">44 0 398.019 128.301 109.36 1.52361 43</li>
+<li class="L46" rel="L46">45 0 397.91 123.471 110.649 1.51287 44</li>
+<li class="L47" rel="L47">46 0 399.277 118.863 109.274 1.95771 45</li>
+<li class="L48" rel="L48">47 0 400.645 114.255 107.898 1.95771 46</li>
+<li class="L49" rel="L49">48 0 400.866 109.273 107.527 1.98994 47</li>
+<li class="L50" rel="L50">49 0 400.927 104.28 107.276 2.00375 48</li>
+<li class="L51" rel="L51">50 0 401.587 99.3259 107.133 2.08161 49</li>
+<li class="L52" rel="L52">51 0 402.622 94.4428 106.842 2.09797 50</li>
+<li class="L53" rel="L53">52 0 404.582 89.852 106.552 1.96131 51</li>
+<li class="L54" rel="L54">53 0 406.044 85.0903 106.986 1.79919 52</li>
+<li class="L55" rel="L55">54 0 407.078 80.2964 107.96 1.87726 53</li>
+<li class="L56" rel="L56">55 0 409.042 75.8087 108.964 1.86987 54</li>
+<li class="L57" rel="L57">56 0 411.005 71.3209 109.967 1.86987 55</li>
+<li class="L58" rel="L58">57 0 412.39 66.5788 110.737 1.81281 56</li>
+<li class="L59" rel="L59">58 0 414.046 61.8731 111.074 1.60498 57</li>
+<li class="L60" rel="L60">59 0 415.702 57.1673 111.411 1.86209 58</li>
+<li class="L61" rel="L61">60 0 254.376 46.4986 104.893 1.99828 -1</li>
+<li class="L62" rel="L62">61 0 257.409 51.0829 105.965 1.99828 60</li>
+<li class="L63" rel="L63">62 0 259.947 55.302 106.835 2.37501 61</li>
+<li class="L64" rel="L64">63 0 263.802 58.4577 106.409 1.90577 62</li>
+<li class="L65" rel="L65">64 0 268.738 59.2496 106.392 2.00679 63</li>
+<li class="L66" rel="L66">65 0 273.599 58.0798 106.32 1.89628 64</li>
+<li class="L67" rel="L67">66 0 277.937 55.5983 106.149 1.96767 65</li>
+<li class="L68" rel="L68">67 0 282.372 53.3015 105.912 1.62074 66</li>
+<li class="L69" rel="L69">68 0 286.871 52.7436 103.804 1.26697 67</li>
+<li class="L70" rel="L70">69 0 291.663 53.5065 102.597 1.44786 68</li>
+<li class="L71" rel="L71">70 0 331.979 369.32 120.08 1.87731 -1</li>
+<li class="L72" rel="L72">71 0 327.82 366.716 119.123 1.75156 70</li>
+<li class="L73" rel="L73">72 0 323.66 364.112 118.167 1.75156 71</li>
+<li class="L74" rel="L74">73 0 319.836 361.345 116.515 1.78993 72</li>
+<li class="L75" rel="L75">74 0 316.141 358.672 114.466 1.87896 73</li>
+<li class="L76" rel="L76">75 0 312.882 355.417 112.521 1.87917 74</li>
+<li class="L77" rel="L77">76 0 310.245 351.536 110.794 1.88242 75</li>
+<li class="L78" rel="L78">77 0 308.26 347.469 108.667 2.06006 76</li>
+<li class="L79" rel="L79">78 0 307.069 343.04 106.676 1.94142 77</li>
+<li class="L80" rel="L80">79 0 307.163 338.357 104.926 2.00833 78</li>
+<li class="L81" rel="L81">80 0 307.736 333.883 102.769 2.33434 79</li>
+<li class="L82" rel="L82">81 0 308.1 329.071 101.462 2.41635 80</li>
+<li class="L83" rel="L83">82 0 308.221 324.205 100.316 1.94357 81</li>
+<li class="L84" rel="L84">83 0 307.451 319.355 99.3775 2.18098 82</li>
+<li class="L85" rel="L85">84 0 307.245 314.372 99.0202 1.92181 83</li>
+<li class="L86" rel="L86">85 0 307.727 309.504 97.9847 1.8261 84</li>
+<li class="L87" rel="L87">86 0 309.697 304.934 98.465 2.27965 85</li>
+<li class="L88" rel="L88">87 0 311.951 300.594 99.5105 2.20378 86</li>
+<li class="L89" rel="L89">88 0 313.888 296.104 100.55 1.81899 87</li>
+<li class="L90" rel="L90">89 0 315.416 291.404 101.308 1.50627 88</li>
+<li class="L91" rel="L91">90 0 316.867 286.679 102.062 1.96716 89</li>
+<li class="L92" rel="L92">91 0 317.375 281.749 102.724 1.83489 90</li>
+<li class="L93" rel="L93">92 0 316.755 276.84 103.445 2.23816 91</li>
+<li class="L94" rel="L94">93 0 316.135 271.932 104.167 2.23816 92</li>
+<li class="L95" rel="L95">94 0 315.886 266.956 104.593 2.51516 93</li>
+<li class="L96" rel="L96">95 0 316.212 261.976 104.906 2.40603 94</li>
+<li class="L97" rel="L97">96 0 316.893 257.028 105.13 2.38443 95</li>
+<li class="L98" rel="L98">97 0 317.802 252.123 104.798 1.30202 96</li>
+<li class="L99" rel="L99">98 0 318.05 247.185 104.048 1.77924 97</li>
+<li class="L100" rel="L100">99 0 318.742 242.245 103.709 2.02514 98</li>
+<li class="L101" rel="L101">100 0 318.805 237.257 103.369 2.04674 99</li>
+<li class="L102" rel="L102">101 0 319.467 229.807 103.711 2.532 100</li>
+<li class="L103" rel="L103">102 0 319.52 222.31 103.899 2.5388 101</li>
+<li class="L104" rel="L104">103 0 319.237 217.348 103.355 2.26294 102</li>
+<li class="L105" rel="L105">104 0 318.954 212.386 102.81 1.88659 103</li>
+<li class="L106" rel="L106">105 0 318.299 207.432 102.625 1.67126 104</li>
+<li class="L107" rel="L107">106 0 317.464 202.526 102.14 2.30736 105</li>
+<li class="L108" rel="L108">107 0 315.687 197.875 101.678 2.30736 106</li>
+<li class="L109" rel="L109">108 0 313.91 193.225 101.217 1.93972 107</li>
+<li class="L110" rel="L110">109 0 312.831 188.343 101.289 1.93972 108</li>
+<li class="L111" rel="L111">110 0 311.752 183.461 101.361 2.31547 109</li>
+<li class="L112" rel="L112">111 0 102.153 219.737 96.8105 2.09438 -1</li>
+<li class="L113" rel="L113">112 0 103.668 215.032 97.5599 1.91517 111</li>
+<li class="L114" rel="L114">113 0 103.794 210.309 99.1975 1.73005 112</li>
+<li class="L115" rel="L115">114 0 103.494 205.462 100.385 1.92663 113</li>
+<li class="L116" rel="L116">115 0 103.191 200.579 101.418 1.50277 114</li>
+<li class="L117" rel="L117">116 0 102.888 195.696 102.451 1.50277 115</li>
+<li class="L118" rel="L118">117 0 102.587 190.842 103.612 2.19273 116</li>
+<li class="L119" rel="L119">118 0 101.745 186.039 104.719 2.38677 117</li>
+<li class="L120" rel="L120">119 0 101.673 181.046 104.469 2.03235 118</li>
+<li class="L121" rel="L121">120 0 101.601 176.053 104.219 2.03235 119</li>
+<li class="L122" rel="L122">121 0 101.528 171.06 103.969 2.03235 120</li>
+<li class="L123" rel="L123">122 0 101.456 166.066 103.719 2.03235 121</li>
+<li class="L124" rel="L124">123 0 102.221 161.184 102.958 1.9608 122</li>
+<li class="L125" rel="L125">124 0 103.941 156.546 102.234 1.94534 123</li>
+<li class="L126" rel="L126">125 0 105.994 152.025 101.647 1.94534 124</li>
+<li class="L127" rel="L127">126 0 108.453 147.675 101.466 2.29297 125</li>
+<li class="L128" rel="L128">127 0 111.219 143.571 102.177 2.6716 126</li>
+<li class="L129" rel="L129">128 0 114.471 137.177 102.64 3.1181 127</li>
+<li class="L130" rel="L130">129 0 120.13 132.291 102.055 2.94881 128</li>
+<li class="L131" rel="L131">130 0 123.918 129.028 101.961 2.06667 129</li>
+<li class="L132" rel="L132">131 0 126.989 125.085 101.816 2.06667 130</li>
+<li class="L133" rel="L133">132 0 130.06 121.142 101.67 1.82434 131</li>
+<li class="L134" rel="L134">133 0 132.967 117.169 100.8 1.82434 132</li>
+<li class="L135" rel="L135">134 0 135.875 113.195 99.9285 1.81541 133</li>
+<li class="L136" rel="L136">135 0 139.246 109.628 98.9749 2.29514 134</li>
+<li class="L137" rel="L137">136 0 272.39 508.395 102.406 2.47964 -1</li>
+<li class="L138" rel="L138">137 0 270.348 499.646 100.538 2.19305 136</li>
+<li class="L139" rel="L139">138 0 270.52 494.65 100.681 1.69797 137</li>
+<li class="L140" rel="L140">139 0 272.174 489.938 100.92 2.00541 138</li>
+<li class="L141" rel="L141">140 0 275.036 485.91 101.685 2.26142 139</li>
+<li class="L142" rel="L142">141 0 279.428 484.68 103.734 1.89667 140</li>
+<li class="L143" rel="L143">142 0 284.143 484.497 105.388 1.9088 141</li>
+<li class="L144" rel="L144">143 0 288.835 485.202 106.965 1.68449 142</li>
+<li class="L145" rel="L145">144 0 293.374 486.586 108.542 1.01327 143</li>
+<li class="L146" rel="L146">145 0 297.717 488.32 110.309 1.06014 144</li>
+<li class="L147" rel="L147">146 0 301.983 487.54 112.798 1.71822 145</li>
+<li class="L148" rel="L148">147 0 305.662 484.441 114.162 1.81728 146</li>
+<li class="L149" rel="L149">148 0 309.839 482.145 115.673 1.81785 147</li>
+<li class="L150" rel="L150">149 0 313.944 479.964 117.515 1.3191 148</li>
+<li class="L151" rel="L151">150 0 318.114 478.109 119.557 1.3229 149</li>
+<li class="L152" rel="L152">151 0 322.096 475.887 121.608 1.73509 150</li>
+<li class="L153" rel="L153">152 0 326.493 474.261 123.346 2.10049 151</li>
+<li class="L154" rel="L154">153 0 330.89 472.635 125.084 2.10049 152</li>
+<li class="L155" rel="L155">154 0 335.09 470.476 126.727 2.29274 153</li>
+<li class="L156" rel="L156">155 0 339.804 468.896 127.255 2.14194 154</li>
+<li class="L157" rel="L157">156 0 344.154 466.442 127.503 2.06033 155</li>
+<li class="L158" rel="L158">157 0 348.344 463.715 127.467 1.9606 156</li>
+<li class="L159" rel="L159">158 0 352.535 460.987 127.432 1.9606 157</li>
+<li class="L160" rel="L160">159 0 356.725 458.26 127.396 1.9606 158</li>
+<li class="L161" rel="L161">160 0 360.306 454.78 127.127 1.9644 159</li>
+<li class="L162" rel="L162">161 0 364.505 452.072 126.943 1.8934 160</li>
+<li class="L163" rel="L163">162 0 368.324 448.851 126.77 1.89405 161</li>
+<li class="L164" rel="L164">163 0 372.595 446.253 126.894 2.11929 162</li>
+<li class="L165" rel="L165">164 0 375.972 442.712 127.922 2.08938 163</li>
+<li class="L166" rel="L166">165 0 378.599 438.553 128.821 2.08646 164</li>
+<li class="L167" rel="L167">166 0 380.609 433.978 128.676 1.90728 165</li>
+<li class="L168" rel="L168">167 0 381.83 429.132 128.49 2.31554 166</li>
+<li class="L169" rel="L169">168 0 381.51 424.233 127.544 1.73827 167</li>
+<li class="L170" rel="L170">169 0 379.867 419.663 126.354 1.7236 168</li>
+<li class="L171" rel="L171">170 0 378.351 415.392 124.242 1.98929 169</li>
+<li class="L172" rel="L172">171 0 377.375 411.387 121.413 2.10541 170</li>
+<li class="L173" rel="L173">172 0 376.956 406.962 119.123 1.58645 171</li>
+<li class="L174" rel="L174">173 0 377.527 402.553 116.834 1.79569 172</li>
+<li class="L175" rel="L175">174 0 378.53 397.824 115.558 2.32657 173</li>
+<li class="L176" rel="L176">175 0 379.371 392.929 114.985 2.3585 174</li>
+<li class="L177" rel="L177">176 0 380.095 387.991 114.679 2.3585 175</li>
+<li class="L178" rel="L178">177 0 118.826 464.279 80.0825 1.69561 -1</li>
+<li class="L179" rel="L179">178 0 123.303 462.165 80.7817 1.44682 177</li>
+<li class="L180" rel="L180">179 0 127.461 459.396 81.0008 1.60719 178</li>
+<li class="L181" rel="L181">180 0 130.602 455.512 80.7931 1.78569 179</li>
+<li class="L182" rel="L182">181 0 133.744 451.628 80.5854 1.78569 180</li>
+<li class="L183" rel="L183">182 0 136.885 447.743 80.3778 1.75749 181</li>
+<li class="L184" rel="L184">183 0 139.876 443.736 80.4189 1.83706 182</li>
+<li class="L185" rel="L185">184 0 142.719 439.627 80.5956 1.83706 183</li>
+<li class="L186" rel="L186">185 0 145.562 435.518 80.7723 1.6488 184</li>
+</ol></code></pre></td>
+							
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	</div>
+	
+</div>
+
+<script>
+	function submitDeleteForm() {
+		var message = prompt("delete_confirm_message\n\ndelete_commit_summary", "Delete ''");
+		if (message != null) {
+			$("#delete-message").val(message);
+			$("#delete-file-form").submit()
+		}
+	}
+</script>
+
+		
+	</div>
+</div>
+
+	</div>
+	<footer>
+		<div class="ui container">
+			<div class="ui center links item brand footertext">
+				<a href="http://www.g-node.org"><img class="ui mini footericon" src="https://projects.g-node.org/assets/gnode-bootstrap-theme/1.2.0-snapshot/img/gnode-icon-50x50-transparent.png"/>© 2016-2025 G-Node</a>
+				<a href="/G-Node/Info/wiki/about">About</a>
+				<a href="/G-Node/Info/wiki/imprint">Imprint</a>
+				<a href="/G-Node/Info/wiki/contact">Contact</a>
+				<a href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a>
+				<a href="/G-Node/Info/wiki/Datenschutz">Datenschutz</a>
+				
+				<div class="ui language bottom floating slide up dropdown link item" data-tooltip="Non-English translations may be incomplete">
+					<i class="world icon"></i>
+					<div class="text">English</div>
+					<div class="menu">
+						
+							<a class="item active selected" href="#">English</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=zh-CN">简体中文</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=zh-HK">繁體中文（香港）</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=zh-TW">繁體中文（臺灣）</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=de-DE">Deutsch</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=fr-FR">français</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=nl-NL">Nederlands</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=lv-LV">latviešu</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=ru-RU">русский</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=ja-JP">日本語</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=es-ES">español</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=pt-BR">português do Brasil</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=pl-PL">polski</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=bg-BG">български</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=it-IT">italiano</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=fi-FI">suomi</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=tr-TR">Türkçe</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=cs-CZ">čeština</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=sr-SP">српски</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=sv-SE">svenska</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=ko-KR">한국어</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=gl-ES">galego</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=uk-UA">українська</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=en-GB">English (United Kingdom)</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=hu-HU">Magyar</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=sk-SK">Slovenčina</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=id-ID">Indonesian</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=fa-IR">Persian</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=vi-VN">Vietnamese</a>
+						
+							<a class="item " href="/eulerlab/s-on-alpha-regional/src/master/data/Ran/sONa_calcium/20200708/1/Morph/upper_bvs.swc?lang=pt-PT">Português</a>
+						
+					</div>
+				</div>
+			</div>
+			<div class="ui center links item brand footertext">
+				<span>Powered by:      <a href="https://github.com/gogits/gogs"><img class="ui mini footericon" src="/img/gogs.svg"/></a>         </span>
+				<span>Hosted by:       <a href="http://neuro.bio.lmu.de"><img class="ui mini footericon" src="/img/lmu.png"/></a>          </span>
+				<span>Funded by:       <a href="http://www.bmbf.de"><img class="ui mini footericon" src="/img/bmbf.png"/></a>         </span>
+				<span>Registered with: <a href="http://doi.org/10.17616/R3SX9N"><img class="ui mini footericon" src="/img/re3data_logo.png"/></a>          </span>
+				<span>Recommended by:  
+					<a href="https://www.nature.com/sdata/policies/repositories#neurosci"><img class="ui mini footericon" src="/img/sdatarecbadge.jpg"/></a>
+					<a href="https://fairsharing.org/recommendation/PLOS"><img class="ui mini footericon" src="/img/sm_plos-logo-sm.png"/></a>
+					<a href="https://fairsharing.org/recommendation/eLifeRecommendedRepositoriesandStandards"><img class="ui mini footericon" src="/img/elife-logo-xs.fd623d00.svg"/></a>
+				</span>
+			</div>
+		</div>
+	</footer>
+</body>
+
+
+
+	<link rel="stylesheet" href="/plugins/highlight-9.16.2/github.css">
+	<script src="/plugins/highlight-9.16.2/highlight.pack.js"></script>
+
+
+
+
+
+<script src="/js/libs/emojify-1.1.0.min.js"></script>
+<script src="/js/libs/clipboard-1.5.9.min.js"></script>
+
+
+</html>
+
