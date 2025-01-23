@@ -1,0 +1,26 @@
+[2025-01-23 11:07:35,966][rgc][INFO] - Recording ids [1]
+[2025-01-23 11:07:36,446][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-01-23 11:07:36,447][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+[2025-01-23 11:07:40,292][rgc][INFO] - Recomputing avg_recordings
+[2025-01-23 11:07:40,307][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-01-23 11:07:40,694][rgc][INFO] - Inserted 5 recordings
+[2025-01-23 11:07:40,694][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-01-23 11:07:40,696][rgc][INFO] - currents.shape (10, 179)
+[2025-01-23 11:07:40,696][rgc][INFO] - labels.shape (10, 5)
+[2025-01-23 11:07:40,696][rgc][INFO] - loss_weights.shape (10, 5)
+[2025-01-23 11:07:47,347][rgc][INFO] - Weight mean 0.04815898814742354
+[2025-01-23 11:07:47,640][rgc][INFO] - Num train 7, num val 2, num test 1
+[2025-01-23 11:07:49,089][rgc][INFO] - noise_full (10, 15, 20)
+[2025-01-23 11:07:49,089][rgc][INFO] - number of training batches 7
+[2025-01-23 11:07:49,089][rgc][INFO] - lr scheduling dict: {}
+[2025-01-23 11:07:49,162][rgc][INFO] - Starting to train
+[2025-01-23 11:07:49,162][rgc][INFO] - Number of epochs 2
+[2025-01-23 11:18:23,765][rgc][INFO] - Batch 0, avg loss per batch: 4.9884926896908555
+[2025-01-23 11:30:37,574][rgc][INFO] - Batch 1, avg loss per batch: 7.2684939932391694
+[2025-01-23 11:31:37,096][rgc][INFO] - Batch 2, avg loss per batch: 9.038674723397936
+[2025-01-23 11:32:37,691][rgc][INFO] - Batch 3, avg loss per batch: 5.470063786887262
+[2025-01-23 11:33:36,680][rgc][INFO] - Batch 4, avg loss per batch: 4.510307792228419
+[2025-01-23 11:34:36,961][rgc][INFO] - Batch 5, avg loss per batch: 7.529989943939327
+[2025-01-23 11:35:36,620][rgc][INFO] - Batch 6, avg loss per batch: 7.65248804860847
+[2025-01-23 11:35:36,629][rgc][INFO] - ================= Epoch 0, loss: 46.45851097799144 ===============
+[2025-01-23 11:39:47,423][rgc][INFO] - AVG rho on val data: 0.2

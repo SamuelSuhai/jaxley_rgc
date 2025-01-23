@@ -1,0 +1,12 @@
+[2025-01-23 10:29:12,995][rgc][INFO] - Recording ids [1]
+[2025-01-23 10:29:13,526][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-01-23 10:29:13,527][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+[2025-01-23 10:29:17,797][rgc][INFO] - Recomputing avg_recordings
+[2025-01-23 10:29:17,806][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-01-23 10:29:18,173][rgc][INFO] - Inserted 5 recordings
+[2025-01-23 10:29:18,173][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-01-23 10:29:18,174][rgc][INFO] - currents.shape (1, 179)
+[2025-01-23 10:29:18,174][rgc][INFO] - labels.shape (1, 5)
+[2025-01-23 10:29:18,175][rgc][INFO] - loss_weights.shape (1, 5)
+[2025-01-23 10:29:24,657][rgc][INFO] - Weight mean 0.04815898814742354
+[2025-01-23 10:29:24,964][rgc][INFO] - Num train 0, num val 1, num test 0
