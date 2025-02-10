@@ -1,0 +1,43 @@
+[2025-02-07 15:16:58,923][rgc][INFO] - Recording ids [1]
+[2025-02-07 15:17:00,107][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-02-07 15:17:00,109][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+[2025-02-07 15:17:04,075][rgc][INFO] - Recomputing avg_recordings
+[2025-02-07 15:17:04,094][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-02-07 15:17:04,465][rgc][INFO] - Inserted 5 recordings
+[2025-02-07 15:17:04,465][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-02-07 15:17:04,466][rgc][INFO] - currents.shape (16, 179)
+[2025-02-07 15:17:04,466][rgc][INFO] - labels.shape (16, 5)
+[2025-02-07 15:17:04,466][rgc][INFO] - loss_weights.shape (16, 5)
+[2025-02-07 15:17:10,874][rgc][INFO] - Weight mean of w_bc_to_rgc: 0.09563617783960726
+[2025-02-07 15:17:11,168][rgc][INFO] - Num train 10, num val 4, num test 2
+[2025-02-07 15:17:12,595][rgc][INFO] - noise_full (16, 15, 20)
+[2025-02-07 15:17:12,595][rgc][INFO] - number of training batches 3
+[2025-02-07 15:17:12,595][rgc][INFO] - lr scheduling dict: {}
+[2025-02-07 15:17:12,669][rgc][INFO] - Starting to train
+[2025-02-07 15:17:12,669][rgc][INFO] - Number of epochs 34
+[2025-02-07 15:17:12,682][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 0
+[2025-02-07 15:24:32,444][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-07 15:34:34,985][rgc][INFO] - Batch 0, avg loss per batch: 8.495329186456356
+[2025-02-07 15:34:34,987][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 1
+[2025-02-07 15:42:01,542][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-07 16:13:00,807][jax._src.debugging][ERROR] - jax.debug.callback failed
+Traceback (most recent call last):
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/site-packages/jax/_src/debugging.py", line 93, in debug_callback_impl
+    callback(*args)
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/site-packages/jax/_src/debugging.py", line 278, in _flat_callback
+    callback(*args, **kwargs)
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/site-packages/jax/_src/debugger/core.py", line 220, in _breakpoint_callback
+    debugger(frames, thread_id, **kwargs)
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/site-packages/jax/_src/debugger/cli_debugger.py", line 167, in run_debugger
+    CliDebugger(frames, thread_id, **kwargs).run()
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/site-packages/jax/_src/debugger/cli_debugger.py", line 160, in run
+    self.cmdloop()
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/cmd.py", line 138, in cmdloop
+    stop = self.onecmd(line)
+           ^^^^^^^^^^^^^^^^^
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/cmd.py", line 217, in onecmd
+    return func(arg)
+           ^^^^^^^^^
+  File "/.pyenv/versions/miniconda3-latest/lib/python3.12/site-packages/jax/_src/debugger/cli_debugger.py", line 146, in do_quit
+    sys.exit(0)
+SystemExit: 0

@@ -19,6 +19,7 @@ from functools import partial
 
 import jax.numpy as jnp
 from jax import jit, vmap, value_and_grad
+import jax.debug
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
@@ -57,7 +58,7 @@ from hydra.utils import get_original_cwd
 from skimage.transform import resize
 
 # for debugging
-import debug_utils as dbg
+import debugging.debug_utils as dbg
 
 
 log = logging.getLogger("rgc")
@@ -72,6 +73,7 @@ def run(cfg: DictConfig) -> None:
     os.mkdir("transforms")
     os.mkdir("data")
     os.mkdir("rhos")
+    os.mkdir("predictions_labels")
 
     dt = 0.025
     t_max = 200.0
@@ -123,7 +125,11 @@ def run(cfg: DictConfig) -> None:
     cell.delete_stimuli()
 
     for i, rec in avg_recordings.iterrows():
+        # here we set that the internal calcium is recorded???
         cell.branch(rec["branch_ind"]).loc(rec["comp"]).record("Cai", verbose=False)
+
+    # debugging: visualize compartments in which we record
+    #dbg.plot_recording_compartments_in_cell(cell, avg_recordings)
 
     log.info(f"Inserted {len(cell.recordings)} recordings")
     log.info(
@@ -142,9 +148,57 @@ def run(cfg: DictConfig) -> None:
         num_datapoints_per_scanfield,
         number_of_recordings_each_scanfield,
     )
+
+    # # debug
+    # log.info(f"Setting labels and current to constant value and remove all except first compartment for debugging")    
+
+    # labels = np.ones_like(labels) * 0.5
+    # currents = np.ones_like(currents) * 0.5
+
+
+
+
+    # # debug visualization 
+    # dbg.plot_roi_labels_and_cell(labels, cell, 
+    #                          avg_recordings['roi_x'],
+    #                          avg_recordings['roi_y'])
+
+
+    # dbg.plot_bc_output_on_cell_each_image(cell,
+    #                                   stimuli,
+    #                                   noise_full,
+    #                                   setup,
+    #                                   avg_recordings)  
+    
+    # # dbg.plot_currents_bc_activity_calcium_all_times(labels,
+    # #                                             cell,
+    # #                                             currents,
+    # #                                             stimuli,
+    # #                                             noise_full,
+    # #                                             setup,
+    # #                                             avg_recordings)
+
+    # breakpoint()
+    # dbg.plot_currents_on_cell_each_image(cell,
+    #                                 currents,
+    #                                 stimuli,
+    #                                 noise_full,
+    #                                 setup,
+    #                                 avg_recordings)
+
+    # dbg.plot_calcium_on_cell_each_image(cell,
+    #                                 labels,
+    #                                 stimuli,
+    #                                 noise_full,
+    #                                 setup,
+    #                                 avg_recordings)
+    
+    # breakpoint()
+    
     log.info(f"currents.shape {currents.shape}")
     log.info(f"labels.shape {labels.shape}")
     log.info(f"loss_weights.shape {loss_weights.shape}")
+    
 
     stim_branch_inds = stimuli["branch_ind"].to_numpy()
     stim_comps = stimuli["comp"].to_numpy()
@@ -169,17 +223,23 @@ def run(cfg: DictConfig) -> None:
     _ = np.random.seed(cfg["seed_weights"]+cfg["seed_ruler"])
     if cfg["weight_init"] == "random":
         parameters = [
-            {"w_bc_to_rgc": 0.1 * jnp.asarray(np.random.rand(currents.shape[1]))}
+            # changed the mean of the random weight to mid-value of the sigmoid. Scaled by 0.2 not 0.1
+            {"w_bc_to_rgc": 0.2 * jnp.asarray(np.random.rand(currents.shape[1]))} # uniform
+            # {"w_bc_to_rgc": 0.03 * jnp.asarray(np.random.randn(currents.shape[1]) + 0.1 )}
         ] + parameters
     else:
         assert isinstance(cfg["weight_init"], float)
         parameters = [
             {"w_bc_to_rgc": cfg["weight_init"] * jnp.ones(currents.shape[1])}
         ] + parameters
-    log.info(f"Weight mean {parameters[0]['w_bc_to_rgc'].mean()}")
+    log.info(f"Weight mean of w_bc_to_rgc: {parameters[0]['w_bc_to_rgc'].mean()}")
+    
+    # # debug: investigate parameters. Why are they initialized such that the transformed
+    # # are moslty negative?
+
 
     output_scale = jnp.asarray(cfg["output_scale"])
-    output_offset = jnp.asarray(-1.3)
+    output_offset = jnp.asarray(cfg["output_offset"])
 
     with open(f"{os.getcwd()}/transforms/transform_params.pkl", "wb") as handle:
         pickle.dump(transform_params, handle)
@@ -225,6 +285,7 @@ def run(cfg: DictConfig) -> None:
         cfg["test_num"],
         cfg["batchsize"],
     )
+
     log.info(f"noise_full {noise_full.shape}")
 
     num_batches = int(dataloader.cardinality())
@@ -293,213 +354,229 @@ def run(cfg: DictConfig) -> None:
     pixel_size = 30
     levels = [0.5]
 
-    static = {
-        "cell": cell,
-        "dt": dt,
-        "t_max": t_max,
-        "time_vec": time_vec,
-        "num_truncations": num_truncations,
-        "output_scale": output_scale,
-        "output_offset": output_offset,
-        "kernel": kernel,
-        "transform_params": transform_params,
-        "transform_somatic": transform_somatic,
-        "transform_basal": transform_basal,
-        "somatic_inds": somatic_inds,
-        "basal_inds": basal_inds,
-        "stim_branch_inds": stim_branch_inds,
-        "stim_comps": stim_comps,
-    }
-    with open(f"{os.getcwd()}/cell.pkl", "wb") as handle:
-        pickle.dump(cell, handle)
+    # static = {
+    #     "cell": cell,
+    #     "dt": dt,
+    #     "t_max": t_max,
+    #     "time_vec": time_vec,
+    #     "num_truncations": num_truncations,
+    #     "output_scale": output_scale,
+    #     "output_offset": output_offset,
+    #     "kernel": kernel,
+    #     "transform_params": transform_params,
+    #     "transform_somatic": transform_somatic,
+    #     "transform_basal": transform_basal,
+    #     "somatic_inds": somatic_inds,
+    #     "basal_inds": basal_inds,
+    #     "stim_branch_inds": stim_branch_inds,
+    #     "stim_comps": stim_comps,
+    # }
+    # with open(f"{os.getcwd()}/cell.pkl", "wb") as handle:
+    #     pickle.dump(cell, handle)
 
-    # Build all functions.
-    # sim_split = jit(partial(simulate_split, static=static))
-    # vmapped_sim_split = jit(vmap(partial(simulate_split, static=static), in_axes=(None, None, None, None, 0, None)))
-    # sim = jit(partial(simulate, static=static))
-    # vmapped_sim = jit(vmap(partial(simulate, static=static), in_axes=(None, None, None, 0, None)))
-    vmapped_predict = jit(
-        vmap(partial(predict, static=static), in_axes=(None, None, None, 0, None))
-    )
-    vmapped_loss_fn = jit(
-        vmap(partial(loss_fn, static=static), in_axes=(None, None, None, 0, 0, 0, None))
-    )
+    # # Build all functions.
+    # # sim_split = jit(partial(simulate_split, static=static))
+    # # vmapped_sim_split = jit(vmap(partial(simulate_split, static=static), in_axes=(None, None, None, None, 0, None)))
+    # # sim = jit(partial(simulate, static=static))
+    # # vmapped_sim = jit(vmap(partial(simulate, static=static), in_axes=(None, None, None, 0, None)))
+    # vmapped_predict = jit(
+    #     vmap(partial(predict, static=static), in_axes=(None, None, None, 0, None))
+    # )
+    # vmapped_loss_fn = jit(
+    #     vmap(partial(loss_fn, static=static), in_axes=(None, None, None, 0, 0, 0, None))
+    # )
 
-    def batch_loss_fn(
-        opt_params,
-        opt_basal_neuron_params,
-        opt_somatic_neuron_params,
-        all_currents,
-        all_labels,
-        all_loss_weights,
-        all_states,
-    ):
-        """Return average loss across a batch given transformed parameters."""
-        params = transform_params.forward(opt_params)
-        basal_neuron_params = transform_basal.forward(opt_basal_neuron_params)
-        somatic_neuron_params = transform_somatic.forward(opt_somatic_neuron_params)
-        losses = vmapped_loss_fn(
-            params,
-            basal_neuron_params,
-            somatic_neuron_params,
-            all_currents,
-            all_labels,
-            all_loss_weights,
-            all_states,
-        )
-        return jnp.mean(losses)
+    # def batch_loss_fn(
+    #     opt_params,
+    #     opt_basal_neuron_params,
+    #     opt_somatic_neuron_params,
+    #     all_currents,
+    #     all_labels,
+    #     all_loss_weights,
+    #     all_states,
+    # ):
+    #     """Return average loss across a batch given transformed parameters."""
+    #     params = transform_params.forward(opt_params)
+    #     basal_neuron_params = transform_basal.forward(opt_basal_neuron_params)
+    #     somatic_neuron_params = transform_somatic.forward(opt_somatic_neuron_params)
+    #     losses = vmapped_loss_fn(
+    #         params,
+    #         basal_neuron_params,
+    #         somatic_neuron_params,
+    #         all_currents,
+    #         all_labels,
+    #         all_loss_weights,
+    #         all_states,
+    #     )
+    #     return jnp.mean(losses)
 
-    batch_grad_fn = jit(value_and_grad(batch_loss_fn, argnums=(0, 1, 2)))
+    # batch_grad_fn = jit(value_and_grad(batch_loss_fn, argnums=(0, 1, 2)))
 
-    log.info(f"Starting to train")
-    tf.random.set_seed(cfg["seed_tf_train_loop"]+cfg["seed_ruler"])
-    best_validation_rho = -1.0
-    best_test_rho = -1.0
-    best_train_rho = -1.0
+    # log.info(f"Starting to train")
+    # tf.random.set_seed(cfg["seed_tf_train_loop"]+cfg["seed_ruler"])
+    # best_validation_rho = -1.0
+    # best_test_rho = -1.0
+    # best_train_rho = -1.0
 
-    num_epochs = int(np.ceil(cfg["iterations"] / num_batches))
-    log.info(f"Number of epochs {num_epochs}")
-    for epoch in range(num_epochs):
-        with open(f"{os.getcwd()}/opt_params/params_{epoch}.pkl", "wb") as handle:
-            pickle.dump([opt_params, opt_basal_params, opt_somatic_params], handle)
+    # num_epochs = int(np.ceil(cfg["iterations"] / num_batches))
+    # log.info(f"Number of epochs {num_epochs}")
+    # for epoch in range(num_epochs):
+    #     with open(f"{os.getcwd()}/opt_params/params_{epoch}.pkl", "wb") as handle:
+    #         pickle.dump([opt_params, opt_basal_params, opt_somatic_params], handle)
 
-        with open(f"{os.getcwd()}/loss.pkl", "wb") as handle:
-            pickle.dump(epoch_losses, handle)
+    #     with open(f"{os.getcwd()}/loss.pkl", "wb") as handle:
+    #         pickle.dump(epoch_losses, handle)
 
-        epoch_loss = 0.0
+    #     epoch_loss = 0.0
 
-        for batch_ind, batch in enumerate(dataloader):
-            current_batch = batch[1].numpy()
-            label_batch = batch[2].numpy()
-            loss_weight_batch = batch[3].numpy()
+    #     for batch_ind, batch in enumerate(dataloader):
+    #         current_batch = batch[1].numpy()
+    #         label_batch = batch[2].numpy()
+    #         loss_weight_batch = batch[3].numpy()
 
-            log.info(f"\tApplying batch grad function of batch {batch_ind}")
-            loss, gradient = batch_grad_fn(
-                opt_params,
-                opt_basal_params,
-                opt_somatic_params,
-                current_batch,
-                label_batch,
-                loss_weight_batch,
-                init_states,
-            )
-            grad_params, grad_basal_params, grad_somatic_params = gradient
+    #         log.info(f"\tApplying batch grad function of epoch {epoch} and batch {batch_ind}")
+    #         loss, gradient = batch_grad_fn(
+    #             opt_params,
+    #             opt_basal_params,
+    #             opt_somatic_params,
+    #             current_batch,
+    #             label_batch,
+    #             loss_weight_batch,
+    #             init_states,
+    #         )
+    #         grad_params, grad_basal_params, grad_somatic_params = gradient
+            
+        
+            
+    #         #log.info(f"\tUpdating weights of batch {batch_ind}")
+    #         # Update for weights.
+    #         beta = cfg.beta
+    #         for i in range(3):
+    #             weight_norm = l2_norm(grad_params[i])
+    #             key = list(grad_params[i].keys())[0]
+    #             num_params = len(grad_params[i][key])
+    #             grad_params[i] = tree_map(
+    #                 lambda x: x / weight_norm**beta * num_params, grad_params[i]
+    #             )
+
+    #         # Update for basal parameters.
+    #         num_params = 6 # !!!??????? change this??
+    #         grad_norm_basal = l2_norm(grad_basal_params)
+    #         grad_basal_params = tree_map(
+    #             lambda x: x / grad_norm_basal**beta * num_params, grad_basal_params
+    #         )
+
+    #         # Update for basal parameters.
+    #         num_params = 6
+    #         grad_norm_somatic = l2_norm(grad_somatic_params)
+    #         grad_somatic_params = tree_map(
+    #             lambda x: x / grad_norm_somatic**beta * num_params, grad_somatic_params
+    #         )
+
+   
+
+    #         epoch_loss += loss
+
+
+    #         log.info(f"\tUpdating weights of batch {batch_ind}")
+    #         # Update all parameters with optimizer
+    #         updates, opt_state_params = optimizer_params.update(
+    #             grad_params, opt_state_params
+    #         )
+
+
+
+    #         opt_params = optax.apply_updates(opt_params, updates)
+
+
+    #         updates, opt_state_basal_params = optimizer_basal_params.update(
+    #             grad_basal_params, opt_state_basal_params
+    #         )
+    #         opt_basal_params = optax.apply_updates(opt_basal_params, updates)
+
+    #         updates, opt_state_somatic_params = optimizer_somatic_params.update(
+    #             grad_somatic_params, opt_state_somatic_params
+    #         )
+    #         opt_somatic_params = optax.apply_updates(opt_somatic_params, updates)
+
+    #         log.info(f"Batch {batch_ind}, avg loss per batch: {loss}")
+
+    #         if (batch_ind % cfg["eval_every_nth_batch"]) == (cfg["eval_every_nth_batch"] - 1) and batch_ind > 0:
+
+    #             record_as_best = False
+    #             for split, dl in eval_dataloaders.items():
+    #                 # Compute correlation.
+    #                 all_ca_predictions = []
+    #                 all_ca_recordings = []
+    #                 all_images = []
+    #                 all_loss_weights = []
+
+    #                 for batch_ind, batch in enumerate(dl):
+    #                     image_batch = batch[0].numpy()
+    #                     current_batch = batch[1].numpy()
+    #                     label_batch = batch[2].numpy()
+    #                     loss_weight_batch = batch[3].numpy()
+
+    #                     all_images.append(image_batch)
+    #                     all_ca_recordings.append(label_batch)
+    #                     all_loss_weights.append(loss_weight_batch)
+
+    #                     # Trained.
+    #                     ca_predictions = vmapped_predict(
+    #                         transform_params.forward(opt_params),
+    #                         transform_basal.forward(opt_basal_params),
+    #                         transform_somatic.forward(opt_somatic_params),
+    #                         current_batch,
+    #                         init_states,
+    #                     )
+    #                     all_ca_predictions.append(ca_predictions)
+
+    #                 all_images = np.concatenate(all_images, axis=0)
+    #                 all_ca_recordings = np.concatenate(all_ca_recordings, axis=0)
+    #                 all_loss_weights = np.concatenate(all_loss_weights, axis=0)
+    #                 all_ca_predictions = np.concatenate(all_ca_predictions, axis=0)
 
             
-            log.info(f"\tUpdating weights of batch {batch_ind}")
-            # Update for weights.
-            beta = cfg.beta
-            for i in range(3):
-                weight_norm = l2_norm(grad_params[i])
-                key = list(grad_params[i].keys())[0]
-                num_params = len(grad_params[i][key])
-                grad_params[i] = tree_map(
-                    lambda x: x / weight_norm**beta * num_params, grad_params[i]
-                )
+    #                 # Compute correlation for every ROI.
+    #                 trained_rhos = []
+    #                 for roi_id in range(len(avg_recordings)):
+    #                     roi_was_measured = all_loss_weights[:, roi_id].astype(bool)
+    #                     rho_trained = np.corrcoef(
+    #                         all_ca_recordings[roi_was_measured, roi_id],
+    #                         all_ca_predictions[roi_was_measured, roi_id],
+    #                     )[0, 1]
+    #                     trained_rhos.append(rho_trained)
+    #                 avg_rho = np.mean(trained_rhos)
+    #                 log.info(f"AVG rho on {split} data: {avg_rho}")
 
-            # Update for basal parameters.
-            num_params = 6
-            grad_norm_basal = l2_norm(grad_basal_params)
-            grad_basal_params = tree_map(
-                lambda x: x / grad_norm_basal**beta * num_params, grad_basal_params
-            )
+    #                 if split == "val" and avg_rho > best_validation_rho:
+    #                     best_validation_rho = avg_rho
+    #                     record_as_best = True
+    #                 if split == "train" and record_as_best:
+    #                     best_train_rho = avg_rho
+    #                 if split == "test" and record_as_best:
+    #                     best_test_rho = avg_rho
 
-            # Update for basal parameters.
-            num_params = 6
-            grad_norm_somatic = l2_norm(grad_somatic_params)
-            grad_somatic_params = tree_map(
-                lambda x: x / grad_norm_somatic**beta * num_params, grad_somatic_params
-            )
+    #             log.info(f"Current best rhos: train {best_train_rho}, val {best_validation_rho}, test {best_test_rho}")
+    #             with open(f"{os.getcwd()}/rhos/train_rho.pkl", "wb") as handle:
+    #                 pickle.dump(best_train_rho, handle)
+    #             with open(f"{os.getcwd()}/rhos/val_rho.pkl", "wb") as handle:
+    #                 pickle.dump(best_validation_rho, handle)
+    #             with open(f"{os.getcwd()}/rhos/test_rho.pkl", "wb") as handle:
+    #                 pickle.dump(best_test_rho, handle)
 
-            epoch_loss += loss
-
-
-            log.info(f"\tUpdating weights of batch {batch_ind}")
-            # Update all parameters with optimizer
-            updates, opt_state_params = optimizer_params.update(
-                grad_params, opt_state_params
-            )
-            opt_params = optax.apply_updates(opt_params, updates)
-
-            updates, opt_state_basal_params = optimizer_basal_params.update(
-                grad_basal_params, opt_state_basal_params
-            )
-            opt_basal_params = optax.apply_updates(opt_basal_params, updates)
-
-            updates, opt_state_somatic_params = optimizer_somatic_params.update(
-                grad_somatic_params, opt_state_somatic_params
-            )
-            opt_somatic_params = optax.apply_updates(opt_somatic_params, updates)
-
-            log.info(f"Batch {batch_ind}, avg loss per batch: {loss}")
-
-            if (batch_ind % cfg["eval_every_nth_batch"]) == (cfg["eval_every_nth_batch"] - 1):
-                record_as_best = False
-                for split, dl in eval_dataloaders.items():
-                    # Compute correlation.
-                    all_ca_predictions = []
-                    all_ca_recordings = []
-                    all_images = []
-                    all_loss_weights = []
-
-                    for batch_ind, batch in enumerate(dl):
-                        image_batch = batch[0].numpy()
-                        current_batch = batch[1].numpy()
-                        label_batch = batch[2].numpy()
-                        loss_weight_batch = batch[3].numpy()
-
-                        all_images.append(image_batch)
-                        all_ca_recordings.append(label_batch)
-                        all_loss_weights.append(loss_weight_batch)
-
-                        # Trained.
-                        ca_predictions = vmapped_predict(
-                            transform_params.forward(opt_params),
-                            transform_basal.forward(opt_basal_params),
-                            transform_somatic.forward(opt_somatic_params),
-                            current_batch,
-                            init_states,
-                        )
-                        all_ca_predictions.append(ca_predictions)
-
-                    all_images = np.concatenate(all_images, axis=0)
-                    all_ca_recordings = np.concatenate(all_ca_recordings, axis=0)
-                    all_loss_weights = np.concatenate(all_loss_weights, axis=0)
-                    all_ca_predictions = np.concatenate(all_ca_predictions, axis=0)
-
-                    # Compute correlation for every ROI.
-                    trained_rhos = []
-                    for roi_id in range(len(avg_recordings)):
-                        roi_was_measured = all_loss_weights[:, roi_id].astype(bool)
-                        rho_trained = np.corrcoef(
-                            all_ca_recordings[roi_was_measured, roi_id],
-                            all_ca_predictions[roi_was_measured, roi_id],
-                        )[0, 1]
-                        trained_rhos.append(rho_trained)
-                    avg_rho = np.mean(trained_rhos)
-                    log.info(f"AVG rho on {split} data: {avg_rho}")
-
-                    if split == "val" and avg_rho > best_validation_rho:
-                        best_validation_rho = avg_rho
-                        record_as_best = True
-                    if split == "train" and record_as_best:
-                        best_train_rho = avg_rho
-                    if split == "test" and record_as_best:
-                        best_test_rho = avg_rho
-
-                log.info(f"Current best rhos: train {best_train_rho}, val {best_validation_rho}, test {best_test_rho}")
-                with open(f"{os.getcwd()}/rhos/train_rho.pkl", "wb") as handle:
-                    pickle.dump(best_train_rho, handle)
-                with open(f"{os.getcwd()}/rhos/val_rho.pkl", "wb") as handle:
-                    pickle.dump(best_validation_rho, handle)
-                with open(f"{os.getcwd()}/rhos/test_rho.pkl", "wb") as handle:
-                    pickle.dump(best_test_rho, handle)
+    #             # save all trained rhos
+    #             with open(f"{os.getcwd()}/rhos/train_rho_all_epoch_{epoch}.pkl", "wb") as handle:
+    #                 pickle.dump(trained_rhos, handle)
+                    
                 
 
-        log.info(f"================= Epoch {epoch}, loss: {epoch_loss} ===============")
-        epoch_losses.append(epoch_loss)
+        # log.info(f"================= Epoch {epoch}, loss: {epoch_loss} ===============")
+        # epoch_losses.append(epoch_loss)
+
 
         # if cfg["vis"]:
+        #     log.info(f"Visualizing histograms")
         #     # Evaluate after every epoch.
         #     predictions = vmapped_predict(
         #         transform_params.forward(opt_params),
@@ -515,160 +592,216 @@ def run(cfg: DictConfig) -> None:
         #     )
         #     plt.show()
 
-        record_as_best = False
-        for split, dl in eval_dataloaders.items():
+        # record_as_best = False
+        # for split, dl in eval_dataloaders.items():
 
-            # Compute correlation.
-            all_ca_predictions = []
-            all_ca_recordings = []
-            all_images = []
-            all_loss_weights = []
+        #     # Compute correlation.
+        #     all_ca_predictions = []
+        #     all_ca_recordings = []
+        #     all_images = []
+        #     all_loss_weights = []
 
-            for batch_ind, batch in enumerate(dl):
-                image_batch = batch[0].numpy()
-                current_batch = batch[1].numpy()
-                label_batch = batch[2].numpy()
-                loss_weight_batch = batch[3].numpy()
+        #     for batch_ind, batch in enumerate(dl):
+        #         image_batch = batch[0].numpy()
+        #         current_batch = batch[1].numpy()
+        #         label_batch = batch[2].numpy()
+        #         loss_weight_batch = batch[3].numpy()
 
-                all_images.append(image_batch)
-                all_ca_recordings.append(label_batch)
-                all_loss_weights.append(loss_weight_batch)
+        #         all_images.append(image_batch)
+        #         all_ca_recordings.append(label_batch)
+        #         all_loss_weights.append(loss_weight_batch)
 
-                # Trained.
-                ca_predictions = vmapped_predict(
-                    transform_params.forward(opt_params),
-                    transform_basal.forward(opt_basal_params),
-                    transform_somatic.forward(opt_somatic_params),
-                    current_batch,
-                    init_states,
+        #         # Trained.
+        #         ca_predictions = vmapped_predict(
+        #             transform_params.forward(opt_params),
+        #             transform_basal.forward(opt_basal_params),
+        #             transform_somatic.forward(opt_somatic_params),
+        #             current_batch,
+        #             init_states,
+        #         )
+        #         all_ca_predictions.append(ca_predictions)
+
+        #     all_images = np.concatenate(all_images, axis=0)
+        #     all_ca_recordings = np.concatenate(all_ca_recordings, axis=0)
+        #     all_loss_weights = np.concatenate(all_loss_weights, axis=0)
+        #     all_ca_predictions = np.concatenate(all_ca_predictions, axis=0)
+            
+
+        #     # save predictions and labels and currents
+        #     with open(f"{os.getcwd()}/predictions_labels/predictions_epoch_{epoch}_split_{split}.pkl", "wb") as handle:
+        #         pickle.dump(all_ca_predictions, handle)
+            
+        #     # save things that do not change seperately 
+        #     if epoch == 0:
+        #         with open(f"{os.getcwd()}/predictions_labels/labels_split_{split}.pkl", "wb") as handle:
+        #             pickle.dump(all_ca_recordings, handle)
+        #         with open(f"{os.getcwd()}/predictions_labels/loss_weights_epoch_split_{split}.pkl", "wb") as handle:
+        #             pickle.dump(all_loss_weights, handle)
+        #         with open(f"{os.getcwd()}/predictions_labels/currents_split_{split}.pkl", "wb") as handle:
+        #             pickle.dump(current_batch, handle)
+
+            
+
+        #     # Compute correlation for every ROI.
+        #     trained_rhos = []
+        #     for roi_id in range(len(avg_recordings)):
+        #         # compute the correlation for predicted vs lael across masurements
+        #         # for each roi seperately
+        #         roi_was_measured = all_loss_weights[:, roi_id].astype(bool)
+                
+        #         # we can only do the correlation across time ponts if enought data
+        #         # is in the validation set. Otherwise we do it over rois 
+        #         if len(roi_was_measured)  > 1:    
+        #             rho_trained = np.corrcoef(
+        #                 all_ca_recordings[roi_was_measured, roi_id],
+        #                 all_ca_predictions[roi_was_measured, roi_id],
+        #             )[0, 1]
+
+        #         else:
+        #             corr_roi = np.corrcoef(all_ca_recordings,all_ca_predictions)[0,1]
+        #             log.info(f"ROI {roi_id} has not enough data points to compute correlation. Setting it to zero. But correlation acorss rois is {corr_roi}")
+        #             rho_trained = 0.0
+        #         trained_rhos.append(rho_trained)
+        #     avg_rho = np.mean(trained_rhos)
+        #     log.info(f"AVG rho on {split} data: {avg_rho}")
+
+        #     if split == "val" and avg_rho > best_validation_rho:
+        #         best_validation_rho = avg_rho
+        #         record_as_best = True
+
+        #     if split == "train" and record_as_best:
+        #         best_train_rho = avg_rho
+        #     if split == "test" and record_as_best:
+        #         best_test_rho = avg_rho
+
+        # log.info(f"Current best rhos: train {best_train_rho}, val {best_validation_rho}, test {best_test_rho}")
+        # with open(f"{os.getcwd()}/rhos/train_rho.pkl", "wb") as handle:
+        #     pickle.dump(best_train_rho, handle)
+        # with open(f"{os.getcwd()}/rhos/val_rho.pkl", "wb") as handle:
+        #     pickle.dump(best_validation_rho, handle)
+        # with open(f"{os.getcwd()}/rhos/test_rho.pkl", "wb") as handle:
+        #     pickle.dump(best_test_rho, handle)
+        
+        # TODO adapt this for our data
+
+        # debugging: set predictions equal labels and see if RFs make sense
+    
+    breakpoint()
+    all_ca_predictions = labels
+    all_loss_weights = np.ones_like(labels)
+    all_images = noise_full
+    epoch = 0 
+    
+    if cfg["vis"]:
+        # Compute receptive fields.
+        counters = [0] #np.arange(0, 147, 5) # which rois to visualize
+        rfs_trained = compute_all_trained_rfs(
+            counters,
+            all_loss_weights,
+            all_ca_predictions,
+            np.transpose(all_images, (1, 2, 0)),
+            noise_mag,
+            num_iter,
+        )
+
+        fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
+
+        for i, counter in enumerate(counters):
+            # changed
+            ax = cell.vis(ax=ax) # ,color="k",morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3})
+
+            rec_id = rec_ids_of_all_rois[counter]
+            roi_id = roi_ids_of_all_rois[counter]
+            rf_pred = rfs_trained[i]
+            setup_rec = setup[setup["rec_id"] == rec_id]
+            offset_x = setup_rec["image_center_x"].to_numpy()[0]
+            offset_y = setup_rec["image_center_y"].to_numpy()[0]
+
+            upsample_factor = 5
+            im_pos_x = (
+                np.linspace(
+                    -7.0 * pixel_size, 7.0 * pixel_size, 15 * upsample_factor
                 )
-                all_ca_predictions.append(ca_predictions)
+                + offset_x
+            )
+            im_pos_y = (
+                -np.linspace(
+                    -9.5 * pixel_size, 9.5 * pixel_size, 20 * upsample_factor
+                )
+                + offset_y
+            )
+            image_xs, image_ys = np.meshgrid(im_pos_x, im_pos_y)
 
-            all_images = np.concatenate(all_images, axis=0)
-            all_ca_recordings = np.concatenate(all_ca_recordings, axis=0)
-            all_loss_weights = np.concatenate(all_loss_weights, axis=0)
-            all_ca_predictions = np.concatenate(all_ca_predictions, axis=0)
+            rec = avg_recordings.loc[counter]
+            dist = np.sqrt(
+                np.sum(
+                    (
+                        center
+                        - np.asarray([rec["roi_x"].item(), rec["roi_y"].item()])
+                    )
+                    ** 2
+                )
+            )
+            cmap = mpl.colormaps["viridis"]
+            col = cmap((dist + 20) / 150)
 
-            # Compute correlation for every ROI.
-            trained_rhos = []
-            for roi_id in range(len(avg_recordings)):
-                roi_was_measured = all_loss_weights[:, roi_id].astype(bool)
-                rho_trained = np.corrcoef(
-                    all_ca_recordings[roi_was_measured, roi_id],
-                    all_ca_predictions[roi_was_measured, roi_id],
-                )[0, 1]
-                trained_rhos.append(rho_trained)
-            avg_rho = np.mean(trained_rhos)
-            log.info(f"AVG rho on {split} data: {avg_rho}")
+            ax.spines["bottom"].set_visible(False)
+            ax.spines["left"].set_visible(False)
 
-            if split == "val" and avg_rho > best_validation_rho:
-                best_validation_rho = avg_rho
-                record_as_best = True
-
-            if split == "train" and record_as_best:
-                best_train_rho = avg_rho
-            if split == "test" and record_as_best:
-                best_test_rho = avg_rho
-
-        log.info(f"Current best rhos: train {best_train_rho}, val {best_validation_rho}, test {best_test_rho}")
-        with open(f"{os.getcwd()}/rhos/train_rho.pkl", "wb") as handle:
-            pickle.dump(best_train_rho, handle)
-        with open(f"{os.getcwd()}/rhos/val_rho.pkl", "wb") as handle:
-            pickle.dump(best_validation_rho, handle)
-        with open(f"{os.getcwd()}/rhos/test_rho.pkl", "wb") as handle:
-            pickle.dump(best_test_rho, handle)
-
-        if len(rec_ids) == 15 and cfg["vis"]:
-            # Compute receptive fields.
-            counters = np.arange(0, 147, 5)
-            rfs_trained = compute_all_trained_rfs(
-                counters,
-                all_loss_weights,
-                all_ca_predictions,
-                np.transpose(all_images, (1, 2, 0)),
-                noise_mag,
-                num_iter,
+            _ = ax.scatter(
+                rec["roi_x"].item(),
+                rec["roi_y"].item(),
+                color=col,
+                s=20.0,
+                edgecolors="k",
+                zorder=10000,
             )
 
-            with mpl.rc_context(fname=f"{get_original_cwd()}/../../.matplotlibcluster"):
-                fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
+            # Contours
+            output_shape = (np.array([20, 15]) * upsample_factor).astype(int)
+            upsampled_rf = resize(
+                rf_pred, output_shape=output_shape, mode="constant"
+            )
+            breakpoint()
+            _ = ax.contour(
+                image_xs,
+                image_ys,
+                upsampled_rf,
+                levels=levels,
+                colors=[col],
+                linestyles="solid",
+                linewidths=0.5,
+            )
+            _ = ax.set_xticks([])
+            _ = ax.set_yticks([])
+    
+        plt.savefig(
+            f"{os.getcwd()}/figs/rf_{epoch}.png", dpi=150, bbox_inches="tight"
+        )
 
-                for i, counter in enumerate(counters):
-                    ax = cell.vis(
-                        ax=ax,
-                        col="k",
-                        morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3},
-                    )
+        # visualize a heatmap of the receptive fields
+        fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
+        for i, counter in enumerate(counters):
+            # changed
+            ax = cell.vis(ax=ax) # ,color="k",morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3})
 
-                    rec_id = rec_ids_of_all_rois[counter]
-                    roi_id = roi_ids_of_all_rois[counter]
-                    rf_pred = rfs_trained[i]
-                    setup_rec = setup[setup["rec_id"] == rec_id]
-                    offset_x = setup_rec["image_center_x"].to_numpy()[0]
-                    offset_y = setup_rec["image_center_y"].to_numpy()[0]
+            rec_id = rec_ids_of_all_rois[counter]
+            roi_id = roi_ids_of_all_rois[counter]
+            rf_pred = rfs_trained[i]
+            setup_rec = setup[setup["rec_id"] == rec_id]
+            offset_x = setup_rec["image_center_x"].to_numpy()[0]
+            offset_y = setup_rec["image_center_y"].to_numpy()[0]
 
-                    upsample_factor = 5
-                    im_pos_x = (
-                        np.linspace(
-                            -7.0 * pixel_size, 7.0 * pixel_size, 15 * upsample_factor
-                        )
-                        + offset_x
-                    )
-                    im_pos_y = (
-                        -np.linspace(
-                            -9.5 * pixel_size, 9.5 * pixel_size, 20 * upsample_factor
-                        )
-                        + offset_y
-                    )
-                    image_xs, image_ys = np.meshgrid(im_pos_x, im_pos_y)
+            ax.imshow(rf_pred, cmap="viridis")
 
-                    rec = avg_recordings.loc[counter]
-                    dist = np.sqrt(
-                        np.sum(
-                            (
-                                center
-                                - np.asarray([rec["roi_x"].item(), rec["roi_y"].item()])
-                            )
-                            ** 2
-                        )
-                    )
-                    cmap = mpl.colormaps["viridis"]
-                    col = cmap((dist + 20) / 150)
+        plt.savefig(
+            f"{os.getcwd()}/figs/rf_heatmap_{epoch}.png")
 
-                    ax.spines["bottom"].set_visible(False)
-                    ax.spines["left"].set_visible(False)
 
-                    _ = ax.scatter(
-                        rec["roi_x"].item(),
-                        rec["roi_y"].item(),
-                        color=col,
-                        s=20.0,
-                        edgecolors="k",
-                        zorder=10000,
-                    )
 
-                    # Contours
-                    output_shape = (np.array([20, 15]) * upsample_factor).astype(int)
-                    upsampled_rf = resize(
-                        rf_pred, output_shape=output_shape, mode="constant"
-                    )
 
-                    _ = ax.contour(
-                        image_xs,
-                        image_ys,
-                        upsampled_rf,
-                        levels=levels,
-                        colors=[col],
-                        linestyles="solid",
-                        linewidths=0.5,
-                    )
-                    _ = ax.set_xticks([])
-                    _ = ax.set_yticks([])
 
-                plt.savefig(
-                    f"{os.getcwd()}/figs/rf_{epoch}.png", dpi=150, bbox_inches="tight"
-                )
-                plt.show()
+        plt.show()
 
     with open(f"{os.getcwd()}/opt_params/params_{epoch+1}.pkl", "wb") as handle:
         pickle.dump([opt_params, opt_basal_params, opt_somatic_params], handle)

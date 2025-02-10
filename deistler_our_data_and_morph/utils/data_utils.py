@@ -12,7 +12,21 @@ def read_data(
     noise_name,
     path_prefix=".",
 ):
-    #breakpoint()
+    
+    '''
+    Takes in:
+    - start_n_scan: int - the starting stimulus number
+    - num_datapoints_per_scanfield: int - the number of datapoints per scanfield (i.e. length of time series)
+    
+
+    Outputs: 
+    Stimuli: pd.DataFrame - contains the stimulation of BCs over time for each compartment! 
+            Compartments in rows. It gets some columns from the bc_output DF. x_/y_loc are the coordinates of the BCs.
+    Recordings: pd.DataFrame - combines the labels with meta info on rois.    
+
+    '''
+
+
     # Only loaded for visualization.
     file = h5py.File(f"{path_prefix}/data/{noise_name}.h5", 'r+')
     # changed this field from k
@@ -25,7 +39,7 @@ def read_data(
     stimuli_meta = pd.read_pickle(f"{path_prefix}/results/data/stimuli_meta_{cell_id}.pkl")
     labels_df = pd.read_pickle(f"{path_prefix}/results/data/labels_lowpass_{cell_id}.pkl")
     
-    # TODO Change to file that contains all outputs.
+    # TODO Change to file that contains all outputs. -> isnt this done??
     bc_output = pd.read_pickle(f"{path_prefix}/results/data/off_bc_output_{cell_id}.pkl")
     
     setup = setup[setup["cell_id"] == cell_id]
@@ -86,13 +100,27 @@ def read_data(
 
 def _average_calcium_in_identical_comps(rec_df, num_datapoints_per_scanfield):
     '''
-    Groups rec_df by branch and compartment and takes the 
-    mean of the calcium values.
+    
+    Inputs:
+    - rec_df: pd.DataFrame - For one scanfield contains rois in rows and the corresponding calcium trace
+                in the colun oir_id_ca. 
+            
+    - num_datapoints_per_scanfield: int - the number of datapoints per scanfield (i.e. length of time series
+
+    Outputs:
+
+    mean_df: pd.DataFrame - contains the mean calcium trace across all ROIs in the same compartment.
+            has nr of rows equal to the number of compartments.
+    
     '''
-    #breakpoint()
+
     num_datapoints = num_datapoints_per_scanfield
+
+    # expand the calcium trace into num_datapoints columns: one column for each time point (stimulus presentation)
     rec_df[[f"ca{i}" for i in range(num_datapoints)]] = pd.DataFrame(rec_df.ca.tolist(), index=rec_df.index)
     rec_df = rec_df.drop(columns="ca")
+    
+    # Take the mean calcium trace across all ROIs in the same compartment!!!
     mean_df = rec_df.groupby(["branch_ind", "comp_discrete"]).mean()
 
     # Merge columns into a list of a single column.
@@ -104,11 +132,20 @@ def _average_calcium_in_identical_comps(rec_df, num_datapoints_per_scanfield):
 
 def build_avg_recordings(recordings, rec_ids, nseg, num_datapoints_per_scanfield):
     '''
-    Computes the average calcium ??? 
+    taks in:
+    recordings: pd.DataFrame - contains the labels with meta info on rois.
+                It has one row per roi in each rec id and has the calcium trace of this roi.
+
+
+    Outputs:
+    avg_recordings: pd.DataFrame - contains the average calcium trace across all ROIs in the same compartment.
+            This is concatenated for each scan field
+            has nr of rows equal to the number of compartments in all scan fields.
+
+
     
     '''
 
-    #breakpoint()
     avg_recordings = []
     for rec_id in rec_ids:
         rec_in_scanfield = recordings[recordings["rec_id"] == rec_id].copy()
@@ -116,11 +153,12 @@ def build_avg_recordings(recordings, rec_ids, nseg, num_datapoints_per_scanfield
         rec_in_scanfield["comp_discrete"] = np.clip(np.floor(rec_in_scanfield["comp"] * nseg).tolist(), a_min=0, a_max=nseg-1)
         rec_in_scanfield = rec_in_scanfield.drop(columns="cell_id")
         
+        # the average ca in each compartment (if mulitple rois in one comp they are averaged)
         avg_recordings_in_scanfield = _average_calcium_in_identical_comps(
             rec_in_scanfield, num_datapoints_per_scanfield
         )
         
-        # Make `branch_ind` and `discrete_comp` columns again.
+        # Make `branch_ind` and `discrete_comp` columns again. Before they are set as index?
         avg_recordings_in_scanfield = avg_recordings_in_scanfield.reset_index()
     
         avg_recordings.append(avg_recordings_in_scanfield)
@@ -138,11 +176,33 @@ def build_training_data(
     num_datapoints_per_scanfield,
     number_of_recordings_each_scanfield,
 ):
+    '''
+    inputs:
+    stimuli: pd.DataFrame - contains the stimulation of BCs over time for each compartment!
+            Compartments (of entire cell) in rows.
+
+    outputs:
+    currents: np.array - the currents that will be used as step currents.
+                        Is of shape (num_datapoints_per_scanfield, num_compartments in entire cell)
+    
+    labels: np.array - the averaged calcium traces of the compartments.
+                        In a special form: a matrix with shape 
+                        (num_datapoints_per_scanfield * nr scan fields (= nr of images per scanfield aka time points), num_compartments in which we record the intracellular calcium )                        
+
+    loss_weights: np.array - the loss weights for each compartment. Again with special form as labels
+
+    '''
+
+
     number_of_recordings = len(avg_recordings)
     
     # The currents that will be used as step currents.
     bc_activity = np.stack(stimuli["activity"].to_numpy()).T
-    currents = i_amp * np.asarray(bc_activity) / stimuli["num_synapses_of_bc"].to_numpy()
+    
+    # scale stimulation by number of synapses to have every BC have the same influence over RGC in expectation 
+    # (individual BC to RGC sysnapse streghts are drawn randomly)
+    # TODO: check what happoens if not scaled by nur of synapses
+    currents = i_amp * np.asarray(bc_activity) #/ stimuli["num_synapses_of_bc"].to_numpy()
     
     # Labels will also have to go to a dataloader.
     loss_weights = np.zeros((number_of_recordings, len(rec_ids) * num_datapoints_per_scanfield))
@@ -151,6 +211,8 @@ def build_training_data(
     cumsum_rec = np.cumsum([0] + number_of_recordings_each_scanfield)
     for i in range(len(rec_ids)):
         rec_id = rec_ids[i]
+
+        # indices for the current scan field.
         start = cumsum_rec[i]
         end = cumsum_rec[i+1]
     
@@ -160,6 +222,8 @@ def build_training_data(
         # Labels.
         recordings_in_this_scanfield = avg_recordings[avg_recordings["rec_id"] == rec_id]
         labels_in_this_scanfield = np.asarray(np.stack(recordings_in_this_scanfield["ca"].to_numpy()).T)
+        
+
         labels[start:end, i*num_datapoints_per_scanfield: (i+1)*num_datapoints_per_scanfield] = labels_in_this_scanfield.T
         i += 1
     

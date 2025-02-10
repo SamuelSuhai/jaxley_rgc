@@ -30,7 +30,26 @@ import pandas as pd
 from jax.scipy.signal import convolve2d
 import jaxley as jx
 from jaxley.channels import HH
+import argparse
+import ast
 #from jaxley.synapses import GlutamateSynapse
+print('Starting BC cell output calculation')
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--single-example', type=str, help='A dictionary with keys rec_id and time_point')
+args = parser.parse_args()
+
+# Convert the string argument to a dictionary
+if args.single_example:
+    single_example = ast.literal_eval(args.single_example)
+
+    assert 'time_point' in single_example, "time_point not in single_example"
+    assert 'rec_id' in single_example, "red_id not in single_example"
+
+
+else:
+    single_example = None
 
 
 # Define setup
@@ -51,7 +70,8 @@ assert os.path.exists(base_dir), f'{base_dir} does not exist.'
 all_dfs = pd.read_pickle(f"{base_dir}/results/data/setup.pkl")
 cell = jx.read_swc(f"{base_dir}/morphologies/{cell_id}.swc", nseg=4, max_branch_len=300.0, min_radius=5.0)
 
-is_off_bc = True  # for OFF-BCs, we compute `(1-image)` as the light stimulus, leading to an inverted bc activity.
+is_off_bc = False  # for OFF-BCs, we compute `(1-image)` as the light stimulus, leading to an inverted bc activity.
+
 
 # General hyperparameters.
 num_pixels = (20, 15)
@@ -66,7 +86,7 @@ kernel_size = 50
 # BC hyperparameters.
 size_multiplier_for_bc_grid_x = 0.9  # How much larger should the BC grid be, compared to one image.
 size_multiplier_for_bc_grid_y = 0.8  # How much larger should the BC grid be, compared to one image.
-bc_spacing = 40.0
+bc_spacing = 15.0 # this used to be 40 before
 
 # Define offsets for the center of the grid for BCs -- this does not influence results as long
 # as the BC grid covers the cell.
@@ -222,11 +242,15 @@ def discretize_bc_output(bc_output, bc_loc_x, bc_loc_y, im_pos_x, im_pos_y):
     return output_vals_at_bc_loc
 
 
-def main ():
+def main (single_example = None):
     # Run all scan fields
     # rec_id = 1
     rec_ids = [i for i in range(1,8)] # I switched to int and not the origianl rec_id from data joint: ['d' + str(i) for i in range(1, 8)]
     for rec_id in rec_ids:
+
+        if single_example is not None:
+            if single_example["rec_id"] != rec_id:
+                continue
 
         print(f"Rec id {rec_id}")
         roi_id = 1  # Does not matter.
@@ -256,11 +280,16 @@ def main ():
 
         activities_across_time = []
         for time_point in range(noise_stimulus.shape[2]):
+
+            if single_example is not None:
+                if time_point != single_example["time_point"]:
+                    continue
             
 
-            if time_point % 10 == 0 and time_point > 0:
+            if time_point % 100 == 0 and time_point > 0:
                 print(f"Time point {time_point}")
             
+            # why are we transposing the stimulus here ????
             image = noise_stimulus[:, :, time_point].T
 
             # OPL and IPL.
@@ -275,40 +304,61 @@ def main ():
         activities_across_time = np.asarray(activities_across_time).T
 
 
-        # Save as bipolar cell output.
-        bipolar_cell = pd.DataFrame().from_dict({"cell_id": [cell_id] * len(bc_loc_x), 
-                                                "rec_id": [rec_id] * len(bc_loc_x), 
-                                                "bc_id": np.arange(1, len(bc_loc_x)+1), 
-                                                "x_loc": bc_loc_x, 
-                                                "y_loc": bc_loc_y, 
-                                                "activity": activities_across_time.tolist()})
-        
-        bipolar_cell.to_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
+
+        # only write data is no single example specified
+        if single_example is None:
+            # Save as bipolar cell output.
+            bipolar_cell = pd.DataFrame().from_dict({"cell_id": [cell_id] * len(bc_loc_x), 
+                                                    "rec_id": [rec_id] * len(bc_loc_x), 
+                                                    "bc_id": np.arange(1, len(bc_loc_x)+1), 
+                                                    "x_loc": bc_loc_x, 
+                                                    "y_loc": bc_loc_y, 
+                                                    "activity": activities_across_time.tolist()})
+            
+            bipolar_cell.to_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
 
 
-    ### Merge all disk-written results
-    dfs = []
-    for rec_id in rec_ids:
-        df = pd.read_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
-        dfs.append(df)
+            ### Merge all disk-written results
+            dfs = []
+            for rec_id in rec_ids:
+                df = pd.read_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
+                dfs.append(df)
 
-    dfs = pd.concat(dfs)
-    dfs.to_pickle(f"{base_dir}/results/data/off_bc_output_{cell_id}.pkl")
+            dfs = pd.concat(dfs)
+            print(f"Writing to {base_dir}/results/data/off_bc_output_{cell_id}.pkl")
+            dfs.to_pickle(f"{base_dir}/results/data/off_bc_output_{cell_id}.pkl")
 
 
-    #with mpl.rc_context(fname="../../.matplotlibrc"):
-    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    # plotting: BC_output over single bc_activit
+    fig, ax = plt.subplots(1, 2, figsize=(6, 12))
 
-    _ = ax.imshow(bc_output, extent=[im_pos_x[0], im_pos_x[-1], im_pos_y[-1], im_pos_y[0]], clim=[0, 1], alpha=0.4, cmap="viridis")
+    # show noise stimulus and bc activity
+    _ = ax[0].imshow(image, extent=[im_pos_x[0], im_pos_x[-1], im_pos_y[-1], im_pos_y[0]], clim=[0, 1], alpha=0.4, cmap="viridis")
+
+    for a, b, c in zip(bc_loc_x, bc_loc_y, bipolar_cell_activity):
+            cmap = mpl.colormaps['viridis']
+            _ = ax[0].scatter(a, b, s=40.0, color=cmap(c), zorder=10000)
+            _ = ax[0].scatter(a, b, s=60.0, zorder=10000, facecolors='none', edgecolors='w', linewidth=2.0)
+
+    ax[0] = cell.vis(ax=ax[0]) #, morph_plot_kwargs={"alpha": 0.4})
+
+
+    # show the bc output and bc activity
+    _ = ax[1].imshow(bc_output, extent=[im_pos_x[0], im_pos_x[-1], im_pos_y[-1], im_pos_y[0]], clim=[0, 1], alpha=0.4, cmap="viridis")
 
     for a, b, c in zip(bc_loc_x, bc_loc_y, bipolar_cell_activity):
         cmap = mpl.colormaps['viridis']
-        _ = ax.scatter(a, b, s=40.0, color=cmap(c), zorder=10000)
-        _ = ax.scatter(a, b, s=60.0, zorder=10000, facecolors='none', edgecolors='w', linewidth=2.0)
+        _ = ax[1].scatter(a, b, s=40.0, color=cmap(c), zorder=10000)
+        _ = ax[1].scatter(a, b, s=60.0, zorder=10000, facecolors='none', edgecolors='w', linewidth=2.0)
 
-    ax = cell.vis(ax=ax)#, morph_plot_kwargs={"alpha": 0.4})
+    ax[1] = cell.vis(ax=ax[1])#, morph_plot_kwargs={"alpha": 0.4})
+
+    print(f"Writing to {base_dir}/results/figs/rgc_within_bc_grid.png")
     plt.savefig(f"{base_dir}/results/figs/rgc_within_bc_grid.png", dpi=200, bbox_inches="tight")
 
 
+
+
+
 if __name__ == "__main__":
-    main()
+    main(single_example)

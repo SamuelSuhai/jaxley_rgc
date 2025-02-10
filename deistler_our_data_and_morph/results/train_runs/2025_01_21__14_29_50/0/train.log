@@ -1,3 +1,0 @@
-[2025-01-21 14:29:50,334][rgc][INFO] - Recording ids [1, 2, 3, 4, 5, 6, 7]
-[2025-01-21 14:29:50,978][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
-[2025-01-21 14:29:50,979][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory

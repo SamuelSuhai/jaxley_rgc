@@ -18,6 +18,26 @@ import matplotlib as mpl
 import scipy
 import os
 
+import argparse
+import ast
+
+sampling_method = 'mean'
+
+# # Parse command line arguments
+# parser = argparse.ArgumentParser(description='Process some integers.')
+# parser.add_argument('--subsampling-method', type=str, help='Str indicating which method to subsample: mean -> will take mean ca in stimpulus presentation bins')
+# args = parser.parse_args()
+
+# # Convert the string argument to a dictionary
+# if args.subsampling_method:
+#     subsampling_method = ast.literal_eval(args.subsampling_method)
+
+# else:
+#     subsampling_method = None
+
+
+
+
 # Get the home directory
 home_directory = os.path.expanduser("~")
 
@@ -28,6 +48,8 @@ assert os.path.exists(base_dir), f'{base_dir} does not exist.'
 all_dfs = pd.read_pickle(f"{base_dir}/results/data/setup.pkl")
 
 cell_id = "2020-07-08_1"
+
+
 
 
 
@@ -101,6 +123,67 @@ def delay_and_subsample_calcium(calcium, times_calcium, noise_times, noise_stimu
     last_time_per_image = times_calcium[diff_X]
 
     return last_calcium_per_image, last_time_per_image
+
+def subsample_by_mean_ca_in_stimulus_bins(calcium, times_calcium, noise_times, noise_stimulus):
+    
+    subsampled_ca = []
+    subsampled_times = []
+
+    # loop over the binds and compute the average ca in each bin
+    for idx_bin, bin_start in enumerate(noise_times):
+        if idx_bin == len(noise_times) - 1:
+            break
+        bin_end = noise_times[idx_bin + 1]
+        condition = (times_calcium >= bin_start) & (times_calcium < bin_end)
+        mean_ca = np.mean(calcium[condition])
+        subsampled_ca.append(mean_ca)
+        subsampled_times.append(bin_start)
+
+    return subsampled_ca, subsampled_times 
+
+def main_mean():
+    all_dfs.head()
+    one_morph = all_dfs[all_dfs["cell_id"] == cell_id]
+
+    # Read stimulus information.
+    file = h5py.File(f"{base_dir}/data/noise.h5", 'r+')
+    noise_stimulus = noise_stimulus = file["NoiseArray3D"][()]
+
+    # Save calcium labels (low-pass filtered and time-delayed)
+    inds = []
+    cell_ids = []
+    rec_ids = []
+    roi_ids = []
+    labels = []
+
+    for df in one_morph.iterrows():
+        index = df[0]
+        one_roi = df[1]
+        roi_ids.append(one_roi["roi_id"])
+        rec_ids.append(one_roi["rec_id"])
+        cell_ids.append(one_roi["cell_id"])
+        inds.append(index)
+    
+        filtered, _, times_calcium, noise_times = lowpass_calcium(one_roi)
+        subsampled_calcium, subsampled_times = subsample_by_mean_ca_in_stimulus_bins(
+            filtered, 
+            times_calcium, 
+            noise_times,
+            noise_stimulus)
+        
+        labels.append(subsampled_calcium[:1498])
+    labels = pd.DataFrame().from_dict(
+        {
+            "inds": inds,
+            "cell_id": cell_ids,
+            "rec_id": rec_ids,
+            "roi_id": roi_ids,
+            "ca": labels, 
+        }
+    )
+    labels.to_pickle(f"{base_dir}/results/data/labels_lowpass_{cell_id}.pkl")
+
+
 
 def main():
     all_dfs.head()
@@ -231,7 +314,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    if sampling_method == "mean":
+        main_mean()
+    else:   
+        main()
     print("Done.")
 
 

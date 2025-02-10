@@ -1,0 +1,23 @@
+lr: 0.001
+momentum: 0.5
+iterations: 100
+reduce_lr_every: 350
+reduce_lr_by: 10.0
+beta: 0.99
+soma_radius: 7.5
+output_scale: 40.0
+output_offset: -1.5
+weight_init: random
+batchsize: 1
+rec_ids:
+- 1
+num_datapoints_per_scanfield: 3
+val_frac: 0.4
+test_num: 1
+vis: true
+seed_weights: 10
+seed_membrane_conds: 0
+seed_tf_dataloader: 0
+seed_tf_train_loop: 0
+seed_ruler: 0
+eval_every_nth_batch: 100

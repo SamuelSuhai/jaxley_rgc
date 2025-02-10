@@ -16,6 +16,8 @@ import pandas as pd
 import matplotlib as mpl
 
 import jaxley as jx
+import argparse
+import ast
 
 # Define setup
 # Set these to change what cell you want
@@ -24,7 +26,12 @@ stimulus = "noise_1500"
 exp_num = "1"
 cell_id = date + "_" + exp_num
 
+# # Parse command line arguments
+# parser = argparse.ArgumentParser(description='Process some integers.')
+# parser.add_argument('--min-distance', type=int, help='Int of the minimum distance to consider for a synapse.', default=20)
+# args = parser.parse_args()
 
+distance_cutoff = 7
 
 
 rec_id: int = 1  # Can pick any here.
@@ -40,7 +47,7 @@ except:
     stim = bc_output_df[bc_output_df["cell_id"] == cell_id]
     stim = stim[stim["rec_id"] == rec_id]
 
-def compute_jaxley_stim_locations(x, y):
+def compute_jaxley_stim_locations(x, y, distance_cutoff=20):
     """For a given (x,y) location, return all branch and compartment inds within a specified distance."""
     min_dists = []
     min_comps = []
@@ -50,7 +57,7 @@ def compute_jaxley_stim_locations(x, y):
 
     for i, xyzr in enumerate(cell.xyzr):
         dists = np.sqrt((x - xyzr[:, 0])**2 + (y - xyzr[:, 1])**2)
-        is_in_reach = np.min(dists) < 20  # 20 um
+        is_in_reach = np.min(dists) < distance_cutoff  # 20 um
 
         if is_in_reach:
             branch_inds_in_pixel.append(i)
@@ -79,7 +86,7 @@ mind_dists_of_branches_for_every_bc = []
 bc_ids_per_stim = []
 
 for x, y, id in zip(bc_loc_x, bc_loc_y, bc_ids):
-    branches, comps, min_dist_of_branch_in_pixel = compute_jaxley_stim_locations(x, y)
+    branches, comps, min_dist_of_branch_in_pixel = compute_jaxley_stim_locations(x, y,distance_cutoff)
     branch_inds_for_every_bc += branches
     comp_inds_for_every_bc += comps
     mind_dists_of_branches_for_every_bc += min_dist_of_branch_in_pixel
