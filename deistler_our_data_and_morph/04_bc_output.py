@@ -38,6 +38,11 @@ print('Starting BC cell output calculation')
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--single-example', type=str, help='A dictionary with keys rec_id and time_point')
+parser.add_argument('--date', type=str, help='Date of recording')
+parser.add_argument('--exp_num', type=str, help='The number of the experiment')
+parser.add_argument('--bc_spacing', type=int, help='distance between bc')
+
+
 args = parser.parse_args()
 
 # Convert the string argument to a dictionary
@@ -51,14 +56,15 @@ if args.single_example:
 else:
     single_example = None
 
+assert args.date is not None and '-' in args.date, "Please provide valid date eg: 2020-07-08"
 
-# Define setup
+
 # Set these to change what cell you want
-date = "2020-07-08"
+date = args.date
 stimulus = "noise_1500"
-exp_num = "1"
+exp_num = args.exp_num
 cell_id = date + "_" + exp_num
-
+rec_ids = [i for i in range(1,8)]
 
 
 # Get the home directory
@@ -69,6 +75,12 @@ base_dir = f'{home_directory}/GitRepos/jaxley_rgc/deistler_our_data_and_morph'
 assert os.path.exists(base_dir), f'{base_dir} does not exist.'
 all_dfs = pd.read_pickle(f"{base_dir}/results/data/setup.pkl")
 cell = jx.read_swc(f"{base_dir}/morphologies/{cell_id}.swc", nseg=4, max_branch_len=300.0, min_radius=5.0)
+
+min_rec_id = np.min(all_dfs["rec_id"].unique())
+max_rec_id = np.max(all_dfs["rec_id"].unique())
+rec_ids = [i for i in range(min_rec_id,max_rec_id+1)]
+print(f"Rec ids: {rec_ids}")
+
 
 is_off_bc = False  # for OFF-BCs, we compute `(1-image)` as the light stimulus, leading to an inverted bc activity.
 
@@ -86,7 +98,10 @@ kernel_size = 50
 # BC hyperparameters.
 size_multiplier_for_bc_grid_x = 0.9  # How much larger should the BC grid be, compared to one image.
 size_multiplier_for_bc_grid_y = 0.8  # How much larger should the BC grid be, compared to one image.
-bc_spacing = 15.0 # this used to be 40 before
+if args.bc_spacing:
+    bc_spacing = args.bc_spacing
+else:
+    bc_spacing = 15.0 # this used to be 40 before
 
 # Define offsets for the center of the grid for BCs -- this does not influence results as long
 # as the BC grid covers the cell.
@@ -136,6 +151,7 @@ def upsample_image(image, pixel_size, kernel_size):
     image_full = np.zeros((image.shape[0] + 2*kernel_size - 1, image.shape[1] + 2*kernel_size - 1))
     image_full[kernel_size:-kernel_size+1,kernel_size:-kernel_size+1] = image 
     return image_full
+
 def build_opl_kernel(filter: str, std, filter_size):
     res_filter = 100
     center = [0., 0.]
@@ -244,8 +260,7 @@ def discretize_bc_output(bc_output, bc_loc_x, bc_loc_y, im_pos_x, im_pos_y):
 
 def main (single_example = None):
     # Run all scan fields
-    # rec_id = 1
-    rec_ids = [i for i in range(1,8)] # I switched to int and not the origianl rec_id from data joint: ['d' + str(i) for i in range(1, 8)]
+
     for rec_id in rec_ids:
 
         if single_example is not None:
@@ -262,7 +277,7 @@ def main (single_example = None):
         im_pos_x, im_pos_y = get_image_locs(df)
 
         # Read stimulus information.
-        file = h5py.File(f"{base_dir}/data/noise.h5", 'r+')
+        file = h5py.File(f"{base_dir}/data/noise.h5", 'r')
         noise_stimulus = file["NoiseArray3D"][()]
 
         if is_off_bc:
@@ -318,15 +333,15 @@ def main (single_example = None):
             bipolar_cell.to_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
 
 
-            ### Merge all disk-written results
-            dfs = []
-            for rec_id in rec_ids:
-                df = pd.read_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
-                dfs.append(df)
+    ### Merge all disk-written results
+    dfs = []
+    for rec_id in rec_ids:
+        df = pd.read_pickle(f"{base_dir}/results/data/off_bc_output_rec_id_{cell_id}_{rec_id}.pkl")
+        dfs.append(df)
 
-            dfs = pd.concat(dfs)
-            print(f"Writing to {base_dir}/results/data/off_bc_output_{cell_id}.pkl")
-            dfs.to_pickle(f"{base_dir}/results/data/off_bc_output_{cell_id}.pkl")
+    dfs = pd.concat(dfs)
+    print(f"Writing to {base_dir}/results/data/off_bc_output_{cell_id}.pkl")
+    dfs.to_pickle(f"{base_dir}/results/data/off_bc_output_{cell_id}.pkl")
 
 
     # plotting: BC_output over single bc_activit

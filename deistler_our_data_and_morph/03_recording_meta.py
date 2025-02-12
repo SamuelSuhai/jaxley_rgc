@@ -28,10 +28,32 @@ from scipy.ndimage import rotate
 
 import jaxley as jx
 from jaxley.channels import HH
-date = "2020-07-08"
+
+import argparse
+import ast
+
+
+
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--date', type=str, help='Date of recording')
+parser.add_argument('--exp_num', type=str, help='The number of the experiment')
+
+
+args = parser.parse_args()
+
+assert args.date is not None and '-' in args.date, "Please provide valid date eg: 2020-07-08"
+
+
+
+
+# Set these to change what cell you want
+date = args.date
 stimulus = "noise_1500"
-exp_num = "1"
+exp_num = args.exp_num
 cell_id = date + "_" + exp_num
+
 
 # Set directory 
 home_directory = os.path.expanduser("~")

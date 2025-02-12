@@ -1,4 +1,9 @@
 
+'''
+Example usage
+python -m pdb 05_stimuli_meta.py --date "2020-08-29" --exp_num 1 --distance_cutoff 10
+
+'''
 
 print("\nRunning 05_stimuli_meta.py")
 
@@ -19,19 +24,28 @@ import jaxley as jx
 import argparse
 import ast
 
-# Define setup
+
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--date', type=str, help='Date of recording')
+parser.add_argument('--exp_num', type=str, help='The number of the experiment')
+parser.add_argument('--distance_cutoff', type=int, help='The number of the experiment')
+
+args = parser.parse_args()
+
+assert args.date is not None and '-' in args.date, "Please provide valid date eg: 2020-07-08"
+assert args.distance_cutoff is not None, "Please provide a distance cutoff"
+
 # Set these to change what cell you want
-date = "2020-07-08"
+date = args.date
 stimulus = "noise_1500"
-exp_num = "1"
+exp_num = args.exp_num
 cell_id = date + "_" + exp_num
+field_stim_extract = "d1"  # Assume stimuli are all the same with each ROI
 
-# # Parse command line arguments
-# parser = argparse.ArgumentParser(description='Process some integers.')
-# parser.add_argument('--min-distance', type=int, help='Int of the minimum distance to consider for a synapse.', default=20)
-# args = parser.parse_args()
 
-distance_cutoff = 7
+distance_cutoff = args.distance_cutoff
 
 
 rec_id: int = 1  # Can pick any here.

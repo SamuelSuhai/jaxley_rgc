@@ -7,13 +7,29 @@ import sys
 import pandas as pd
 import shutil
 import pickle
+import argparse
+import ast
 
 from djimaging.user.alpha.utils import database
 
+
+
+
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--date', type=str, help='Date of recording')
+parser.add_argument('--exp_num', type=str, help='The number of the experiment')
+
+args = parser.parse_args()
+
+assert args.date is not None and '-' in args.date, "Please provide valid date eg: 2020-07-08"
+
+
 # Set these to change what cell you want
-date = "2020-07-08"
+date = args.date
 stimulus = "noise_1500"
-exp_num = "1"
+exp_num = args.exp_num
 cell_id = date + "_" + exp_num
 field_stim_extract = "d1"  # Assume stimuli are all the same with each ROI
 

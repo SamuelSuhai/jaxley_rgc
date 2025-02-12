@@ -8,6 +8,11 @@ This script preprocesses the calcium data before training. It performs two essen
 The low-pass filter is a butterworth filter.
 
 The inference of delay happens by performing linear regression from images onto calcium signal and choosing that delay which leads to the smallest MSE on average across all ROIs.
+
+Example usage:
+
+python 02_labels_lowpass.py --date 2020-08-29 --exp_num 1 --sampling_method mean
+
 '''
 from scipy import signal
 import numpy as np
@@ -17,23 +22,36 @@ import pandas as pd
 import matplotlib as mpl
 import scipy
 import os
-
 import argparse
 import ast
 
 sampling_method = 'mean'
 
-# # Parse command line arguments
-# parser = argparse.ArgumentParser(description='Process some integers.')
-# parser.add_argument('--subsampling-method', type=str, help='Str indicating which method to subsample: mean -> will take mean ca in stimpulus presentation bins')
-# args = parser.parse_args()
 
-# # Convert the string argument to a dictionary
-# if args.subsampling_method:
-#     subsampling_method = ast.literal_eval(args.subsampling_method)
 
-# else:
-#     subsampling_method = None
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--date', type=str, help='Date of recording')
+parser.add_argument('--exp_num', type=str, help='The number of the experiment')
+parser.add_argument('--sampling_method', type=str, help='The sampling method to use')
+
+
+args = parser.parse_args()
+
+assert args.date is not None and '-' in args.date, "Please provide valid date eg: 2020-07-08"
+assert args.sampling_method in ['mean','subsample'], "Please provide a valid sampling method"
+
+# sampling method
+sampling_method = args.sampling_method
+
+# Set these to change what cell you want
+date = args.date
+stimulus = "noise_1500"
+exp_num = args.exp_num
+cell_id = date + "_" + exp_num
+field_stim_extract = "d1"  # Assume stimuli are all the same with each ROI
+
 
 
 
@@ -47,42 +65,7 @@ assert os.path.exists(base_dir), f'{base_dir} does not exist.'
   
 all_dfs = pd.read_pickle(f"{base_dir}/results/data/setup.pkl")
 
-cell_id = "2020-07-08_1"
 
-
-
-
-
-def get_stim_and_calcium(one_roi):
-    """Interpolates the noise stimulus and align it temporally with calcium."""
-            
-    noise_times = one_roi["Triggertimes_noise"]
-    calcium_at_roi = one_roi["Traces0_raw_noise"]
-    times_calcium = one_roi["Tracetimes0_noise"]
-
-    # Throw out calcium from before the noise.
-    condition = times_calcium > np.min(noise_times)
-    calcium_at_roi = calcium_at_roi[condition]
-    times_calcium = times_calcium[condition]
-
-    # Throw out calcium from after 200ms after the last noise trigger.
-    condition = times_calcium < np.max(noise_times) + 0.2
-    calcium_at_roi = calcium_at_roi[condition]
-    times_calcium = times_calcium[condition]
-    
-    interpolated_noise = np.zeros((noise_stimulus.shape[0], noise_stimulus.shape[1], len(times_calcium)))  # np.interp(times_calcium, joined_times, joined_stim)
-    for i in range(15):
-        for j in range(20):
-            interpolator = scipy.interpolate.interp1d(noise_times, noise_stimulus[i, j], kind="zero", fill_value="extrapolate")
-            interpolated_noise[i, j, :] = interpolator(times_calcium)
-
-    # Align calcium and stimulus.
-    temporal_delay_steps = 10
-    calcium_at_roi = calcium_at_roi[temporal_delay_steps:]
-    times_calcium = times_calcium[temporal_delay_steps:]
-    interpolated_noise = interpolated_noise[:, :, :-temporal_delay_steps]
-
-    return interpolated_noise, calcium_at_roi, times_calcium, noise_times
 
 def lowpass_calcium(one_roi):
     noise_times = one_roi["Triggertimes_noise"]
@@ -108,6 +91,10 @@ def lowpass_calcium(one_roi):
 
 
 def delay_and_subsample_calcium(calcium, times_calcium, noise_times, noise_stimulus,temporal_delay_steps: int = 5):
+    '''
+    
+    '''
+    
     interpolated_noise = np.zeros((noise_stimulus.shape[0], noise_stimulus.shape[1], len(times_calcium)))
     noise_index = np.arange(noise_stimulus.shape[2])
     noise_times = noise_times[:1500]
@@ -207,9 +194,9 @@ def main():
         )
 
     # raw vs filtered calcium    
-    fig, ax = plt.subplots(1, 1, figsize=(12, 3))
-    _ = ax.plot(times_calcium[:200], filtered_calcium[:200])
-    _ = ax.plot(times_calcium[:200], raw_calcium[:200])
+    fig, ax = plt.subplots(1, 1, figsize=(24, 3))
+    _ = ax.plot(times_calcium[:400], filtered_calcium[:400])
+    _ = ax.plot(times_calcium[:400], raw_calcium[:400])
     _ = ax.set_xlabel("Time (seconds)")
     _ = ax.set_ylim([-6, 6])
     plt.savefig(f"{base_dir}/results/figs/raw_vs_filtered_ca.png", dpi=200, bbox_inches="tight")
@@ -238,7 +225,7 @@ def main():
     from sklearn.model_selection import KFold, cross_val_score
     from scipy.spatial.distance import correlation
     all_accs_across_rois = []
-    shifts = np.arange(2, 14)
+    shifts = np.arange(1, 14)
     for j, df in enumerate(one_morph.iterrows()):
         one_roi = df[1]
         filtered, _, times_calcium, noise_times = lowpass_calcium(one_roi)
@@ -316,8 +303,10 @@ def main():
 if __name__ == "__main__":
 
     if sampling_method == "mean":
+        print("Using mean sampling method ...")
         main_mean()
-    else:   
+    elif sampling_method == "subsample":   
+        print("Using subsample sampling method ...")
         main()
     print("Done.")
 

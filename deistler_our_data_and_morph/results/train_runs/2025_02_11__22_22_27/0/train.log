@@ -1,0 +1,93 @@
+[2025-02-11 22:22:27,900][rgc][INFO] - Recording ids [2]
+[2025-02-11 22:22:28,640][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-02-11 22:22:28,641][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+[2025-02-11 22:22:32,662][rgc][INFO] - Recomputing avg_recordings
+[2025-02-11 22:22:44,091][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-02-11 22:22:44,672][rgc][INFO] - Inserted 5 recordings
+[2025-02-11 22:22:44,672][rgc][INFO] - number_of_recordings_each_scanfield [5]
+[2025-02-11 22:22:44,693][rgc][INFO] - currents.shape (1024, 353)
+[2025-02-11 22:22:44,693][rgc][INFO] - labels.shape (1024, 5)
+[2025-02-11 22:22:44,693][rgc][INFO] - loss_weights.shape (1024, 5)
+[2025-02-11 22:22:50,653][rgc][INFO] - Weight mean of w_bc_to_rgc: 0.10000000000000002
+[2025-02-11 22:22:50,965][rgc][INFO] - Num train 672, num val 224, num test 128
+[2025-02-11 22:22:52,395][rgc][INFO] - noise_full (1024, 15, 20)
+[2025-02-11 22:22:52,395][rgc][INFO] - number of training batches 3
+[2025-02-11 22:22:52,395][rgc][INFO] - lr scheduling dict: {300: 0.1, 600: 0.1, 900: 0.1}
+[2025-02-11 22:22:52,441][rgc][INFO] - Starting to train
+[2025-02-11 22:22:52,442][rgc][INFO] - Number of epochs 334
+[2025-02-11 22:22:52,461][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 0
+[2025-02-11 23:10:23,896][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-11 23:10:24,346][rgc][INFO] - Batch 0, avg loss per batch: 7.733942903199157
+[2025-02-11 23:10:24,347][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 1
+[2025-02-11 23:58:03,428][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-11 23:58:03,474][rgc][INFO] - Batch 1, avg loss per batch: 7.304855538127055
+[2025-02-11 23:58:03,475][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 2
+[2025-02-12 00:36:11,096][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-12 00:36:11,120][rgc][INFO] - Batch 2, avg loss per batch: 7.251335644833979
+[2025-02-12 00:36:11,132][rgc][INFO] - ================= Epoch 0, loss: 22.29013408616019 ===============
+[2025-02-12 00:36:11,132][rgc][INFO] - Visualizing histograms
+[2025-02-12 00:54:16,485][rgc][INFO] - AVG rho on val data: 0.02342230996715626
+[2025-02-12 00:54:16,486][rgc][INFO] - AVG Mean Absolute Error on val data: 1.4741934370284244
+[2025-02-12 01:03:46,263][rgc][INFO] - AVG rho on test data: 0.04258548922651303
+[2025-02-12 01:03:46,263][rgc][INFO] - AVG Mean Absolute Error on test data: 1.44083937693636
+[2025-02-12 01:28:37,749][rgc][INFO] - AVG rho on train data: 0.03317969374487912
+[2025-02-12 01:28:37,749][rgc][INFO] - AVG Mean Absolute Error on train data: 1.4401693622966831
+[2025-02-12 01:28:37,751][rgc][INFO] - Current best rhos: train 0.03317969374487912, val 0.02342230996715626, test 0.04258548922651303
+[2025-02-12 01:28:37,776][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 0
+[2025-02-12 02:05:46,473][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-12 02:05:46,496][rgc][INFO] - Batch 0, avg loss per batch: 7.328072226852063
+[2025-02-12 02:05:46,498][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 1
+[2025-02-12 02:42:54,418][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-12 02:42:54,468][rgc][INFO] - Batch 1, avg loss per batch: 6.777467523152973
+[2025-02-12 02:42:54,469][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 2
+[2025-02-12 03:10:06,839][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-12 03:10:06,862][rgc][INFO] - Batch 2, avg loss per batch: 6.41702823191585
+[2025-02-12 03:10:06,873][rgc][INFO] - ================= Epoch 1, loss: 20.522567981920886 ===============
+[2025-02-12 03:10:06,873][rgc][INFO] - Visualizing histograms
+[2025-02-12 03:21:07,007][rgc][INFO] - AVG rho on val data: 0.020977011092990504
+[2025-02-12 03:21:07,008][rgc][INFO] - AVG Mean Absolute Error on val data: 1.206511369469276
+[2025-02-12 03:26:48,926][rgc][INFO] - AVG rho on test data: 0.06858151374566428
+[2025-02-12 03:26:48,926][rgc][INFO] - AVG Mean Absolute Error on test data: 1.1449936217991983
+[2025-02-12 03:47:39,944][rgc][INFO] - AVG rho on train data: 0.037419331208073336
+[2025-02-12 03:47:39,944][rgc][INFO] - AVG Mean Absolute Error on train data: 1.1928409996124099
+[2025-02-12 03:47:39,945][rgc][INFO] - Current best rhos: train 0.03317969374487912, val 0.02342230996715626, test 0.04258548922651303
+[2025-02-12 03:47:39,974][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 0
+[2025-02-12 04:24:47,643][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-12 04:24:47,668][rgc][INFO] - Batch 0, avg loss per batch: 6.006920219593958
+[2025-02-12 04:24:47,670][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 1
+[2025-02-12 05:01:58,104][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-12 05:01:58,183][rgc][INFO] - Batch 1, avg loss per batch: 5.520073547724801
+[2025-02-12 05:01:58,188][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 2
+[2025-02-12 05:29:09,976][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-12 05:29:10,002][rgc][INFO] - Batch 2, avg loss per batch: 5.1156876434453045
+[2025-02-12 05:29:10,016][rgc][INFO] - ================= Epoch 2, loss: 16.642681410764062 ===============
+[2025-02-12 05:29:10,017][rgc][INFO] - Visualizing histograms
+[2025-02-12 05:40:09,697][rgc][INFO] - AVG rho on val data: 0.0030191205394936487
+[2025-02-12 05:40:09,698][rgc][INFO] - AVG Mean Absolute Error on val data: 1.0073804454133024
+[2025-02-12 05:45:42,529][rgc][INFO] - AVG rho on test data: 0.06597682851017124
+[2025-02-12 05:45:42,530][rgc][INFO] - AVG Mean Absolute Error on test data: 0.9336810995407067
+[2025-02-12 06:06:27,139][rgc][INFO] - AVG rho on train data: 0.053304687695117134
+[2025-02-12 06:06:27,140][rgc][INFO] - AVG Mean Absolute Error on train data: 0.9765489011667434
+[2025-02-12 06:06:27,141][rgc][INFO] - Current best rhos: train 0.03317969374487912, val 0.02342230996715626, test 0.04258548922651303
+[2025-02-12 06:06:27,169][rgc][INFO] - 	Applying batch grad function of epoch 3 and batch 0
+[2025-02-12 06:43:32,630][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-12 06:43:32,692][rgc][INFO] - Batch 0, avg loss per batch: 5.029362920945857
+[2025-02-12 06:43:32,695][rgc][INFO] - 	Applying batch grad function of epoch 3 and batch 1
+[2025-02-12 07:20:39,372][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-12 07:20:39,395][rgc][INFO] - Batch 1, avg loss per batch: 4.8123161812345145
+[2025-02-12 07:20:39,398][rgc][INFO] - 	Applying batch grad function of epoch 3 and batch 2
+[2025-02-12 07:47:52,029][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-12 07:47:52,083][rgc][INFO] - Batch 2, avg loss per batch: 4.270004474263735
+[2025-02-12 07:47:52,098][rgc][INFO] - ================= Epoch 3, loss: 14.111683576444108 ===============
+[2025-02-12 07:47:52,099][rgc][INFO] - Visualizing histograms
+[2025-02-12 07:59:06,487][rgc][INFO] - AVG rho on val data: 0.0007882940988664502
+[2025-02-12 07:59:06,488][rgc][INFO] - AVG Mean Absolute Error on val data: 0.9881516105291128
+[2025-02-12 08:04:37,084][rgc][INFO] - AVG rho on test data: 0.06657965690826005
+[2025-02-12 08:04:37,084][rgc][INFO] - AVG Mean Absolute Error on test data: 0.9138029123359436
+[2025-02-12 08:25:25,318][rgc][INFO] - AVG rho on train data: 0.05084529108321589
+[2025-02-12 08:25:25,319][rgc][INFO] - AVG Mean Absolute Error on train data: 0.9576937634180632
+[2025-02-12 08:25:25,319][rgc][INFO] - Current best rhos: train 0.03317969374487912, val 0.02342230996715626, test 0.04258548922651303
+[2025-02-12 08:25:25,334][rgc][INFO] - 	Applying batch grad function of epoch 4 and batch 0
+[2025-02-12 09:02:33,324][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-12 09:02:33,345][rgc][INFO] - Batch 0, avg loss per batch: 4.827635112321692
+[2025-02-12 09:02:33,347][rgc][INFO] - 	Applying batch grad function of epoch 4 and batch 1
