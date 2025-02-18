@@ -90,11 +90,11 @@ def simulate(params, basal_neuron_params, somatic_neuron_params, currents, all_s
         # reminder: each v has shape (nr of comp we are recording from, truncated time window length/dt)
         vs.append(v[:, 1:])
 
-    # concatenate along the time dimension
+    # concatenate along the time dimension 
     return jnp.concatenate(vs, axis=1)
 
 
-def predict(params, basal_neuron_params, somatic_neuron_params, currents, all_states, static):
+def predict(params, basal_neuron_params, somatic_neuron_params, currents, all_states, static,offset_scale):
     """Return calcium activity in each of the recordings."""
 
     v = simulate(
@@ -104,7 +104,9 @@ def predict(params, basal_neuron_params, somatic_neuron_params, currents, all_st
     # v as shape (nr of comp we are recording from, TOTAL time window length/dt)
     # mean over time = mean ca activity over time
     convolved_at_last_time = jnp.mean(jnp.flip(static["kernel"]) * v, axis=1)
-    return (convolved_at_last_time * static["output_scale"]) + static["output_offset"]
+
+    # return (convolved_at_last_time * static["output_scale"]) + static["output_offset"]
+    return (convolved_at_last_time * offset_scale[0]['scale'] + offset_scale[1]['offset']) # experiment:make offset_scale a parameter
 
 
 def loss_fn(
@@ -116,10 +118,11 @@ def loss_fn(
     loss_weights,
     all_states,
     static,
+    offset_scale
 ):
     """Return loss for a single (data,label) pair."""
     prediction = predict(
-        params, basal_neuron_params, somatic_neuron_params, currents, all_states, static
+        params, basal_neuron_params, somatic_neuron_params, currents, all_states, static,offset_scale
     )
     loss_of_each_recording = jnp.abs(prediction - labels)
     loss = jnp.sum(loss_weights * loss_of_each_recording)

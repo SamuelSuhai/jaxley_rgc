@@ -456,6 +456,17 @@ def run(cfg: DictConfig) -> None:
     output_scale = jnp.asarray(cfg["output_scale"])
     output_offset = jnp.asarray(cfg["output_offset"])
 
+    # experiment: make scale and offset trainable
+    offset_scale_params = [
+        {"scale": jnp.asarray(35.0)},
+        {"offset": jnp.asarray(-1.5)},
+    ]
+    with open(f"{os.getcwd()}/transforms/transform_offset_scale.pkl", "wb") as handle:
+        pickle.dump(offset_scale_params, handle)
+
+
+
+
     with open(f"{os.getcwd()}/transforms/transform_params.pkl", "wb") as handle:
         pickle.dump(transform_params, handle)
     with open(f"{os.getcwd()}/transforms/transform_basal.pkl", "wb") as handle:
@@ -559,14 +570,19 @@ def run(cfg: DictConfig) -> None:
     opt_state_somatic_params = optimizer_somatic_params.init(opt_somatic_params)
 
 
+    # experiment: offset and scale trainable parameters
+    optimizer_offset_scale = optax.sgd(scheduler, momentum=momentum)
+    opt_state_offset_scale = optimizer_offset_scale.init(offset_scale_params)    
+
+    # experiment: offset and scale trainable change static
     static = {
         "cell": cell,
         "dt": dt,
         "t_max": t_max,
         "time_vec": time_vec,
         "num_truncations": num_truncations,
-        "output_scale": output_scale,
-        "output_offset": output_offset,
+        # "output_scale": output_scale,
+        # "output_offset": output_offset,
         "kernel": kernel,
         "transform_params": transform_params,
         "transform_somatic": transform_somatic,
@@ -587,8 +603,9 @@ def run(cfg: DictConfig) -> None:
     vmapped_predict = jit(
         vmap(partial(predict, static=static), in_axes=(None, None, None, 0, None))
     )
+
     vmapped_loss_fn = jit(
-        vmap(partial(loss_fn, static=static), in_axes=(None, None, None, 0, 0, 0, None))
+        vmap(partial(loss_fn), in_axes=(None, None, None, 0, 0, 0, None, None))
     )
 
     def batch_loss_fn(
@@ -599,6 +616,9 @@ def run(cfg: DictConfig) -> None:
         all_labels,
         all_loss_weights,
         all_states,
+        offset_scale_params, # experiment: offset scale
+        static,
+
     ):
         """Return average loss across a batch given transformed parameters."""
         params = transform_params.forward(opt_params)
@@ -612,10 +632,15 @@ def run(cfg: DictConfig) -> None:
             all_labels,
             all_loss_weights,
             all_states,
+            offset_scale_params,
+            static,
         )
         return jnp.mean(losses)
 
-    batch_grad_fn = jit(value_and_grad(batch_loss_fn, argnums=(0, 1, 2)))
+    #batch_grad_fn = jit(value_and_grad(batch_loss_fn, argnums=(0, 1, 2,7)))
+    batch_grad_fn = jit(
+        value_and_grad(batch_loss_fn, argnums=(0, 1, 2, 7)),
+    )
 
     log.info(f"Starting to train")
     tf.random.set_seed(cfg["seed_tf_train_loop"]+cfg["seed_ruler"])
@@ -653,8 +678,11 @@ def run(cfg: DictConfig) -> None:
                 label_batch,
                 loss_weight_batch,
                 init_states,
+                offset_scale_params,
+                static,
+    
             )
-            grad_params, grad_basal_params, grad_somatic_params = gradient
+            grad_params, grad_basal_params, grad_somatic_params,grad_offset_scale_params = gradient
             
         
             
@@ -682,13 +710,13 @@ def run(cfg: DictConfig) -> None:
             grad_somatic_params = tree_map(
                 lambda x: x / grad_norm_somatic**beta * num_params, grad_somatic_params
             )
-
-   
+            
 
             epoch_loss += loss
 
 
             log.info(f"\tUpdating weights of batch {batch_ind}")
+            
             # Update all parameters with optimizer
             updates, opt_state_params = optimizer_params.update(
                 grad_params, opt_state_params
@@ -709,6 +737,13 @@ def run(cfg: DictConfig) -> None:
             )
             opt_somatic_params = optax.apply_updates(opt_somatic_params, updates)
 
+            # experiment: update offset and scale
+            updates_offset_scale, opt_state_offset_scale = optimizer_offset_scale.update(
+                    grad_offset_scale_params, opt_state_offset_scale
+            )
+            offset_scale_params = optax.apply_updates(offset_scale_params, updates_offset_scale)
+
+            
             log.info(f"Batch {batch_ind}, avg loss per batch: {loss}")
             
 
