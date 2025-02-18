@@ -25,8 +25,6 @@ import os
 import argparse
 import ast
 
-sampling_method = 'mean'
-
 
 
 

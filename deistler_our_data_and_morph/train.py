@@ -1,6 +1,6 @@
 from jax import config
 
-config.update("jax_enable_x64", True)
+config.update("jax_enable_x64", False)
 config.update("jax_platform_name", "gpu")
 
 import os
@@ -67,6 +67,203 @@ log = logging.getLogger("rgc")
 
 coinfig_fullpath = "/gpfs01/euler/User/ssuhai/GitRepos/jaxley_rgc/deistler_our_data_and_morph/config"
 
+def plot_prediction_histogram(vmapped_predict,
+                              opt_params,
+                              opt_basal_params,
+                              opt_somatic_params,
+                              currents,
+                              init_states,
+                              epoch):
+    # Evaluate after every epoch.
+    predictions = vmapped_predict(
+        transform_params.forward(opt_params),
+        transform_basal.forward(opt_basal_params),
+        transform_somatic.forward(opt_somatic_params),
+        currents[:64],
+        init_states,
+    )
+    fig, ax = plt.subplots(1, 1, figsize=(5, 3))
+    ax.hist(predictions.flatten(), bins=40, density=True)
+    plt.savefig(
+        f"{os.getcwd()}/figs/hist_{epoch}.png", dpi=150, bbox_inches="tight"
+    )
+    plt.show()
+
+
+
+def create_rf_plots(counters,
+                    cell,
+                    all_loss_weights,
+                    all_ca_predictions,
+                    all_images,
+                    avg_recordings,
+                    setup,
+                    epoch,
+                    save_path_base = None,
+                    return_ax_and_not_save = False):
+    '''
+    counters- list of indices of the recordings for which we want to plot the receptive fields
+    save_path is a list or None
+    '''
+    # Receptive field setup.
+    avg_recordings["roi_id"] = avg_recordings["roi_id"].astype(int)
+    rec_and_roi = avg_recordings[["rec_id", "roi_id"]].to_numpy()
+    rec_ids_of_all_rois = rec_and_roi[:, 0]
+    roi_ids_of_all_rois = rec_and_roi[:, 1]
+    noise_mag = 1e-1
+    num_iter = 20
+    avg_recordings = avg_recordings.reset_index()
+    center = np.asarray([170, 150])
+    pixel_size = 30
+    levels = [0.5]
+
+    # Compute receptive fields.
+    rfs_trained = compute_all_trained_rfs(
+        counters,
+        all_loss_weights,
+        all_ca_predictions,
+        np.transpose(all_images, (1, 2, 0)),
+        noise_mag,
+        num_iter,
+    )
+
+    # contour RF plot
+    for i, counter in enumerate(counters):
+
+
+        fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
+
+        # changed
+        ax = cell.vis(ax=ax) # ,color="k",morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3})
+
+        rec_id = rec_ids_of_all_rois[counter]
+        roi_id = roi_ids_of_all_rois[counter]
+        rf_pred = rfs_trained[i]
+        setup_rec = setup[setup["rec_id"] == rec_id]
+        offset_x = setup_rec["image_center_x"].to_numpy()[0]
+        offset_y = setup_rec["image_center_y"].to_numpy()[0]
+
+        upsample_factor = 5
+        im_pos_x = (
+            np.linspace(
+                -7.0 * pixel_size, 7.0 * pixel_size, 15 * upsample_factor
+            )
+            + offset_x
+        )
+        im_pos_y = (
+            -np.linspace(
+                -9.5 * pixel_size, 9.5 * pixel_size, 20 * upsample_factor
+            )
+            + offset_y
+        )
+        image_xs, image_ys = np.meshgrid(im_pos_x, im_pos_y)
+
+        rec = avg_recordings.loc[counter]
+        dist = np.sqrt(
+            np.sum(
+                (
+                    center
+                    - np.asarray([rec["roi_x"].item(), rec["roi_y"].item()])
+                )
+                ** 2
+            )
+        )
+        cmap = mpl.colormaps["viridis"]
+        col = cmap((dist + 20) / 150)
+
+        ax.spines["bottom"].set_visible(False)
+        ax.spines["left"].set_visible(False)
+
+        _ = ax.scatter(
+            rec["roi_x"].item(),
+            rec["roi_y"].item(),
+            color=col,
+            s=20.0,
+            edgecolors="k",
+            zorder=10000,
+        )
+
+        # Contours
+        output_shape = (np.array([20, 15]) * upsample_factor).astype(int)
+        upsampled_rf = resize(
+            rf_pred, output_shape=output_shape, mode="constant"
+        )
+
+        _ = ax.contour(
+            image_xs,
+            image_ys,
+            upsampled_rf,
+            levels=levels,
+            colors=[col],
+            linestyles="solid",
+            linewidths=0.5,
+        )
+        _ = ax.set_xticks([])
+        _ = ax.set_yticks([])
+
+        # paths for saving figs
+        if save_path_base is None:
+            save_path_contour = f"{os.getcwd()}/figs/rf_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png"
+        else:
+            save_path_contour = save_path_base + f"_roi_id_{roi_id}_contour.png"
+        
+        if not return_ax_and_not_save:
+            print(f"Saving contour to {save_path_contour}")
+            plt.savefig(
+                save_path_contour, dpi=150, bbox_inches="tight"
+            )
+        else:
+            ax_list = [ax]
+
+    
+    # visualize a heatmap of the receptive fields
+    for i, counter in enumerate(counters):
+        fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
+
+        # changed
+        ax = cell.vis(ax=ax) # ,color="k",morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3})
+
+        rec_id = rec_ids_of_all_rois[counter]
+        roi_id = roi_ids_of_all_rois[counter]
+        rf_pred = rfs_trained[i]
+        setup_rec = setup[setup["rec_id"] == rec_id]
+        offset_x = setup_rec["image_center_x"].to_numpy()[0]
+        offset_y = setup_rec["image_center_y"].to_numpy()[0]
+
+        im_pos_x = np.linspace(-7.5*pixel_size + 0.5, 7.5* pixel_size - 0.5, 15*pixel_size) + offset_x
+        im_pos_y = -np.linspace(-10.0*pixel_size + 0.5, 10.0*pixel_size - 0.5, 20*pixel_size) + offset_y
+
+        _ = ax.imshow(rf_pred, 
+                            extent=[im_pos_x[0], im_pos_x[-1], im_pos_y[-1], im_pos_y[0]], 
+                            clim=[0, 1], 
+                            alpha=0.4, cmap="viridis")
+        
+        rec = avg_recordings.loc[counter]
+        _ = ax.scatter(
+            rec["roi_x"].item(),
+            rec["roi_y"].item(),
+            color=col,
+            s=20.0,
+            edgecolors="k",
+            zorder=10000,
+        )
+
+        # paths for saving figs
+        if save_path_base is None:
+            save_path_heatmap = f"{os.getcwd()}/figs/rf_heatmap_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png"
+        else:
+            save_path_heatmap = save_path_base + f"_roi_id_{roi_id}_heatmap.png"
+
+        if not return_ax_and_not_save:
+            print(f"Saving heatmap to {save_path_heatmap}")
+            plt.savefig(
+                save_path_heatmap, dpi=150, bbox_inches="tight")
+        else:
+            ax_list.append(ax)
+            return(ax_list)
+
+
+
 @hydra.main(config_path=coinfig_fullpath, config_name="train")
 def run(cfg: DictConfig) -> None:
     simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
@@ -80,18 +277,19 @@ def run(cfg: DictConfig) -> None:
     dt = 0.025
     t_max = 200.0
     num_truncations = 4
-    nseg = 4
+    nseg = cfg['nseg']#4
     time_vec = np.arange(0, t_max + 2 * dt, dt)
 
     warmup = 5.0
     i_amp = 0.1
 
-    start_n_scan = 100 # Start from time point 100 there were some weird things in the labels before
+    start_n_scan = cfg["start_n_scan"] # Start from time point 100 there were some weird things in the labels before
     num_datapoints_per_scanfield = cfg["num_datapoints_per_scanfield"]
     cell_id = cfg["cell_id"] #"2020-07-08_1" #"20161028_1"  # "20170610_1", "20161028_1"
     rec_ids = cfg["rec_ids"]
     log.info(f"Recording ids {rec_ids}")
 
+    
     stimuli, recordings, setup, noise_full = read_data(
         start_n_scan,
         num_datapoints_per_scanfield,
@@ -105,17 +303,26 @@ def run(cfg: DictConfig) -> None:
     cell = build_cell(cell_id, nseg, cfg["soma_radius"], get_original_cwd())
     kernel = build_kernel(time_vec, dt)
 
-    if len(rec_ids) < 15:
-        log.info("Recomputing avg_recordings")
+    # Build average recordings.
+    avg_rec_path = f"{get_original_cwd()}/results/intermediate/avg_recordings.pkl"
+    avg_rec_dir = os.path.dirname(avg_rec_path)
+
+    # Ensure the directory exists
+    os.makedirs(avg_rec_dir, exist_ok=True)
+
+    if cfg['reuse_avg_recordings']:
+        log.info(f"Loading avg_recordings from intermediate file with path {avg_rec_path}")
+        
+        with open(avg_rec_path, "rb") as handle:
+            avg_recordings = pickle.load(handle)
+    else:
+        log.info("Recomputing and saving avg_recordings - no intermediate file found")
+
         avg_recordings = build_avg_recordings(
             recordings, rec_ids, nseg, num_datapoints_per_scanfield
         )
-    else:
-        avg_rec_path = f"{get_original_cwd()}/results/intermediate/avg_recordings.pkl"
-        # with open(avg_rec_path, "wb") as handle:
-        #     pickle.dump(avg_recordings, handle)
-        with open(avg_rec_path, "rb") as handle:
-            avg_recordings = pickle.load(handle)
+        with open(avg_rec_path, "wb") as handle:
+            pickle.dump(avg_recordings, handle)
     
     # Build recordings.
     number_of_recordings_each_scanfield = list(avg_recordings.groupby("rec_id").size())
@@ -126,12 +333,19 @@ def run(cfg: DictConfig) -> None:
     cell.delete_recordings()
     cell.delete_stimuli()
 
-    for i, rec in avg_recordings.iterrows():
+    # insert recordings in cell 
+    for idx,(i, rec) in enumerate(avg_recordings.iterrows()):
         # here we set that the internal calcium is recorded???
         cell.branch(rec["branch_ind"]).loc(rec["comp"]).record("Cai", verbose=False)
+    
 
     # debugging: visualize compartments in which we record
-    #dbg.plot_recording_compartments_in_cell(cell, avg_recordings)
+    if 'recording_comps_and_rois' in cfg['debugging_figs']:
+        dbg.plot_recording_compartments_and_rois_on_cell(cell, 
+                                                         avg_recordings,
+                                                         recordings,
+                                                         over_write_save_path= False) #os.path.join(get_original_cwd(), 'report_figs/2020-08-29_experimental_and_model_recordings.pdf'))
+
 
     log.info(f"Inserted {len(cell.recordings)} recordings")
     log.info(
@@ -180,7 +394,6 @@ def run(cfg: DictConfig) -> None:
     # #                                             setup,
     # #                                             avg_recordings)
 
-    # breakpoint()
     # dbg.plot_currents_on_cell_each_image(cell,
     #                                 currents,
     #                                 stimuli,
@@ -345,17 +558,6 @@ def run(cfg: DictConfig) -> None:
     optimizer_somatic_params = optax.sgd(scheduler, momentum=momentum)
     opt_state_somatic_params = optimizer_somatic_params.init(opt_somatic_params)
 
-    # Receptive field setup.
-    avg_recordings["roi_id"] = avg_recordings["roi_id"].astype(int)
-    rec_and_roi = avg_recordings[["rec_id", "roi_id"]].to_numpy()
-    rec_ids_of_all_rois = rec_and_roi[:, 0]
-    roi_ids_of_all_rois = rec_and_roi[:, 1]
-    noise_mag = 1e-1
-    num_iter = 20
-    avg_recordings = avg_recordings.reset_index()
-    center = np.asarray([170, 150])
-    pixel_size = 30
-    levels = [0.5]
 
     static = {
         "cell": cell,
@@ -609,20 +811,15 @@ def run(cfg: DictConfig) -> None:
         # Visuaisation of predictions
         if cfg["vis"]:
             log.info(f"Visualizing histograms")
-            # Evaluate after every epoch.
-            predictions = vmapped_predict(
-                transform_params.forward(opt_params),
-                transform_basal.forward(opt_basal_params),
-                transform_somatic.forward(opt_somatic_params),
-                currents[:64],
-                init_states,
-            )
-            fig, ax = plt.subplots(1, 1, figsize=(5, 3))
-            ax.hist(predictions.flatten(), bins=40, density=True)
-            plt.savefig(
-                f"{os.getcwd()}/figs/hist_{epoch}.png", dpi=150, bbox_inches="tight"
-            )
-            plt.show()
+            plot_prediction_histogram(vmapped_predict,
+                              opt_params,
+                              opt_basal_params,
+                              opt_somatic_params,
+                              currents,
+                              init_states,
+                              epoch)
+            
+
 
 
         # 2) Evaluate after every epoch
@@ -669,7 +866,7 @@ def run(cfg: DictConfig) -> None:
             if epoch == 0:
                 with open(f"{os.getcwd()}/predictions_labels/labels_split_{split}.pkl", "wb") as handle:
                     pickle.dump(all_ca_recordings, handle)
-                with open(f"{os.getcwd()}/predictions_labels/loss_weights_epoch_split_{split}.pkl", "wb") as handle:
+                with open(f"{os.getcwd()}/predictions_labels/loss_weights_split_{split}.pkl", "wb") as handle:
                     pickle.dump(all_loss_weights, handle)
                 with open(f"{os.getcwd()}/predictions_labels/currents_split_{split}.pkl", "wb") as handle:
                     pickle.dump(current_batch, handle)
@@ -710,6 +907,10 @@ def run(cfg: DictConfig) -> None:
             # save all trained maes for this epoch and split
             with open(f"{os.getcwd()}/rhos/{split}_mae_all_epoch_{epoch}.pkl", "wb") as handle:
                 pickle.dump(mae_trained, handle)
+
+            # Save all trained rhos to see how they develop 
+            with open(f"{os.getcwd()}/rhos/{split}_rho_all_epoch_{epoch}.pkl", "wb") as handle:
+                pickle.dump(trained_rhos, handle)
                     
 
             if split == "val" and avg_rho > best_validation_rho:
@@ -731,140 +932,27 @@ def run(cfg: DictConfig) -> None:
 
 
     # ################################################ RF Figures ########################################################    
-    # log.info("Creating Receptive Field Figures ... ")
+    log.info("Creating Receptive Field Figures ... ")
 
-    # if cfg["vis"]:
-    #     # Compute receptive fields.
-    #     counters = [i for i in range(avg_recordings.shape[0])] #np.arange(0, 147, 5) # which rois to visualize
-    #     rfs_trained = compute_all_trained_rfs(
-    #         counters,
-    #         all_loss_weights,
-    #         all_ca_predictions,
-    #         np.transpose(all_images, (1, 2, 0)),
-    #         noise_mag,
-    #         num_iter,
-    #     )
-
+    if cfg["vis"]:
         
-
-    #     for i, counter in enumerate(counters):
-    #         fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
-
-    #         # changed
-    #         ax = cell.vis(ax=ax) # ,color="k",morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3})
-
-    #         rec_id = rec_ids_of_all_rois[counter]
-    #         roi_id = roi_ids_of_all_rois[counter]
-    #         rf_pred = rfs_trained[i]
-    #         setup_rec = setup[setup["rec_id"] == rec_id]
-    #         offset_x = setup_rec["image_center_x"].to_numpy()[0]
-    #         offset_y = setup_rec["image_center_y"].to_numpy()[0]
-
-    #         upsample_factor = 5
-    #         im_pos_x = (
-    #             np.linspace(
-    #                 -7.0 * pixel_size, 7.0 * pixel_size, 15 * upsample_factor
-    #             )
-    #             + offset_x
-    #         )
-    #         im_pos_y = (
-    #             -np.linspace(
-    #                 -9.5 * pixel_size, 9.5 * pixel_size, 20 * upsample_factor
-    #             )
-    #             + offset_y
-    #         )
-    #         image_xs, image_ys = np.meshgrid(im_pos_x, im_pos_y)
-
-    #         rec = avg_recordings.loc[counter]
-    #         dist = np.sqrt(
-    #             np.sum(
-    #                 (
-    #                     center
-    #                     - np.asarray([rec["roi_x"].item(), rec["roi_y"].item()])
-    #                 )
-    #                 ** 2
-    #             )
-    #         )
-    #         cmap = mpl.colormaps["viridis"]
-    #         col = cmap((dist + 20) / 150)
-
-    #         ax.spines["bottom"].set_visible(False)
-    #         ax.spines["left"].set_visible(False)
-
-    #         _ = ax.scatter(
-    #             rec["roi_x"].item(),
-    #             rec["roi_y"].item(),
-    #             color=col,
-    #             s=20.0,
-    #             edgecolors="k",
-    #             zorder=10000,
-    #         )
-
-    #         # Contours
-    #         output_shape = (np.array([20, 15]) * upsample_factor).astype(int)
-    #         upsampled_rf = resize(
-    #             rf_pred, output_shape=output_shape, mode="constant"
-    #         )
-
-    #         _ = ax.contour(
-    #             image_xs,
-    #             image_ys,
-    #             upsampled_rf,
-    #             levels=levels,
-    #             colors=[col],
-    #             linestyles="solid",
-    #             linewidths=0.5,
-    #         )
-    #         _ = ax.set_xticks([])
-    #         _ = ax.set_yticks([])
-    
-    #         plt.savefig(
-    #             f"{os.getcwd()}/figs/rf_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png", dpi=150, bbox_inches="tight"
-    #         )
-
-    #     # visualize a heatmap of the receptive fields
-    #     for i, counter in enumerate(counters):
-    #         fig, ax = plt.subplots(1, 1, figsize=(4.9, 6.5))
-
-    #         # changed
-    #         ax = cell.vis(ax=ax) # ,color="k",morph_plot_kwargs={"zorder": 1000, "linewidth": 0.3})
-
-    #         rec_id = rec_ids_of_all_rois[counter]
-    #         roi_id = roi_ids_of_all_rois[counter]
-    #         rf_pred = rfs_trained[i]
-    #         setup_rec = setup[setup["rec_id"] == rec_id]
-    #         offset_x = setup_rec["image_center_x"].to_numpy()[0]
-    #         offset_y = setup_rec["image_center_y"].to_numpy()[0]
-
-    #         im_pos_x = np.linspace(-7.5*pixel_size + 0.5, 7.5* pixel_size - 0.5, 15*pixel_size) + offset_x
-    #         im_pos_y = -np.linspace(-10.0*pixel_size + 0.5, 10.0*pixel_size - 0.5, 20*pixel_size) + offset_y
-
-    #         _ = ax.imshow(rf_pred, 
-    #                           extent=[im_pos_x[0], im_pos_x[-1], im_pos_y[-1], im_pos_y[0]], 
-    #                           clim=[0, 1], 
-    #                           alpha=0.4, cmap="viridis")
-            
-    #         rec = avg_recordings.loc[counter]
-    #         _ = ax.scatter(
-    #             rec["roi_x"].item(),
-    #             rec["roi_y"].item(),
-    #             color=col,
-    #             s=20.0,
-    #             edgecolors="k",
-    #             zorder=10000,
-    #         )
-
-    #         plt.savefig(
-    #             f"{os.getcwd()}/figs/rf_heatmap_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png")
+        try:
+            create_rf_plots(counters=[0, 1, 2, 3, 4],
+                            cell=cell,
+                            all_loss_weights=all_loss_weights,
+                            all_ca_predictions=all_ca_predictions,
+                            all_images=all_images,
+                            avg_recordings=avg_recordings,
+                            setup=setup,
+                            epoch=epoch)  
+            plt.show()
+        except Exception as e:
+            log.info(f"Could not create RF plots. Error: {e}")
 
 
 
-
-
-    #     plt.show()
-
-    # with open(f"{os.getcwd()}/opt_params/params_{epoch+1}.pkl", "wb") as handle:
-    #     pickle.dump([opt_params, opt_basal_params, opt_somatic_params], handle)
+    with open(f"{os.getcwd()}/opt_params/params_{epoch+1}.pkl", "wb") as handle:
+        pickle.dump([opt_params, opt_basal_params, opt_somatic_params], handle)
 
     log.info(f"Finished")
 

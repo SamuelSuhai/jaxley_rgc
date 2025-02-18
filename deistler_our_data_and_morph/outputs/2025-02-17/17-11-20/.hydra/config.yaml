@@ -1,0 +1,8 @@
+results_dir: 2020-08-29_512_pts_rec_ids_2
+plot_type: all
+cell_id: 2020-08-29_1
+rec_ids:
+- 2
+start_n_scan: 100
+num_datapoints_per_scanfield: 512
+nseg: 4

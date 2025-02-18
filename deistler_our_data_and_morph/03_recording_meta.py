@@ -8,6 +8,9 @@ recording field.
 Note: its important that there only be one .swc file per cell in
 morpohologies folder.
 
+Eample usage:
+python 03_recording_meta.py --date 2020-08-29 --exp_num 1
+
 '''
 from jax import config
 

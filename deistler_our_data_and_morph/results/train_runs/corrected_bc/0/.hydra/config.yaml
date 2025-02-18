@@ -1,0 +1,24 @@
+cell_id: 2020-08-29_1
+lr: 0.005
+momentum: 0.5
+iterations: 200
+reduce_lr_every: 50
+reduce_lr_by: 5
+beta: 0.99
+soma_radius: 7.5
+output_scale: 30.0
+output_offset: -0.5
+weight_init: 0.1
+batchsize: 1
+rec_ids:
+- 2
+num_datapoints_per_scanfield: 64
+val_frac: 0.25
+test_num: 8
+vis: true
+seed_weights: 10
+seed_membrane_conds: 0
+seed_tf_dataloader: 0
+seed_tf_train_loop: 0
+seed_ruler: 0
+eval_every_nth_batch: 100

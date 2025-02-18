@@ -1,0 +1,6 @@
+- results_dir=2020-08-29_64_pts_bs_1
+- date=2020-08-29
+- exp_num=1
+- rec_ids=[2]
+- start_n_scan=100
+- num_datapoints_per_scanfield=64

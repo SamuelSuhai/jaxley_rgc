@@ -103,7 +103,7 @@ def _average_calcium_in_identical_comps(rec_df, num_datapoints_per_scanfield):
     
     Inputs:
     - rec_df: pd.DataFrame - For one scanfield contains rois in rows and the corresponding calcium trace
-                in the colun oir_id_ca. 
+                in the column oir_id_ca. 
             
     - num_datapoints_per_scanfield: int - the number of datapoints per scanfield (i.e. length of time series
 

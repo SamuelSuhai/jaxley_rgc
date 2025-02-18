@@ -1,0 +1,667 @@
+[2025-02-17 21:18:07,175][rgc][INFO] - Recording ids [0, 1, 2]
+[2025-02-17 21:18:08,378][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-02-17 21:18:08,384][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+[2025-02-17 21:18:17,478][rgc][INFO] - Recomputing and saving avg_recordings - no intermediate file found
+[2025-02-17 21:18:17,699][rgc][INFO] - number_of_recordings_each_scanfield [8, 3, 5]
+[2025-02-17 21:18:22,502][rgc][INFO] - Inserted 16 recordings
+[2025-02-17 21:18:22,502][rgc][INFO] - number_of_recordings_each_scanfield [8, 3, 5]
+[2025-02-17 21:18:22,508][rgc][INFO] - currents.shape (192, 353)
+[2025-02-17 21:18:22,508][rgc][INFO] - labels.shape (192, 16)
+[2025-02-17 21:18:22,508][rgc][INFO] - loss_weights.shape (192, 16)
+[2025-02-17 21:18:32,885][rgc][INFO] - Weight mean of w_bc_to_rgc: 0.09999999999999999
+[2025-02-17 21:18:33,630][rgc][INFO] - Num train 138, num val 46, num test 8
+[2025-02-17 21:18:35,440][rgc][INFO] - noise_full (192, 15, 20)
+[2025-02-17 21:18:35,440][rgc][INFO] - number of training batches 69
+[2025-02-17 21:18:35,441][rgc][INFO] - lr scheduling dict: {}
+[2025-02-17 21:18:35,530][rgc][INFO] - Starting to train
+[2025-02-17 21:18:35,531][rgc][INFO] - Number of epochs 3
+[2025-02-17 21:18:35,549][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 0
+[2025-02-17 21:29:36,429][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-17 21:29:36,964][rgc][INFO] - Batch 0, avg loss per batch: 5.022105509128366
+[2025-02-17 21:29:36,966][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 1
+[2025-02-17 21:40:59,941][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-17 21:41:00,009][rgc][INFO] - Batch 1, avg loss per batch: 2.5891505652322584
+[2025-02-17 21:41:00,011][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 2
+[2025-02-17 21:41:29,524][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-17 21:41:29,565][rgc][INFO] - Batch 2, avg loss per batch: 6.406822833277567
+[2025-02-17 21:41:29,567][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 3
+[2025-02-17 21:41:59,146][rgc][INFO] - 	Updating weights of batch 3
+[2025-02-17 21:41:59,186][rgc][INFO] - Batch 3, avg loss per batch: 4.671069684884846
+[2025-02-17 21:41:59,187][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 4
+[2025-02-17 21:42:28,929][rgc][INFO] - 	Updating weights of batch 4
+[2025-02-17 21:42:28,997][rgc][INFO] - Batch 4, avg loss per batch: 7.712104956518759
+[2025-02-17 21:42:28,998][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 5
+[2025-02-17 21:42:58,672][rgc][INFO] - 	Updating weights of batch 5
+[2025-02-17 21:42:58,706][rgc][INFO] - Batch 5, avg loss per batch: 6.764227495907015
+[2025-02-17 21:42:58,708][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 6
+[2025-02-17 21:43:28,177][rgc][INFO] - 	Updating weights of batch 6
+[2025-02-17 21:43:28,210][rgc][INFO] - Batch 6, avg loss per batch: 3.4973107267977177
+[2025-02-17 21:43:28,211][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 7
+[2025-02-17 21:43:57,620][rgc][INFO] - 	Updating weights of batch 7
+[2025-02-17 21:43:57,680][rgc][INFO] - Batch 7, avg loss per batch: 6.032646016952825
+[2025-02-17 21:43:57,681][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 8
+[2025-02-17 21:44:27,294][rgc][INFO] - 	Updating weights of batch 8
+[2025-02-17 21:44:27,330][rgc][INFO] - Batch 8, avg loss per batch: 4.185451113246241
+[2025-02-17 21:44:27,331][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 9
+[2025-02-17 21:44:56,743][rgc][INFO] - 	Updating weights of batch 9
+[2025-02-17 21:44:56,794][rgc][INFO] - Batch 9, avg loss per batch: 8.36148630484353
+[2025-02-17 21:44:56,795][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 10
+[2025-02-17 21:45:26,382][rgc][INFO] - 	Updating weights of batch 10
+[2025-02-17 21:45:26,421][rgc][INFO] - Batch 10, avg loss per batch: 3.901400882341759
+[2025-02-17 21:45:26,422][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 11
+[2025-02-17 21:45:56,084][rgc][INFO] - 	Updating weights of batch 11
+[2025-02-17 21:45:56,137][rgc][INFO] - Batch 11, avg loss per batch: 2.244491690251507
+[2025-02-17 21:45:56,138][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 12
+[2025-02-17 21:46:25,610][rgc][INFO] - 	Updating weights of batch 12
+[2025-02-17 21:46:25,680][rgc][INFO] - Batch 12, avg loss per batch: 3.4053728688597777
+[2025-02-17 21:46:25,681][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 13
+[2025-02-17 21:46:55,113][rgc][INFO] - 	Updating weights of batch 13
+[2025-02-17 21:46:55,167][rgc][INFO] - Batch 13, avg loss per batch: 4.924666325507635
+[2025-02-17 21:46:55,168][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 14
+[2025-02-17 21:47:24,704][rgc][INFO] - 	Updating weights of batch 14
+[2025-02-17 21:47:24,757][rgc][INFO] - Batch 14, avg loss per batch: 5.146702070571819
+[2025-02-17 21:47:24,758][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 15
+[2025-02-17 21:47:54,372][rgc][INFO] - 	Updating weights of batch 15
+[2025-02-17 21:47:54,417][rgc][INFO] - Batch 15, avg loss per batch: 5.910046127331268
+[2025-02-17 21:47:54,418][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 16
+[2025-02-17 21:48:24,058][rgc][INFO] - 	Updating weights of batch 16
+[2025-02-17 21:48:24,111][rgc][INFO] - Batch 16, avg loss per batch: 2.314748450907032
+[2025-02-17 21:48:24,112][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 17
+[2025-02-17 21:48:53,613][rgc][INFO] - 	Updating weights of batch 17
+[2025-02-17 21:48:53,669][rgc][INFO] - Batch 17, avg loss per batch: 2.6688966675839243
+[2025-02-17 21:48:53,669][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 18
+[2025-02-17 21:49:23,193][rgc][INFO] - 	Updating weights of batch 18
+[2025-02-17 21:49:23,227][rgc][INFO] - Batch 18, avg loss per batch: 4.258140415609941
+[2025-02-17 21:49:23,228][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 19
+[2025-02-17 21:49:52,418][rgc][INFO] - 	Updating weights of batch 19
+[2025-02-17 21:49:52,470][rgc][INFO] - Batch 19, avg loss per batch: 3.336505150273317
+[2025-02-17 21:49:52,471][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 20
+[2025-02-17 21:50:21,980][rgc][INFO] - 	Updating weights of batch 20
+[2025-02-17 21:50:22,009][rgc][INFO] - Batch 20, avg loss per batch: 2.9428756298156773
+[2025-02-17 21:50:22,010][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 21
+[2025-02-17 21:50:51,013][rgc][INFO] - 	Updating weights of batch 21
+[2025-02-17 21:50:51,064][rgc][INFO] - Batch 21, avg loss per batch: 6.151993235340562
+[2025-02-17 21:50:51,065][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 22
+[2025-02-17 21:51:20,342][rgc][INFO] - 	Updating weights of batch 22
+[2025-02-17 21:51:20,391][rgc][INFO] - Batch 22, avg loss per batch: 5.901284024591621
+[2025-02-17 21:51:20,392][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 23
+[2025-02-17 21:51:50,082][rgc][INFO] - 	Updating weights of batch 23
+[2025-02-17 21:51:50,143][rgc][INFO] - Batch 23, avg loss per batch: 3.454917481376751
+[2025-02-17 21:51:50,144][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 24
+[2025-02-17 21:52:19,782][rgc][INFO] - 	Updating weights of batch 24
+[2025-02-17 21:52:19,815][rgc][INFO] - Batch 24, avg loss per batch: 3.1689077302745026
+[2025-02-17 21:52:19,816][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 25
+[2025-02-17 21:52:49,486][rgc][INFO] - 	Updating weights of batch 25
+[2025-02-17 21:52:49,519][rgc][INFO] - Batch 25, avg loss per batch: 2.1195299963388856
+[2025-02-17 21:52:49,520][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 26
+[2025-02-17 21:53:19,316][rgc][INFO] - 	Updating weights of batch 26
+[2025-02-17 21:53:19,377][rgc][INFO] - Batch 26, avg loss per batch: 1.9234268396537457
+[2025-02-17 21:53:19,378][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 27
+[2025-02-17 21:53:49,069][rgc][INFO] - 	Updating weights of batch 27
+[2025-02-17 21:53:49,121][rgc][INFO] - Batch 27, avg loss per batch: 5.425644485001582
+[2025-02-17 21:53:49,121][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 28
+[2025-02-17 21:54:18,954][rgc][INFO] - 	Updating weights of batch 28
+[2025-02-17 21:54:19,001][rgc][INFO] - Batch 28, avg loss per batch: 3.96360394873359
+[2025-02-17 21:54:19,002][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 29
+[2025-02-17 21:54:48,684][rgc][INFO] - 	Updating weights of batch 29
+[2025-02-17 21:54:48,722][rgc][INFO] - Batch 29, avg loss per batch: 3.7560721750955715
+[2025-02-17 21:54:48,723][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 30
+[2025-02-17 21:55:18,453][rgc][INFO] - 	Updating weights of batch 30
+[2025-02-17 21:55:18,501][rgc][INFO] - Batch 30, avg loss per batch: 4.746013221711737
+[2025-02-17 21:55:18,502][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 31
+[2025-02-17 21:55:48,255][rgc][INFO] - 	Updating weights of batch 31
+[2025-02-17 21:55:48,292][rgc][INFO] - Batch 31, avg loss per batch: 5.1831707740391595
+[2025-02-17 21:55:48,293][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 32
+[2025-02-17 21:56:17,876][rgc][INFO] - 	Updating weights of batch 32
+[2025-02-17 21:56:17,910][rgc][INFO] - Batch 32, avg loss per batch: 4.628144816807957
+[2025-02-17 21:56:17,911][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 33
+[2025-02-17 21:56:47,558][rgc][INFO] - 	Updating weights of batch 33
+[2025-02-17 21:56:47,609][rgc][INFO] - Batch 33, avg loss per batch: 2.5227427537621385
+[2025-02-17 21:56:47,610][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 34
+[2025-02-17 21:57:17,384][rgc][INFO] - 	Updating weights of batch 34
+[2025-02-17 21:57:17,444][rgc][INFO] - Batch 34, avg loss per batch: 4.005974699005581
+[2025-02-17 21:57:17,445][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 35
+[2025-02-17 21:57:47,441][rgc][INFO] - 	Updating weights of batch 35
+[2025-02-17 21:57:47,499][rgc][INFO] - Batch 35, avg loss per batch: 5.097839425856931
+[2025-02-17 21:57:47,500][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 36
+[2025-02-17 21:58:17,406][rgc][INFO] - 	Updating weights of batch 36
+[2025-02-17 21:58:17,456][rgc][INFO] - Batch 36, avg loss per batch: 3.6890503976941504
+[2025-02-17 21:58:17,456][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 37
+[2025-02-17 21:58:47,242][rgc][INFO] - 	Updating weights of batch 37
+[2025-02-17 21:58:47,292][rgc][INFO] - Batch 37, avg loss per batch: 3.4508095460944137
+[2025-02-17 21:58:47,293][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 38
+[2025-02-17 21:59:16,875][rgc][INFO] - 	Updating weights of batch 38
+[2025-02-17 21:59:16,915][rgc][INFO] - Batch 38, avg loss per batch: 4.318157919252628
+[2025-02-17 21:59:16,916][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 39
+[2025-02-17 21:59:46,311][rgc][INFO] - 	Updating weights of batch 39
+[2025-02-17 21:59:46,349][rgc][INFO] - Batch 39, avg loss per batch: 4.072347043328027
+[2025-02-17 21:59:46,350][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 40
+[2025-02-17 22:00:15,907][rgc][INFO] - 	Updating weights of batch 40
+[2025-02-17 22:00:15,964][rgc][INFO] - Batch 40, avg loss per batch: 4.920367005506417
+[2025-02-17 22:00:15,965][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 41
+[2025-02-17 22:00:45,549][rgc][INFO] - 	Updating weights of batch 41
+[2025-02-17 22:00:45,595][rgc][INFO] - Batch 41, avg loss per batch: 1.0050460067054148
+[2025-02-17 22:00:45,596][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 42
+[2025-02-17 22:01:14,910][rgc][INFO] - 	Updating weights of batch 42
+[2025-02-17 22:01:14,960][rgc][INFO] - Batch 42, avg loss per batch: 4.995747582562792
+[2025-02-17 22:01:14,961][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 43
+[2025-02-17 22:01:44,408][rgc][INFO] - 	Updating weights of batch 43
+[2025-02-17 22:01:44,463][rgc][INFO] - Batch 43, avg loss per batch: 4.166684166207149
+[2025-02-17 22:01:44,463][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 44
+[2025-02-17 22:02:13,617][rgc][INFO] - 	Updating weights of batch 44
+[2025-02-17 22:02:13,659][rgc][INFO] - Batch 44, avg loss per batch: 6.348523350276649
+[2025-02-17 22:02:13,660][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 45
+[2025-02-17 22:02:43,083][rgc][INFO] - 	Updating weights of batch 45
+[2025-02-17 22:02:43,125][rgc][INFO] - Batch 45, avg loss per batch: 1.639737454028322
+[2025-02-17 22:02:43,125][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 46
+[2025-02-17 22:03:12,060][rgc][INFO] - 	Updating weights of batch 46
+[2025-02-17 22:03:12,111][rgc][INFO] - Batch 46, avg loss per batch: 3.8208937017897036
+[2025-02-17 22:03:12,111][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 47
+[2025-02-17 22:03:41,375][rgc][INFO] - 	Updating weights of batch 47
+[2025-02-17 22:03:41,427][rgc][INFO] - Batch 47, avg loss per batch: 6.593640667882141
+[2025-02-17 22:03:41,428][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 48
+[2025-02-17 22:04:10,504][rgc][INFO] - 	Updating weights of batch 48
+[2025-02-17 22:04:10,544][rgc][INFO] - Batch 48, avg loss per batch: 7.50454205921543
+[2025-02-17 22:04:10,545][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 49
+[2025-02-17 22:04:39,702][rgc][INFO] - 	Updating weights of batch 49
+[2025-02-17 22:04:39,751][rgc][INFO] - Batch 49, avg loss per batch: 2.7768461241130584
+[2025-02-17 22:04:39,751][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 50
+[2025-02-17 22:05:08,809][rgc][INFO] - 	Updating weights of batch 50
+[2025-02-17 22:05:08,869][rgc][INFO] - Batch 50, avg loss per batch: 9.647230391675507
+[2025-02-17 22:05:08,870][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 51
+[2025-02-17 22:05:37,997][rgc][INFO] - 	Updating weights of batch 51
+[2025-02-17 22:05:38,030][rgc][INFO] - Batch 51, avg loss per batch: 7.729955610029446
+[2025-02-17 22:05:38,031][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 52
+[2025-02-17 22:06:06,961][rgc][INFO] - 	Updating weights of batch 52
+[2025-02-17 22:06:07,012][rgc][INFO] - Batch 52, avg loss per batch: 7.016368637550167
+[2025-02-17 22:06:07,013][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 53
+[2025-02-17 22:06:36,160][rgc][INFO] - 	Updating weights of batch 53
+[2025-02-17 22:06:36,218][rgc][INFO] - Batch 53, avg loss per batch: 3.7224305393756065
+[2025-02-17 22:06:36,218][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 54
+[2025-02-17 22:07:05,100][rgc][INFO] - 	Updating weights of batch 54
+[2025-02-17 22:07:05,151][rgc][INFO] - Batch 54, avg loss per batch: 12.314532636789899
+[2025-02-17 22:07:05,151][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 55
+[2025-02-17 22:07:34,328][rgc][INFO] - 	Updating weights of batch 55
+[2025-02-17 22:07:34,368][rgc][INFO] - Batch 55, avg loss per batch: 2.7935548320258303
+[2025-02-17 22:07:34,369][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 56
+[2025-02-17 22:08:03,637][rgc][INFO] - 	Updating weights of batch 56
+[2025-02-17 22:08:03,671][rgc][INFO] - Batch 56, avg loss per batch: 5.57274933958295
+[2025-02-17 22:08:03,673][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 57
+[2025-02-17 22:08:32,807][rgc][INFO] - 	Updating weights of batch 57
+[2025-02-17 22:08:32,839][rgc][INFO] - Batch 57, avg loss per batch: 7.5084616637822315
+[2025-02-17 22:08:32,839][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 58
+[2025-02-17 22:09:01,784][rgc][INFO] - 	Updating weights of batch 58
+[2025-02-17 22:09:01,846][rgc][INFO] - Batch 58, avg loss per batch: 1.9410918804700967
+[2025-02-17 22:09:01,847][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 59
+[2025-02-17 22:09:30,911][rgc][INFO] - 	Updating weights of batch 59
+[2025-02-17 22:09:30,957][rgc][INFO] - Batch 59, avg loss per batch: 5.768142342836908
+[2025-02-17 22:09:30,958][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 60
+[2025-02-17 22:10:00,171][rgc][INFO] - 	Updating weights of batch 60
+[2025-02-17 22:10:00,219][rgc][INFO] - Batch 60, avg loss per batch: 3.0159133137344636
+[2025-02-17 22:10:00,220][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 61
+[2025-02-17 22:10:29,298][rgc][INFO] - 	Updating weights of batch 61
+[2025-02-17 22:10:29,340][rgc][INFO] - Batch 61, avg loss per batch: 4.425446579614012
+[2025-02-17 22:10:29,341][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 62
+[2025-02-17 22:10:58,816][rgc][INFO] - 	Updating weights of batch 62
+[2025-02-17 22:10:58,866][rgc][INFO] - Batch 62, avg loss per batch: 5.987885002522789
+[2025-02-17 22:10:58,867][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 63
+[2025-02-17 22:11:27,904][rgc][INFO] - 	Updating weights of batch 63
+[2025-02-17 22:11:27,967][rgc][INFO] - Batch 63, avg loss per batch: 8.526758130381833
+[2025-02-17 22:11:27,968][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 64
+[2025-02-17 22:11:56,948][rgc][INFO] - 	Updating weights of batch 64
+[2025-02-17 22:11:56,993][rgc][INFO] - Batch 64, avg loss per batch: 4.391133470317602
+[2025-02-17 22:11:56,994][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 65
+[2025-02-17 22:12:26,318][rgc][INFO] - 	Updating weights of batch 65
+[2025-02-17 22:12:26,380][rgc][INFO] - Batch 65, avg loss per batch: 4.010212221266803
+[2025-02-17 22:12:26,381][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 66
+[2025-02-17 22:12:55,724][rgc][INFO] - 	Updating weights of batch 66
+[2025-02-17 22:12:55,766][rgc][INFO] - Batch 66, avg loss per batch: 8.385422452311353
+[2025-02-17 22:12:55,767][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 67
+[2025-02-17 22:13:24,914][rgc][INFO] - 	Updating weights of batch 67
+[2025-02-17 22:13:24,968][rgc][INFO] - Batch 67, avg loss per batch: 8.152339745412949
+[2025-02-17 22:13:24,968][rgc][INFO] - 	Applying batch grad function of epoch 0 and batch 68
+[2025-02-17 22:13:54,390][rgc][INFO] - 	Updating weights of batch 68
+[2025-02-17 22:13:54,447][rgc][INFO] - Batch 68, avg loss per batch: 2.441171875435336
+[2025-02-17 22:13:54,460][rgc][INFO] - ================= Epoch 0, loss: 330.99868078320503 ===============
+[2025-02-17 22:13:54,460][rgc][INFO] - Visualizing histograms
+[2025-02-17 22:21:33,980][rgc][INFO] - AVG rho on val data: 0.06923260584632664
+[2025-02-17 22:21:33,981][rgc][INFO] - AVG Mean Absolute Error on val data: 0.7817862091400268
+[2025-02-17 22:25:23,544][rgc][INFO] - AVG rho on test data: nan
+[2025-02-17 22:25:23,544][rgc][INFO] - AVG Mean Absolute Error on test data: 0.7218470228314726
+[2025-02-17 22:29:23,480][rgc][INFO] - AVG rho on train data: 0.04527044039884896
+[2025-02-17 22:29:23,480][rgc][INFO] - AVG Mean Absolute Error on train data: 0.8212354567480122
+[2025-02-17 22:29:23,484][rgc][INFO] - Current best rhos: train 0.04527044039884896, val 0.06923260584632664, test nan
+[2025-02-17 22:29:23,495][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 0
+[2025-02-17 22:29:53,286][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-17 22:29:53,326][rgc][INFO] - Batch 0, avg loss per batch: 7.360451942790381
+[2025-02-17 22:29:53,327][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 1
+[2025-02-17 22:30:23,034][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-17 22:30:23,068][rgc][INFO] - Batch 1, avg loss per batch: 2.495478401305387
+[2025-02-17 22:30:23,068][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 2
+[2025-02-17 22:30:52,365][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-17 22:30:52,403][rgc][INFO] - Batch 2, avg loss per batch: 4.358273484825646
+[2025-02-17 22:30:52,404][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 3
+[2025-02-17 22:31:21,640][rgc][INFO] - 	Updating weights of batch 3
+[2025-02-17 22:31:21,680][rgc][INFO] - Batch 3, avg loss per batch: 5.9897058273014565
+[2025-02-17 22:31:21,681][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 4
+[2025-02-17 22:31:50,763][rgc][INFO] - 	Updating weights of batch 4
+[2025-02-17 22:31:50,804][rgc][INFO] - Batch 4, avg loss per batch: 5.151422504130849
+[2025-02-17 22:31:50,805][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 5
+[2025-02-17 22:32:19,823][rgc][INFO] - 	Updating weights of batch 5
+[2025-02-17 22:32:19,872][rgc][INFO] - Batch 5, avg loss per batch: 6.994953404219133
+[2025-02-17 22:32:19,872][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 6
+[2025-02-17 22:32:49,124][rgc][INFO] - 	Updating weights of batch 6
+[2025-02-17 22:32:49,158][rgc][INFO] - Batch 6, avg loss per batch: 4.475896137782845
+[2025-02-17 22:32:49,159][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 7
+[2025-02-17 22:33:18,112][rgc][INFO] - 	Updating weights of batch 7
+[2025-02-17 22:33:18,151][rgc][INFO] - Batch 7, avg loss per batch: 4.067562859803556
+[2025-02-17 22:33:18,152][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 8
+[2025-02-17 22:33:47,180][rgc][INFO] - 	Updating weights of batch 8
+[2025-02-17 22:33:47,212][rgc][INFO] - Batch 8, avg loss per batch: 5.979653358572595
+[2025-02-17 22:33:47,213][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 9
+[2025-02-17 22:34:16,383][rgc][INFO] - 	Updating weights of batch 9
+[2025-02-17 22:34:16,416][rgc][INFO] - Batch 9, avg loss per batch: 3.0956771537844743
+[2025-02-17 22:34:16,417][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 10
+[2025-02-17 22:34:45,414][rgc][INFO] - 	Updating weights of batch 10
+[2025-02-17 22:34:45,453][rgc][INFO] - Batch 10, avg loss per batch: 3.0114084824202996
+[2025-02-17 22:34:45,454][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 11
+[2025-02-17 22:35:14,689][rgc][INFO] - 	Updating weights of batch 11
+[2025-02-17 22:35:14,722][rgc][INFO] - Batch 11, avg loss per batch: 2.9189740979025833
+[2025-02-17 22:35:14,723][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 12
+[2025-02-17 22:35:43,754][rgc][INFO] - 	Updating weights of batch 12
+[2025-02-17 22:35:43,797][rgc][INFO] - Batch 12, avg loss per batch: 4.041313372823842
+[2025-02-17 22:35:43,798][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 13
+[2025-02-17 22:36:12,779][rgc][INFO] - 	Updating weights of batch 13
+[2025-02-17 22:36:12,818][rgc][INFO] - Batch 13, avg loss per batch: 4.957279502731797
+[2025-02-17 22:36:12,819][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 14
+[2025-02-17 22:36:41,995][rgc][INFO] - 	Updating weights of batch 14
+[2025-02-17 22:36:42,035][rgc][INFO] - Batch 14, avg loss per batch: 3.9838355532780034
+[2025-02-17 22:36:42,036][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 15
+[2025-02-17 22:37:11,291][rgc][INFO] - 	Updating weights of batch 15
+[2025-02-17 22:37:11,329][rgc][INFO] - Batch 15, avg loss per batch: 1.9272328050240704
+[2025-02-17 22:37:11,329][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 16
+[2025-02-17 22:37:40,556][rgc][INFO] - 	Updating weights of batch 16
+[2025-02-17 22:37:40,586][rgc][INFO] - Batch 16, avg loss per batch: 4.122539016196617
+[2025-02-17 22:37:40,587][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 17
+[2025-02-17 22:38:10,030][rgc][INFO] - 	Updating weights of batch 17
+[2025-02-17 22:38:10,074][rgc][INFO] - Batch 17, avg loss per batch: 2.670603405585942
+[2025-02-17 22:38:10,075][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 18
+[2025-02-17 22:38:39,226][rgc][INFO] - 	Updating weights of batch 18
+[2025-02-17 22:38:39,257][rgc][INFO] - Batch 18, avg loss per batch: 5.349487704490162
+[2025-02-17 22:38:39,258][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 19
+[2025-02-17 22:39:08,693][rgc][INFO] - 	Updating weights of batch 19
+[2025-02-17 22:39:08,724][rgc][INFO] - Batch 19, avg loss per batch: 2.9496596841950513
+[2025-02-17 22:39:08,725][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 20
+[2025-02-17 22:39:37,802][rgc][INFO] - 	Updating weights of batch 20
+[2025-02-17 22:39:37,861][rgc][INFO] - Batch 20, avg loss per batch: 2.9896278891925325
+[2025-02-17 22:39:37,862][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 21
+[2025-02-17 22:40:07,014][rgc][INFO] - 	Updating weights of batch 21
+[2025-02-17 22:40:07,047][rgc][INFO] - Batch 21, avg loss per batch: 4.091365104524515
+[2025-02-17 22:40:07,048][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 22
+[2025-02-17 22:40:36,300][rgc][INFO] - 	Updating weights of batch 22
+[2025-02-17 22:40:36,331][rgc][INFO] - Batch 22, avg loss per batch: 6.215803349420252
+[2025-02-17 22:40:36,332][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 23
+[2025-02-17 22:41:05,283][rgc][INFO] - 	Updating weights of batch 23
+[2025-02-17 22:41:05,315][rgc][INFO] - Batch 23, avg loss per batch: 5.372653044346478
+[2025-02-17 22:41:05,316][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 24
+[2025-02-17 22:41:34,469][rgc][INFO] - 	Updating weights of batch 24
+[2025-02-17 22:41:34,515][rgc][INFO] - Batch 24, avg loss per batch: 3.6756637275467243
+[2025-02-17 22:41:34,517][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 25
+[2025-02-17 22:42:03,511][rgc][INFO] - 	Updating weights of batch 25
+[2025-02-17 22:42:03,553][rgc][INFO] - Batch 25, avg loss per batch: 3.161566684580605
+[2025-02-17 22:42:03,553][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 26
+[2025-02-17 22:42:32,890][rgc][INFO] - 	Updating weights of batch 26
+[2025-02-17 22:42:32,934][rgc][INFO] - Batch 26, avg loss per batch: 6.222610863011562
+[2025-02-17 22:42:32,935][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 27
+[2025-02-17 22:43:01,841][rgc][INFO] - 	Updating weights of batch 27
+[2025-02-17 22:43:01,883][rgc][INFO] - Batch 27, avg loss per batch: 3.2299140743657215
+[2025-02-17 22:43:01,883][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 28
+[2025-02-17 22:43:30,843][rgc][INFO] - 	Updating weights of batch 28
+[2025-02-17 22:43:30,876][rgc][INFO] - Batch 28, avg loss per batch: 0.8373301210356785
+[2025-02-17 22:43:30,877][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 29
+[2025-02-17 22:43:59,715][rgc][INFO] - 	Updating weights of batch 29
+[2025-02-17 22:43:59,761][rgc][INFO] - Batch 29, avg loss per batch: 4.790099520309027
+[2025-02-17 22:43:59,761][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 30
+[2025-02-17 22:44:28,920][rgc][INFO] - 	Updating weights of batch 30
+[2025-02-17 22:44:28,957][rgc][INFO] - Batch 30, avg loss per batch: 5.374340515282823
+[2025-02-17 22:44:28,958][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 31
+[2025-02-17 22:44:57,694][rgc][INFO] - 	Updating weights of batch 31
+[2025-02-17 22:44:57,738][rgc][INFO] - Batch 31, avg loss per batch: 7.906163498499528
+[2025-02-17 22:44:57,738][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 32
+[2025-02-17 22:45:26,806][rgc][INFO] - 	Updating weights of batch 32
+[2025-02-17 22:45:26,845][rgc][INFO] - Batch 32, avg loss per batch: 5.010703424848844
+[2025-02-17 22:45:26,845][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 33
+[2025-02-17 22:45:55,738][rgc][INFO] - 	Updating weights of batch 33
+[2025-02-17 22:45:55,778][rgc][INFO] - Batch 33, avg loss per batch: 4.139250548160713
+[2025-02-17 22:45:55,779][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 34
+[2025-02-17 22:46:24,733][rgc][INFO] - 	Updating weights of batch 34
+[2025-02-17 22:46:24,774][rgc][INFO] - Batch 34, avg loss per batch: 3.8381038730458212
+[2025-02-17 22:46:24,775][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 35
+[2025-02-17 22:46:53,695][rgc][INFO] - 	Updating weights of batch 35
+[2025-02-17 22:46:53,735][rgc][INFO] - Batch 35, avg loss per batch: 3.792326051499594
+[2025-02-17 22:46:53,736][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 36
+[2025-02-17 22:47:22,943][rgc][INFO] - 	Updating weights of batch 36
+[2025-02-17 22:47:22,983][rgc][INFO] - Batch 36, avg loss per batch: 2.5940323676131736
+[2025-02-17 22:47:22,984][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 37
+[2025-02-17 22:47:52,074][rgc][INFO] - 	Updating weights of batch 37
+[2025-02-17 22:47:52,118][rgc][INFO] - Batch 37, avg loss per batch: 2.7318544915127445
+[2025-02-17 22:47:52,119][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 38
+[2025-02-17 22:48:21,350][rgc][INFO] - 	Updating weights of batch 38
+[2025-02-17 22:48:21,402][rgc][INFO] - Batch 38, avg loss per batch: 2.4064969766725186
+[2025-02-17 22:48:21,403][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 39
+[2025-02-17 22:48:50,609][rgc][INFO] - 	Updating weights of batch 39
+[2025-02-17 22:48:50,647][rgc][INFO] - Batch 39, avg loss per batch: 4.341463257153884
+[2025-02-17 22:48:50,648][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 40
+[2025-02-17 22:49:19,740][rgc][INFO] - 	Updating weights of batch 40
+[2025-02-17 22:49:19,777][rgc][INFO] - Batch 40, avg loss per batch: 3.3827188699809905
+[2025-02-17 22:49:19,778][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 41
+[2025-02-17 22:49:49,057][rgc][INFO] - 	Updating weights of batch 41
+[2025-02-17 22:49:49,108][rgc][INFO] - Batch 41, avg loss per batch: 7.729415620326999
+[2025-02-17 22:49:49,109][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 42
+[2025-02-17 22:50:18,091][rgc][INFO] - 	Updating weights of batch 42
+[2025-02-17 22:50:18,135][rgc][INFO] - Batch 42, avg loss per batch: 1.8395344701884042
+[2025-02-17 22:50:18,135][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 43
+[2025-02-17 22:50:47,175][rgc][INFO] - 	Updating weights of batch 43
+[2025-02-17 22:50:47,217][rgc][INFO] - Batch 43, avg loss per batch: 3.8680214441482192
+[2025-02-17 22:50:47,217][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 44
+[2025-02-17 22:51:16,293][rgc][INFO] - 	Updating weights of batch 44
+[2025-02-17 22:51:16,340][rgc][INFO] - Batch 44, avg loss per batch: 6.467646304743264
+[2025-02-17 22:51:16,341][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 45
+[2025-02-17 22:51:45,367][rgc][INFO] - 	Updating weights of batch 45
+[2025-02-17 22:51:45,428][rgc][INFO] - Batch 45, avg loss per batch: 4.699114097828529
+[2025-02-17 22:51:45,429][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 46
+[2025-02-17 22:52:14,782][rgc][INFO] - 	Updating weights of batch 46
+[2025-02-17 22:52:14,821][rgc][INFO] - Batch 46, avg loss per batch: 2.1292435226898476
+[2025-02-17 22:52:14,822][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 47
+[2025-02-17 22:52:43,760][rgc][INFO] - 	Updating weights of batch 47
+[2025-02-17 22:52:43,816][rgc][INFO] - Batch 47, avg loss per batch: 5.6739884958895
+[2025-02-17 22:52:43,817][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 48
+[2025-02-17 22:53:12,802][rgc][INFO] - 	Updating weights of batch 48
+[2025-02-17 22:53:12,852][rgc][INFO] - Batch 48, avg loss per batch: 4.543816418163826
+[2025-02-17 22:53:12,853][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 49
+[2025-02-17 22:53:41,936][rgc][INFO] - 	Updating weights of batch 49
+[2025-02-17 22:53:41,976][rgc][INFO] - Batch 49, avg loss per batch: 6.386401041233679
+[2025-02-17 22:53:41,978][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 50
+[2025-02-17 22:54:09,689][rgc][INFO] - 	Updating weights of batch 50
+[2025-02-17 22:54:09,741][rgc][INFO] - Batch 50, avg loss per batch: 5.217856492904248
+[2025-02-17 22:54:09,742][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 51
+[2025-02-17 22:54:38,848][rgc][INFO] - 	Updating weights of batch 51
+[2025-02-17 22:54:38,894][rgc][INFO] - Batch 51, avg loss per batch: 2.0267399237182744
+[2025-02-17 22:54:38,895][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 52
+[2025-02-17 22:55:07,989][rgc][INFO] - 	Updating weights of batch 52
+[2025-02-17 22:55:08,027][rgc][INFO] - Batch 52, avg loss per batch: 4.743987192279685
+[2025-02-17 22:55:08,028][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 53
+[2025-02-17 22:55:37,289][rgc][INFO] - 	Updating weights of batch 53
+[2025-02-17 22:55:37,326][rgc][INFO] - Batch 53, avg loss per batch: 3.958224845288262
+[2025-02-17 22:55:37,326][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 54
+[2025-02-17 22:56:06,308][rgc][INFO] - 	Updating weights of batch 54
+[2025-02-17 22:56:06,352][rgc][INFO] - Batch 54, avg loss per batch: 2.92123063376114
+[2025-02-17 22:56:06,353][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 55
+[2025-02-17 22:56:35,381][rgc][INFO] - 	Updating weights of batch 55
+[2025-02-17 22:56:35,420][rgc][INFO] - Batch 55, avg loss per batch: 3.0140929258732507
+[2025-02-17 22:56:35,421][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 56
+[2025-02-17 22:57:04,335][rgc][INFO] - 	Updating weights of batch 56
+[2025-02-17 22:57:04,381][rgc][INFO] - Batch 56, avg loss per batch: 3.0283049245753544
+[2025-02-17 22:57:04,382][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 57
+[2025-02-17 22:57:33,151][rgc][INFO] - 	Updating weights of batch 57
+[2025-02-17 22:57:33,188][rgc][INFO] - Batch 57, avg loss per batch: 5.027259996857948
+[2025-02-17 22:57:33,189][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 58
+[2025-02-17 22:58:02,113][rgc][INFO] - 	Updating weights of batch 58
+[2025-02-17 22:58:02,166][rgc][INFO] - Batch 58, avg loss per batch: 4.78662264506181
+[2025-02-17 22:58:02,167][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 59
+[2025-02-17 22:58:31,176][rgc][INFO] - 	Updating weights of batch 59
+[2025-02-17 22:58:31,214][rgc][INFO] - Batch 59, avg loss per batch: 6.290180035986082
+[2025-02-17 22:58:31,215][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 60
+[2025-02-17 22:59:00,183][rgc][INFO] - 	Updating weights of batch 60
+[2025-02-17 22:59:00,217][rgc][INFO] - Batch 60, avg loss per batch: 2.2091695093092145
+[2025-02-17 22:59:00,219][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 61
+[2025-02-17 22:59:29,443][rgc][INFO] - 	Updating weights of batch 61
+[2025-02-17 22:59:29,486][rgc][INFO] - Batch 61, avg loss per batch: 5.727461582941995
+[2025-02-17 22:59:29,486][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 62
+[2025-02-17 22:59:58,453][rgc][INFO] - 	Updating weights of batch 62
+[2025-02-17 22:59:58,484][rgc][INFO] - Batch 62, avg loss per batch: 3.3571477653462782
+[2025-02-17 22:59:58,485][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 63
+[2025-02-17 23:00:27,454][rgc][INFO] - 	Updating weights of batch 63
+[2025-02-17 23:00:27,490][rgc][INFO] - Batch 63, avg loss per batch: 5.279497216566851
+[2025-02-17 23:00:27,491][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 64
+[2025-02-17 23:00:56,648][rgc][INFO] - 	Updating weights of batch 64
+[2025-02-17 23:00:56,697][rgc][INFO] - Batch 64, avg loss per batch: 4.7486794997124555
+[2025-02-17 23:00:56,699][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 65
+[2025-02-17 23:01:25,533][rgc][INFO] - 	Updating weights of batch 65
+[2025-02-17 23:01:25,581][rgc][INFO] - Batch 65, avg loss per batch: 2.3427303750693254
+[2025-02-17 23:01:25,582][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 66
+[2025-02-17 23:01:54,317][rgc][INFO] - 	Updating weights of batch 66
+[2025-02-17 23:01:54,361][rgc][INFO] - Batch 66, avg loss per batch: 3.3176644796686343
+[2025-02-17 23:01:54,362][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 67
+[2025-02-17 23:02:23,263][rgc][INFO] - 	Updating weights of batch 67
+[2025-02-17 23:02:23,313][rgc][INFO] - Batch 67, avg loss per batch: 3.4727318307536184
+[2025-02-17 23:02:23,314][rgc][INFO] - 	Applying batch grad function of epoch 1 and batch 68
+[2025-02-17 23:02:52,501][rgc][INFO] - 	Updating weights of batch 68
+[2025-02-17 23:02:52,556][rgc][INFO] - Batch 68, avg loss per batch: 4.93584067149959
+[2025-02-17 23:02:52,563][rgc][INFO] - ================= Epoch 1, loss: 291.7481009141546 ===============
+[2025-02-17 23:02:52,563][rgc][INFO] - Visualizing histograms
+[2025-02-17 23:03:21,929][rgc][INFO] - AVG rho on val data: 0.024875622649284758
+[2025-02-17 23:03:21,929][rgc][INFO] - AVG Mean Absolute Error on val data: 0.7001055238710124
+[2025-02-17 23:03:35,784][rgc][INFO] - AVG rho on test data: nan
+[2025-02-17 23:03:35,785][rgc][INFO] - AVG Mean Absolute Error on test data: 0.7459212601137145
+[2025-02-17 23:03:51,703][rgc][INFO] - AVG rho on train data: 0.05401079263677875
+[2025-02-17 23:03:51,703][rgc][INFO] - AVG Mean Absolute Error on train data: 0.7163085356810088
+[2025-02-17 23:03:51,704][rgc][INFO] - Current best rhos: train 0.04527044039884896, val 0.06923260584632664, test nan
+[2025-02-17 23:03:51,712][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 0
+[2025-02-17 23:04:21,379][rgc][INFO] - 	Updating weights of batch 0
+[2025-02-17 23:04:21,424][rgc][INFO] - Batch 0, avg loss per batch: 2.001528975186977
+[2025-02-17 23:04:21,425][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 1
+[2025-02-17 23:04:51,363][rgc][INFO] - 	Updating weights of batch 1
+[2025-02-17 23:04:51,411][rgc][INFO] - Batch 1, avg loss per batch: 3.6861304423654375
+[2025-02-17 23:04:51,411][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 2
+[2025-02-17 23:05:21,033][rgc][INFO] - 	Updating weights of batch 2
+[2025-02-17 23:05:21,102][rgc][INFO] - Batch 2, avg loss per batch: 5.887782280949736
+[2025-02-17 23:05:21,103][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 3
+[2025-02-17 23:05:50,773][rgc][INFO] - 	Updating weights of batch 3
+[2025-02-17 23:05:50,818][rgc][INFO] - Batch 3, avg loss per batch: 3.5858002523244163
+[2025-02-17 23:05:50,818][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 4
+[2025-02-17 23:06:20,579][rgc][INFO] - 	Updating weights of batch 4
+[2025-02-17 23:06:20,623][rgc][INFO] - Batch 4, avg loss per batch: 2.1236894884762694
+[2025-02-17 23:06:20,624][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 5
+[2025-02-17 23:06:49,563][rgc][INFO] - 	Updating weights of batch 5
+[2025-02-17 23:06:49,605][rgc][INFO] - Batch 5, avg loss per batch: 6.154724068185301
+[2025-02-17 23:06:49,606][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 6
+[2025-02-17 23:07:18,422][rgc][INFO] - 	Updating weights of batch 6
+[2025-02-17 23:07:18,464][rgc][INFO] - Batch 6, avg loss per batch: 4.23790557874878
+[2025-02-17 23:07:18,465][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 7
+[2025-02-17 23:07:47,064][rgc][INFO] - 	Updating weights of batch 7
+[2025-02-17 23:07:47,116][rgc][INFO] - Batch 7, avg loss per batch: 9.244178159216636
+[2025-02-17 23:07:47,117][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 8
+[2025-02-17 23:08:15,826][rgc][INFO] - 	Updating weights of batch 8
+[2025-02-17 23:08:15,869][rgc][INFO] - Batch 8, avg loss per batch: 1.7414395727285923
+[2025-02-17 23:08:15,870][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 9
+[2025-02-17 23:08:45,497][rgc][INFO] - 	Updating weights of batch 9
+[2025-02-17 23:08:45,535][rgc][INFO] - Batch 9, avg loss per batch: 4.521021765566262
+[2025-02-17 23:08:45,535][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 10
+[2025-02-17 23:09:14,927][rgc][INFO] - 	Updating weights of batch 10
+[2025-02-17 23:09:14,969][rgc][INFO] - Batch 10, avg loss per batch: 5.387886563826488
+[2025-02-17 23:09:14,970][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 11
+[2025-02-17 23:09:44,695][rgc][INFO] - 	Updating weights of batch 11
+[2025-02-17 23:09:44,746][rgc][INFO] - Batch 11, avg loss per batch: 4.300296658598935
+[2025-02-17 23:09:44,747][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 12
+[2025-02-17 23:10:14,585][rgc][INFO] - 	Updating weights of batch 12
+[2025-02-17 23:10:14,630][rgc][INFO] - Batch 12, avg loss per batch: 3.4631928639778318
+[2025-02-17 23:10:14,630][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 13
+[2025-02-17 23:10:44,421][rgc][INFO] - 	Updating weights of batch 13
+[2025-02-17 23:10:44,484][rgc][INFO] - Batch 13, avg loss per batch: 4.83470182969668
+[2025-02-17 23:10:44,484][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 14
+[2025-02-17 23:11:14,432][rgc][INFO] - 	Updating weights of batch 14
+[2025-02-17 23:11:14,488][rgc][INFO] - Batch 14, avg loss per batch: 2.6204014338070483
+[2025-02-17 23:11:14,489][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 15
+[2025-02-17 23:11:44,292][rgc][INFO] - 	Updating weights of batch 15
+[2025-02-17 23:11:44,335][rgc][INFO] - Batch 15, avg loss per batch: 2.835097967912716
+[2025-02-17 23:11:44,336][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 16
+[2025-02-17 23:12:14,211][rgc][INFO] - 	Updating weights of batch 16
+[2025-02-17 23:12:14,274][rgc][INFO] - Batch 16, avg loss per batch: 2.1494117332774243
+[2025-02-17 23:12:14,275][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 17
+[2025-02-17 23:12:43,999][rgc][INFO] - 	Updating weights of batch 17
+[2025-02-17 23:12:44,060][rgc][INFO] - Batch 17, avg loss per batch: 2.0232563828827934
+[2025-02-17 23:12:44,060][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 18
+[2025-02-17 23:13:13,822][rgc][INFO] - 	Updating weights of batch 18
+[2025-02-17 23:13:13,873][rgc][INFO] - Batch 18, avg loss per batch: 4.414528047893595
+[2025-02-17 23:13:13,874][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 19
+[2025-02-17 23:13:43,974][rgc][INFO] - 	Updating weights of batch 19
+[2025-02-17 23:13:44,006][rgc][INFO] - Batch 19, avg loss per batch: 2.699100987200387
+[2025-02-17 23:13:44,007][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 20
+[2025-02-17 23:14:13,750][rgc][INFO] - 	Updating weights of batch 20
+[2025-02-17 23:14:13,786][rgc][INFO] - Batch 20, avg loss per batch: 4.007264116602548
+[2025-02-17 23:14:13,786][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 21
+[2025-02-17 23:14:43,638][rgc][INFO] - 	Updating weights of batch 21
+[2025-02-17 23:14:43,686][rgc][INFO] - Batch 21, avg loss per batch: 3.1486766333464753
+[2025-02-17 23:14:43,687][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 22
+[2025-02-17 23:15:13,480][rgc][INFO] - 	Updating weights of batch 22
+[2025-02-17 23:15:13,529][rgc][INFO] - Batch 22, avg loss per batch: 4.312509386530309
+[2025-02-17 23:15:13,530][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 23
+[2025-02-17 23:15:43,289][rgc][INFO] - 	Updating weights of batch 23
+[2025-02-17 23:15:43,337][rgc][INFO] - Batch 23, avg loss per batch: 4.897577054976171
+[2025-02-17 23:15:43,338][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 24
+[2025-02-17 23:16:13,142][rgc][INFO] - 	Updating weights of batch 24
+[2025-02-17 23:16:13,174][rgc][INFO] - Batch 24, avg loss per batch: 3.7431162995187925
+[2025-02-17 23:16:13,175][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 25
+[2025-02-17 23:16:43,007][rgc][INFO] - 	Updating weights of batch 25
+[2025-02-17 23:16:43,053][rgc][INFO] - Batch 25, avg loss per batch: 4.5672141625368905
+[2025-02-17 23:16:43,054][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 26
+[2025-02-17 23:17:13,008][rgc][INFO] - 	Updating weights of batch 26
+[2025-02-17 23:17:13,071][rgc][INFO] - Batch 26, avg loss per batch: 1.59043821724386
+[2025-02-17 23:17:13,073][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 27
+[2025-02-17 23:17:43,026][rgc][INFO] - 	Updating weights of batch 27
+[2025-02-17 23:17:43,070][rgc][INFO] - Batch 27, avg loss per batch: 4.099540573920969
+[2025-02-17 23:17:43,071][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 28
+[2025-02-17 23:18:13,024][rgc][INFO] - 	Updating weights of batch 28
+[2025-02-17 23:18:13,059][rgc][INFO] - Batch 28, avg loss per batch: 1.3624800269112645
+[2025-02-17 23:18:13,060][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 29
+[2025-02-17 23:18:42,923][rgc][INFO] - 	Updating weights of batch 29
+[2025-02-17 23:18:42,971][rgc][INFO] - Batch 29, avg loss per batch: 2.529029695635124
+[2025-02-17 23:18:42,972][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 30
+[2025-02-17 23:19:12,648][rgc][INFO] - 	Updating weights of batch 30
+[2025-02-17 23:19:12,695][rgc][INFO] - Batch 30, avg loss per batch: 4.819385883484642
+[2025-02-17 23:19:12,696][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 31
+[2025-02-17 23:19:42,232][rgc][INFO] - 	Updating weights of batch 31
+[2025-02-17 23:19:42,279][rgc][INFO] - Batch 31, avg loss per batch: 3.1910253845204837
+[2025-02-17 23:19:42,280][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 32
+[2025-02-17 23:20:11,878][rgc][INFO] - 	Updating weights of batch 32
+[2025-02-17 23:20:11,927][rgc][INFO] - Batch 32, avg loss per batch: 2.6113901637218273
+[2025-02-17 23:20:11,927][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 33
+[2025-02-17 23:20:41,505][rgc][INFO] - 	Updating weights of batch 33
+[2025-02-17 23:20:41,556][rgc][INFO] - Batch 33, avg loss per batch: 5.019229884663617
+[2025-02-17 23:20:41,557][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 34
+[2025-02-17 23:21:11,239][rgc][INFO] - 	Updating weights of batch 34
+[2025-02-17 23:21:11,279][rgc][INFO] - Batch 34, avg loss per batch: 3.23745120475281
+[2025-02-17 23:21:11,279][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 35
+[2025-02-17 23:21:40,874][rgc][INFO] - 	Updating weights of batch 35
+[2025-02-17 23:21:40,936][rgc][INFO] - Batch 35, avg loss per batch: 6.061510627713966
+[2025-02-17 23:21:40,937][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 36
+[2025-02-17 23:22:10,419][rgc][INFO] - 	Updating weights of batch 36
+[2025-02-17 23:22:10,461][rgc][INFO] - Batch 36, avg loss per batch: 5.51923737355243
+[2025-02-17 23:22:10,462][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 37
+[2025-02-17 23:22:40,051][rgc][INFO] - 	Updating weights of batch 37
+[2025-02-17 23:22:40,094][rgc][INFO] - Batch 37, avg loss per batch: 3.1902216655174915
+[2025-02-17 23:22:40,095][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 38
+[2025-02-17 23:23:09,669][rgc][INFO] - 	Updating weights of batch 38
+[2025-02-17 23:23:09,711][rgc][INFO] - Batch 38, avg loss per batch: 3.0032329987315567
+[2025-02-17 23:23:09,712][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 39
+[2025-02-17 23:23:39,163][rgc][INFO] - 	Updating weights of batch 39
+[2025-02-17 23:23:39,193][rgc][INFO] - Batch 39, avg loss per batch: 3.4585858393103717
+[2025-02-17 23:23:39,194][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 40
+[2025-02-17 23:24:08,732][rgc][INFO] - 	Updating weights of batch 40
+[2025-02-17 23:24:08,779][rgc][INFO] - Batch 40, avg loss per batch: 2.801529445699451
+[2025-02-17 23:24:08,780][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 41
+[2025-02-17 23:24:38,456][rgc][INFO] - 	Updating weights of batch 41
+[2025-02-17 23:24:38,505][rgc][INFO] - Batch 41, avg loss per batch: 5.950113084676664
+[2025-02-17 23:24:38,506][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 42
+[2025-02-17 23:25:08,174][rgc][INFO] - 	Updating weights of batch 42
+[2025-02-17 23:25:08,236][rgc][INFO] - Batch 42, avg loss per batch: 2.7683144761514646
+[2025-02-17 23:25:08,237][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 43
+[2025-02-17 23:25:37,742][rgc][INFO] - 	Updating weights of batch 43
+[2025-02-17 23:25:37,781][rgc][INFO] - Batch 43, avg loss per batch: 4.951493712711175
+[2025-02-17 23:25:37,781][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 44
+[2025-02-17 23:26:07,313][rgc][INFO] - 	Updating weights of batch 44
+[2025-02-17 23:26:07,366][rgc][INFO] - Batch 44, avg loss per batch: 4.092868035813549
+[2025-02-17 23:26:07,366][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 45
+[2025-02-17 23:26:36,769][rgc][INFO] - 	Updating weights of batch 45
+[2025-02-17 23:26:36,801][rgc][INFO] - Batch 45, avg loss per batch: 5.913805256936984
+[2025-02-17 23:26:36,802][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 46
+[2025-02-17 23:27:06,253][rgc][INFO] - 	Updating weights of batch 46
+[2025-02-17 23:27:06,291][rgc][INFO] - Batch 46, avg loss per batch: 2.0423489290632104
+[2025-02-17 23:27:06,292][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 47
+[2025-02-17 23:27:35,975][rgc][INFO] - 	Updating weights of batch 47
+[2025-02-17 23:27:36,006][rgc][INFO] - Batch 47, avg loss per batch: 3.229280381304482
+[2025-02-17 23:27:36,007][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 48
+[2025-02-17 23:28:05,757][rgc][INFO] - 	Updating weights of batch 48
+[2025-02-17 23:28:05,808][rgc][INFO] - Batch 48, avg loss per batch: 2.6707744693018274
+[2025-02-17 23:28:05,809][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 49
+[2025-02-17 23:28:35,093][rgc][INFO] - 	Updating weights of batch 49
+[2025-02-17 23:28:35,127][rgc][INFO] - Batch 49, avg loss per batch: 1.835809089540633
+[2025-02-17 23:28:35,128][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 50
+[2025-02-17 23:29:04,813][rgc][INFO] - 	Updating weights of batch 50
+[2025-02-17 23:29:04,861][rgc][INFO] - Batch 50, avg loss per batch: 4.7745195845231105
+[2025-02-17 23:29:04,861][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 51
+[2025-02-17 23:29:34,490][rgc][INFO] - 	Updating weights of batch 51
+[2025-02-17 23:29:34,522][rgc][INFO] - Batch 51, avg loss per batch: 4.454526400168619
+[2025-02-17 23:29:34,523][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 52
+[2025-02-17 23:30:03,959][rgc][INFO] - 	Updating weights of batch 52
+[2025-02-17 23:30:03,996][rgc][INFO] - Batch 52, avg loss per batch: 2.983292842366933
+[2025-02-17 23:30:03,997][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 53
+[2025-02-17 23:30:33,331][rgc][INFO] - 	Updating weights of batch 53
+[2025-02-17 23:30:33,386][rgc][INFO] - Batch 53, avg loss per batch: 1.9919795485720926
+[2025-02-17 23:30:33,387][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 54
+[2025-02-17 23:31:03,132][rgc][INFO] - 	Updating weights of batch 54
+[2025-02-17 23:31:03,170][rgc][INFO] - Batch 54, avg loss per batch: 5.707955360642964
+[2025-02-17 23:31:03,171][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 55
+[2025-02-17 23:31:32,868][rgc][INFO] - 	Updating weights of batch 55
+[2025-02-17 23:31:32,929][rgc][INFO] - Batch 55, avg loss per batch: 3.9673076673109002
+[2025-02-17 23:31:32,930][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 56
+[2025-02-17 23:32:02,853][rgc][INFO] - 	Updating weights of batch 56
+[2025-02-17 23:32:02,908][rgc][INFO] - Batch 56, avg loss per batch: 5.189876894842589
+[2025-02-17 23:32:02,909][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 57
+[2025-02-17 23:32:32,628][rgc][INFO] - 	Updating weights of batch 57
+[2025-02-17 23:32:32,671][rgc][INFO] - Batch 57, avg loss per batch: 4.6766645955926025
+[2025-02-17 23:32:32,672][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 58
+[2025-02-17 23:33:02,163][rgc][INFO] - 	Updating weights of batch 58
+[2025-02-17 23:33:02,211][rgc][INFO] - Batch 58, avg loss per batch: 5.59720964369766
+[2025-02-17 23:33:02,211][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 59
+[2025-02-17 23:33:30,601][rgc][INFO] - 	Updating weights of batch 59
+[2025-02-17 23:33:30,633][rgc][INFO] - Batch 59, avg loss per batch: 5.180442241992461
+[2025-02-17 23:33:30,634][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 60
+[2025-02-17 23:34:00,263][rgc][INFO] - 	Updating weights of batch 60
+[2025-02-17 23:34:00,303][rgc][INFO] - Batch 60, avg loss per batch: 5.940734529289948
+[2025-02-17 23:34:00,304][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 61
+[2025-02-17 23:34:29,933][rgc][INFO] - 	Updating weights of batch 61
+[2025-02-17 23:34:29,975][rgc][INFO] - Batch 61, avg loss per batch: 3.8901329466034698
+[2025-02-17 23:34:29,976][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 62
+[2025-02-17 23:35:00,041][rgc][INFO] - 	Updating weights of batch 62
+[2025-02-17 23:35:00,100][rgc][INFO] - Batch 62, avg loss per batch: 2.914931801999554
+[2025-02-17 23:35:00,100][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 63
+[2025-02-17 23:35:29,930][rgc][INFO] - 	Updating weights of batch 63
+[2025-02-17 23:35:29,969][rgc][INFO] - Batch 63, avg loss per batch: 3.671528090736965
+[2025-02-17 23:35:29,970][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 64
+[2025-02-17 23:35:59,621][rgc][INFO] - 	Updating weights of batch 64
+[2025-02-17 23:35:59,689][rgc][INFO] - Batch 64, avg loss per batch: 2.8085555914231337
+[2025-02-17 23:35:59,690][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 65
+[2025-02-17 23:36:29,445][rgc][INFO] - 	Updating weights of batch 65
+[2025-02-17 23:36:29,493][rgc][INFO] - Batch 65, avg loss per batch: 2.159682790147165
+[2025-02-17 23:36:29,493][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 66
+[2025-02-17 23:36:59,028][rgc][INFO] - 	Updating weights of batch 66
+[2025-02-17 23:36:59,079][rgc][INFO] - Batch 66, avg loss per batch: 3.467275851914718
+[2025-02-17 23:36:59,080][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 67
+[2025-02-17 23:37:28,773][rgc][INFO] - 	Updating weights of batch 67
+[2025-02-17 23:37:28,807][rgc][INFO] - Batch 67, avg loss per batch: 5.320911574878236
+[2025-02-17 23:37:28,807][rgc][INFO] - 	Applying batch grad function of epoch 2 and batch 68
+[2025-02-17 23:37:58,397][rgc][INFO] - 	Updating weights of batch 68
+[2025-02-17 23:37:58,441][rgc][INFO] - Batch 68, avg loss per batch: 2.58248736232368
+[2025-02-17 23:37:58,446][rgc][INFO] - ================= Epoch 2, loss: 265.8175444462401 ===============
+[2025-02-17 23:37:58,446][rgc][INFO] - Visualizing histograms
+[2025-02-17 23:38:28,410][rgc][INFO] - AVG rho on val data: -0.015161890513603851
+[2025-02-17 23:38:28,410][rgc][INFO] - AVG Mean Absolute Error on val data: 0.6770033127756029
+[2025-02-17 23:38:42,421][rgc][INFO] - AVG rho on test data: nan
+[2025-02-17 23:38:42,421][rgc][INFO] - AVG Mean Absolute Error on test data: 0.6579454043442452
+[2025-02-17 23:38:58,239][rgc][INFO] - AVG rho on train data: 0.014820112070554533
+[2025-02-17 23:38:58,240][rgc][INFO] - AVG Mean Absolute Error on train data: 0.6696835757326016
+[2025-02-17 23:38:58,240][rgc][INFO] - Current best rhos: train 0.04527044039884896, val 0.06923260584632664, test nan
+[2025-02-17 23:38:58,241][rgc][INFO] - Creating Receptive Field Figures ... 
+[2025-02-17 23:39:24,419][rgc][INFO] - Finished

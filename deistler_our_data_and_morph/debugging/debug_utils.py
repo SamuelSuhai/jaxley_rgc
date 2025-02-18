@@ -71,27 +71,54 @@ def plot_roi_labels_and_cell(labels, cell, x_coords, y_coords):
 
 
 
-def plot_recording_compartments_in_cell(cell,avg_recordings):
+def plot_recording_compartments_and_rois_on_cell(cell,avg_recordings,recordings_raw,over_write_save_path=False):
 
     
-
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
     
+    # Plot the cell morphology
     cell.vis(ax=ax)
 
     # define colorwheel with 10 colors
     colors = plt.cm.tab10.colors
-    for i, branch in enumerate(cell.branches):
-        branch.vis(ax=ax, color='gray')
     
+    # plor recorded compartments
     for i, rec in avg_recordings.iterrows():
         cell.branch(rec["branch_ind"]).loc(rec["comp"]).vis(ax=ax, color=colors[i%10])
 
-    save_path = os.path.join(save_dir, 'cell_recording_sites.pdf')
+    # Store labels and handles for the legend
+    legend_labels = []
+    legend_handles = []
+
+    # Plot the experimental ROIs
+    for i, rec in recordings_raw.iterrows():
+        rec_id = int(rec["rec_id"])
+        
+        # Check if this rec_id has already been added to the legend
+        if f"Rec field {rec_id}" not in legend_labels:
+            scatter = ax.scatter(rec["roi_x"], rec["roi_y"], s=5.0, alpha=0.7,
+                            color=colors[rec_id % 10], zorder=10000,
+                            label=f"Rec field {rec_id}")
+            legend_labels.append(f"Rec field {rec_id}")
+            legend_handles.append(scatter)
+        else:
+            # If it's already in the legend, plot without a label to prevent duplicates
+            ax.scatter(rec["roi_x"], rec["roi_y"], s=5.0, 
+                            color=colors[rec_id % 10], alpha=0.7,zorder=10000) # no label
+
+
+    
+    save_path = over_write_save_path if over_write_save_path else os.path.join(save_dir, 'cell_recording_sites.pdf')
+    
+    ax.set_title('Recording compartments and experimental ROIs')
+
+    # Use the stored handles and labels
+    ax.legend(handles=legend_handles, labels=legend_labels, loc='best')
+
     fig.savefig(save_path)
     print(f"Figure saved to {save_path}")
 
-    plt.close(fig)  # Close the figure to free memory
+    plt.close(fig) 
 
 
 def upsample_image(image, pixel_size=30):
@@ -231,7 +258,8 @@ def plot_calcium_on_cell_each_image(cell,
                                     stimuli,
                                     noise_full,
                                     setup,
-                                    avg_recordings):
+                                    avg_recordings,
+                                    max_data_points=10):
     """
     Plots the labels on the cell morphology for each time point in a separate figure.
     """
@@ -246,6 +274,10 @@ def plot_calcium_on_cell_each_image(cell,
 
     # loop over stimuli (i.e. images)
     for idx_time, t in enumerate(times):
+
+        if idx_time >= max_data_points:
+            break
+
         
         fig, ax = plt.subplots(1, 1, figsize=(20, 20))
 

@@ -1,3 +1,16 @@
+
+
+
+
+'''
+Example usage:
+python 01_setup.py --date 2020-08-29 --exp_num 1
+
+'''
+
+
+
+
 import os
 import numpy as np
 from matplotlib import pyplot as plt
@@ -11,8 +24,6 @@ import argparse
 import ast
 
 from djimaging.user.alpha.utils import database
-
-
 
 
 
@@ -97,13 +108,29 @@ fnames = []
 for (dirpath, dirnames, filenames) in os.walk("morphologies"):
     fnames.extend(filenames)
 
+
+
+# retrieve RF data to accont for offset
+rf_tab = database.get_rf_tab(quality_filter=True, inc_nl=False, rf_quality_filter=True)
+field_rf_tab = database.get_rf_tab(roi_kind='field', inc_nl=False, rf_quality_filter=True, quality_filter=False)
+roi_pos_tab = database.get_roi_pos_tab(stim_restriction=["stim_name='noise_2500'", "stim_name='noise_1500'"])
+morph_tab = database.get_morph_tab()
+df_field_rfs, field_avg_dx, field_avg_dy = database.get_field_avg_offset(rf_quality_filter=True)
+df_rf_dxy = df_field_rfs.loc[date,['field_rf_dx_um','field_rf_dy_um']]
+
+
 # Prepare DataFrame
 cell_df = pd.DataFrame()
 for idx, roi_data in enumerate(all_roi_data):
     field_idx = int(roi_data['field'][-1]) - 1
 
+    # Field RF offset
+    delta_x = df_rf_dxy.iloc[field_idx]['field_rf_dx_um']
+    delta_y = df_rf_dxy.iloc[field_idx]['field_rf_dy_um']
+
     # Field presentation-specific attributes
     noise_trigger_ts = field_presentation_all[field_idx]['triggertimes']
+
     # pixel_size = field_presentation_all[field_idx]['pixel_size_um']
     rec_pos = field_presentation_all[field_idx]['rec_cpos_stack_xyz'] * pixel_size
 
@@ -121,11 +148,12 @@ for idx, roi_data in enumerate(all_roi_data):
         "roi_x": roi_data['roi_pos_stack_xyz'][0] * pixel_size,
         "roi_y": roi_data['roi_pos_stack_xyz'][1] * pixel_size,
         "roi_z": roi_data['roi_pos_stack_xyz'][2] * pixel_size,
-
         
         # Field information
-        "image_center_x": rec_pos[0],
-        "image_center_y": rec_pos[1],
+        "image_center_x_uncorrected": rec_pos[0],
+        "image_center_y_uncorrected": rec_pos[1],
+        "image_center_x": rec_pos[0] - delta_x,
+        "image_center_y": rec_pos[1] - delta_y,
         "pixel_size": pixel_size,
         "rec_id": field_idx, # we turn this into an int to avoid problems with jaxley experiment code later
 

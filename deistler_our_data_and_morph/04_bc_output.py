@@ -1,5 +1,6 @@
 '''
-
+Example usage:
+python 04_bc_output.py --date 2020-08-29 --exp_num 1 --bc_spacing 20
 
 '''
 
@@ -363,13 +364,13 @@ def main (single_example = None):
 
     for a, b, c in zip(bc_loc_x, bc_loc_y, bipolar_cell_activity):
         cmap = mpl.colormaps['viridis']
-        _ = ax[1].scatter(a, b, s=40.0, color=cmap(c), zorder=10000)
-        _ = ax[1].scatter(a, b, s=60.0, zorder=10000, facecolors='none', edgecolors='w', linewidth=2.0)
+        _ = ax[1].scatter(a, b, s=20.0, color=cmap(c), zorder=10000,alpha=0.4)
+        _ = ax[1].scatter(a, b, s=30.0, zorder=10000, facecolors='none', edgecolors='w', linewidth=1.0)
 
     ax[1] = cell.vis(ax=ax[1])#, morph_plot_kwargs={"alpha": 0.4})
 
-    print(f"Writing to {base_dir}/results/figs/rgc_within_bc_grid.png")
-    plt.savefig(f"{base_dir}/results/figs/rgc_within_bc_grid.png", dpi=200, bbox_inches="tight")
+    print(f"Writing to {base_dir}/results/figs/rgc_within_bc_grid.pdf")
+    plt.savefig(f"{base_dir}/results/figs/rgc_within_bc_grid.pdf", dpi=200, bbox_inches="tight")
 
 
 

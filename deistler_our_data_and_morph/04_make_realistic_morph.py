@@ -3,6 +3,12 @@ from jax import config
 config.update("jax_enable_x64", True)
 config.update("jax_platform_name", "cpu")
 
+'''
+Example usage:
+
+python -m pdb 04_make_realistic_morph.py --date "2020-08-29" --exp_num 1
+'''
+
 import os
 
 os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = ".8"
