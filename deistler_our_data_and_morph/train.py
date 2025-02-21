@@ -7,7 +7,8 @@ import os
 
 os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = ".2" # '0.6'
 
-
+# set this to false to prevent memory preallocatioan
+# os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "false"
 
 
 
@@ -100,7 +101,8 @@ def create_rf_plots(counters,
                     setup,
                     epoch,
                     save_path_base = None,
-                    return_ax_and_not_save = False):
+                    save_fig= True,
+             ):
     '''
     counters- list of indices of the recordings for which we want to plot the receptive fields
     save_path is a list or None
@@ -117,8 +119,9 @@ def create_rf_plots(counters,
     pixel_size = 30
     levels = [0.5]
 
+    breakpoint()
     # Compute receptive fields.
-    rfs_trained = compute_all_trained_rfs(
+    rfs_trained,asds_trained = compute_all_trained_rfs(
         counters,
         all_loss_weights,
         all_ca_predictions,
@@ -203,17 +206,17 @@ def create_rf_plots(counters,
 
         # paths for saving figs
         if save_path_base is None:
-            save_path_contour = f"{os.getcwd()}/figs/rf_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png"
+            save_path_contour = f"{os.getcwd()}/figs/rf_epoch_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png"
         else:
             save_path_contour = save_path_base + f"_roi_id_{roi_id}_contour.png"
         
-        if not return_ax_and_not_save:
+        if save_fig:
             print(f"Saving contour to {save_path_contour}")
             plt.savefig(
                 save_path_contour, dpi=150, bbox_inches="tight"
             )
-        else:
-            ax_list = [ax]
+        
+        ax_list = [ax]
 
     
     # visualize a heatmap of the receptive fields
@@ -250,17 +253,84 @@ def create_rf_plots(counters,
 
         # paths for saving figs
         if save_path_base is None:
-            save_path_heatmap = f"{os.getcwd()}/figs/rf_heatmap_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png"
+            save_path_heatmap = f"{os.getcwd()}/figs/rf_heatmap_epoch_{epoch}_rec_id_{rec_id}_roi_id_{roi_id}.png"
         else:
             save_path_heatmap = save_path_base + f"_roi_id_{roi_id}_heatmap.png"
 
-        if not return_ax_and_not_save:
+        if save_fig:
             print(f"Saving heatmap to {save_path_heatmap}")
             plt.savefig(
                 save_path_heatmap, dpi=150, bbox_inches="tight")
-        else:
-            ax_list.append(ax)
-            return(ax_list)
+        
+        ax_list.append(ax)
+        
+        return ax_list,rfs_trained
+
+
+
+
+def evaluate_on_dataloader(eval_dataloaders,
+                           vmapped_predict,
+                           opt_params,
+                           opt_basal_params,
+                           opt_somatic_params,
+                           init_states,
+                           epoch,):
+        print(f"Starting evaluation of epoch {epoch}")
+        # 2) Evaluate after every epoch
+        record_as_best = False
+        for split, dl in eval_dataloaders.items():
+
+            # Compute correlation.
+            all_ca_predictions = []
+            all_ca_recordings = []
+            all_images = []
+            all_loss_weights = []
+
+            for batch_ind, batch in enumerate(dl):
+                image_batch = batch[0].numpy()
+                current_batch = batch[1].numpy()
+                label_batch = batch[2].numpy()
+                loss_weight_batch = batch[3].numpy()
+
+                all_images.append(image_batch)
+                all_ca_recordings.append(label_batch)
+                all_loss_weights.append(loss_weight_batch)
+
+                # Trained.
+                ca_predictions = vmapped_predict(
+                    transform_params.forward(opt_params),
+                    transform_basal.forward(opt_basal_params),
+                    transform_somatic.forward(opt_somatic_params),
+                    current_batch,
+                    init_states,
+                )
+                all_ca_predictions.append(ca_predictions)
+
+            all_images = np.concatenate(all_images, axis=0)
+            all_ca_recordings = np.concatenate(all_ca_recordings, axis=0)
+            all_loss_weights = np.concatenate(all_loss_weights, axis=0)
+            all_ca_predictions = np.concatenate(all_ca_predictions, axis=0)
+
+
+            # save predictions and labels and currents
+            with open(f"{os.getcwd()}/predictions_labels/predictions_epoch_{epoch}_split_{split}.pkl", "wb") as handle:
+                pickle.dump(all_ca_predictions, handle)
+            
+            # save things that do not change seperately 
+            if epoch == 0:
+                with open(f"{os.getcwd()}/predictions_labels/labels_split_{split}.pkl", "wb") as handle:
+                    pickle.dump(all_ca_recordings, handle)
+                with open(f"{os.getcwd()}/predictions_labels/loss_weights_split_{split}.pkl", "wb") as handle:
+                    pickle.dump(all_loss_weights, handle)
+                with open(f"{os.getcwd()}/predictions_labels/currents_split_{split}.pkl", "wb") as handle:
+                    pickle.dump(current_batch, handle)
+
+
+            
+        return all_images, all_ca_recordings, all_loss_weights, all_ca_predictions
+
+
 
 
 
@@ -298,6 +368,14 @@ def run(cfg: DictConfig) -> None:
         "noise",
         get_original_cwd(),
     )
+    ####################################################################################################################
+    log.info("!!!!!!!!!!!!!!!!!!!!!!!!!Only using a subset of the recordings for quality reasons")
+    roi_set = {(0,3),(0,5),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(2,6)}
+    mask = np.array([(i['rec_id'],i['roi_id']) in roi_set for idx,i in recordings.iterrows()])
+    recordings = recordings[mask].reset_index(drop=True)
+    setup =setup[mask].reset_index(drop=True)
+    ####################################################################################################################
+
     noise_full = np.transpose(noise_full, (2, 0, 1))
 
     cell = build_cell(cell_id, nseg, cfg["soma_radius"], get_original_cwd())
@@ -306,7 +384,7 @@ def run(cfg: DictConfig) -> None:
     # Build average recordings.
     avg_rec_path = f"{get_original_cwd()}/results/intermediate/avg_recordings.pkl"
     avg_rec_dir = os.path.dirname(avg_rec_path)
-
+    
     # Ensure the directory exists
     os.makedirs(avg_rec_dir, exist_ok=True)
 
@@ -363,6 +441,7 @@ def run(cfg: DictConfig) -> None:
         rec_ids,
         num_datapoints_per_scanfield,
         number_of_recordings_each_scanfield,
+        cfg['scale_by_bc_number'],
     )
 
     # # debug
@@ -625,6 +704,18 @@ def run(cfg: DictConfig) -> None:
 
     num_epochs = int(np.ceil(cfg["iterations"] / num_batches))
     log.info(f"Number of epochs {num_epochs}")
+
+
+    if cfg['evaluate_before_training']:
+        # one pre training evaluation 
+        _,_,_,_ = evaluate_on_dataloader(eval_dataloaders,
+                            vmapped_predict,
+                            opt_params,
+                            opt_basal_params,
+                            opt_somatic_params,
+                            init_states,
+                            -1,)
+
 
     ######################################################## Training epochs ###############################################
     for epoch in range(num_epochs):

@@ -4,7 +4,7 @@
 
 '''
 Example usage:
-python 01_setup.py --date 2020-08-29 --exp_num 1
+python 01_setup.py --date 2020-08-29 --exp_num 1 --quality_filter True
 
 '''
 
@@ -31,6 +31,7 @@ from djimaging.user.alpha.utils import database
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--date', type=str, help='Date of recording')
 parser.add_argument('--exp_num', type=str, help='The number of the experiment')
+parser.add_argument('--quality_filter', type=bool, help='Use RF quality filter for data',default=False)
 
 args = parser.parse_args()
 
@@ -101,7 +102,7 @@ ROI_pos_query = (database.FieldStackPos.RoiStackPos() & f'date="{date}"')
 ca_trace_query = (database.PreprocessTraces() & f'date="{date}"' & f'stim_name="{stimulus}"' & 'field NOT LIKE "%ROI"')
 
 # Combine data
-all_roi_data = (ROI_pos_query * ca_trace_query).fetch()
+all_roi_data = (ROI_pos_query * ca_trace_query).fetch(as_dict=True)
 
 # Retrive morphology file name for identification
 fnames = []
@@ -118,6 +119,12 @@ morph_tab = database.get_morph_tab()
 df_field_rfs, field_avg_dx, field_avg_dy = database.get_field_avg_offset(rf_quality_filter=True)
 df_rf_dxy = df_field_rfs.loc[date,['field_rf_dx_um','field_rf_dy_um']]
 
+# drop the rois not in the roi_pos_tab: they did not meet the quality filter
+if args.quality_filter:
+    rois_fields = (rf_tab & f'date="{date}"' & f'stim_name="{stimulus}"').fetch('roi_id','field',as_dict=True)
+    rois_set = {(r['field'], r['roi_id']) for r in rois_fields}
+    all_roi_data = [i for i in all_roi_data 
+                    if (i['field'], i['roi_id']) in rois_set]
 
 # Prepare DataFrame
 cell_df = pd.DataFrame()

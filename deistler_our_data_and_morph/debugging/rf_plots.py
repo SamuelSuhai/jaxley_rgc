@@ -1,14 +1,13 @@
-# from jax import config
 
-# config.update("jax_enable_x64", True)
-# config.update("jax_platform_name", "cpu")
+'''
+Example usage:
+
+python debugging/rf_plots.py results_dir="2020-08-29_40_-1_5_bc_40um" split="train" epoch="latest"
+
+'''
+
 
 import os
-
-# os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = ".6"
-
-
-
 import h5py
 import hydra
 import pickle
@@ -47,8 +46,6 @@ save_base = '/gpfs01/euler/User/ssuhai/GitRepos/jaxley_rgc/deistler_our_data_and
 results_base = '/gpfs01/euler/User/ssuhai/GitRepos/jaxley_rgc/deistler_our_data_and_morph/results/train_runs'
 config_path = "/gpfs01/euler/User/ssuhai/GitRepos/jaxley_rgc/deistler_our_data_and_morph/debugging/config"
 path_prefix = "/gpfs01/euler/User/ssuhai/GitRepos/jaxley_rgc/deistler_our_data_and_morph"
-
-def plot_prediction_label_rf_comparison
 
 
 @hydra.main(config_path=config_path,config_name="rf_plots.yaml") 
@@ -140,12 +137,17 @@ def main (cfg: DictConfig) -> None:
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
-
-    counters = cfg['counters'] 
+    # get counters
+    if 'all' in cfg['counters']:
+        counters = [i for i in range(all_ca_predictions.shape[1])]
+    
+    else:
+        counters = cfg['counters'] 
+    
     save_path_base = os.path.join(save_dir, f"rf_plots_epoch_{epoch}_recs_{''.join(map(str, cfg.rec_ids))}")
 
     print(f"Creating RF plots for epoch {epoch} and recs {cfg.rec_ids} and rois {counters}")
-    create_rf_plots(counters,
+    _,__= create_rf_plots(counters,
                     cell,
                     all_loss_weights,
                     all_ca_predictions,
@@ -154,7 +156,7 @@ def main (cfg: DictConfig) -> None:
                     setup,
                     epoch,
                     save_path_base,
-                    return_ax_and_not_save=False)
+                    save_fig=True)
 
 
 if __name__ == "__main__":

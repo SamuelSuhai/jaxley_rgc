@@ -188,6 +188,12 @@ def get_stimuli_labels_predictions(predictions_pkl_dir,cfg):
         '/gpfs01/euler/User/ssuhai/GitRepos/jaxley_rgc/deistler_our_data_and_morph'
     )
 
+    
+    roi_set = {(0,3),(0,5),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(2,6)}
+    mask = np.array([(i['rec_id'],i['roi_id']) in roi_set for idx,i in recordings.iterrows()])
+    recordings = recordings[mask].reset_index(drop=True)
+    setup =setup[mask].reset_index(drop=True)
+    breakpoint()    
 
 
     stim_branch_inds = stimuli["branch_ind"].to_numpy()
@@ -265,6 +271,7 @@ def plot_prediction_labels_currents_over_epochs(predictions_pkl_dir,save_dir,cfg
         current_comp_input = comp_inputs_all[comp_was_measured,inds[datapoint]]
         nr_of_comps = np.sum(comp_was_measured)
         assert nr_of_comps > 0, "No compartments were measured in this scanfield"
+
         for epoch in range(len(prediction_files)):
             ax[epoch].plot([i for i in range(nr_of_comps)],all_preds[epoch][datapoint, comp_was_measured], color='blue', label=f'Prediction at {datapoint}', linestyle='--')
             ax[epoch].plot([i for i in range(nr_of_comps)],all_labels[epoch][datapoint, comp_was_measured], color='red', label=f'Labels at {datapoint}',linewidth=2)
@@ -329,6 +336,7 @@ def plot_prediction_labels_currents_over_epochs(predictions_pkl_dir,save_dir,cfg
             ax[epoch].set_xlabel('Time step idx')
             ax[epoch].set_ylabel('Activity')
             ax[epoch].set_title(f'Epoch {epoch}')
+            ax[epoch].set_ylim([-2,2])
             ax[epoch].legend()
 
         saving_at = os.path.join(save_base,f'{cfg.selected_type}_pred_and_labels_over_time_rec_id_{inferred_rec_id}_compartment_{comp_idx}.pdf')
@@ -352,6 +360,7 @@ def run(cfg: DictConfig) -> None:
     save_dir = os.path.join(save_dir, cfg.results_dir.split('/')[-1])
     os.makedirs(save_dir, exist_ok=True)
 
+    # load num_of
     
     if 'all' in  cfg['plot_type'] or 'loss_over_epochs' in cfg['plot_type']:    
     

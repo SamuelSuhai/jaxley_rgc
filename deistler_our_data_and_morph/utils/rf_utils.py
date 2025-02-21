@@ -20,7 +20,7 @@ def get_rf_linreg(ca, images, noise_std=0.0, **kwargs):
     return rf
 
 
-def get_rf_asd(ca, images, noise_std=0.0, num_iter=100):
+def get_rf_asd(ca, images, noise_std=0.0, num_iter=100,return_asd=False):
     test_images_T = images.T
     noise = np.reshape(test_images_T, (test_images_T.shape[0], 20 * 15))
     X = noise
@@ -39,7 +39,7 @@ def get_rf_asd(ca, images, noise_std=0.0, num_iter=100):
     rf -= np.min(rf)
     rf /= np.max(rf)
     
-    return rf
+    return rf if not return_asd else (rf, asd)
 
 
 def recover_raw_rf(rec_id, roi_id, rfs_raw):
@@ -54,16 +54,17 @@ def recover_raw_rf(rec_id, roi_id, rfs_raw):
 def compute_all_trained_rfs(counters, loss_weights_eval, all_ca_predictions, all_images, noise_mag, num_iter):
     # Compute receptive fields.
     rfs_trained = []
-
+    asd_trained = []
     for counter in counters:
         _ = np.random.seed(counter)
         roi_was_measured = loss_weights_eval[:, counter].astype(bool)
-        rfs_trained.append(
-            get_rf_asd(
+        rf,asd = get_rf_asd(
                 all_ca_predictions[roi_was_measured, counter],
                 all_images[:, :, roi_was_measured],
                 noise_std=noise_mag,
                 num_iter=num_iter,
+                return_asd=True
             )
-        )
-    return rfs_trained
+        rfs_trained.append(rf)
+        asd_trained.append(asd)
+    return rfs_trained, asd_trained

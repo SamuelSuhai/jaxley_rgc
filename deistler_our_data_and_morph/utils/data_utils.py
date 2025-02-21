@@ -175,6 +175,7 @@ def build_training_data(
     rec_ids,
     num_datapoints_per_scanfield,
     number_of_recordings_each_scanfield,
+    scale_by_bc_number=False,
 ):
     '''
     inputs:
@@ -202,8 +203,11 @@ def build_training_data(
     # scale stimulation by number of synapses to have every BC have the same influence over RGC in expectation 
     # (individual BC to RGC sysnapse streghts are drawn randomly)
     # TODO: check what happoens if not scaled by nur of synapses
-    currents = i_amp * np.asarray(bc_activity) #/ stimuli["num_synapses_of_bc"].to_numpy()
+    currents = i_amp * np.asarray(bc_activity) 
     
+    if scale_by_bc_number:
+        currents /= stimuli["num_synapses_of_bc"].to_numpy()
+
     # Labels will also have to go to a dataloader.
     loss_weights = np.zeros((number_of_recordings, len(rec_ids) * num_datapoints_per_scanfield))
     labels = np.zeros((number_of_recordings, len(rec_ids) * num_datapoints_per_scanfield))
