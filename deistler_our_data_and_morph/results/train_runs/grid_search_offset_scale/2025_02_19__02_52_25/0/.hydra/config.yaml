@@ -1,0 +1,32 @@
+debugging_figs:
+- recording_comps_and_rois
+cell_id: 2020-08-29_1
+lr: 0.005
+momentum: 0.5
+iterations: 1
+reduce_lr_every: 800
+reduce_lr_by: 5
+beta: 0.99
+soma_radius: 7.5
+output_scale: 35
+output_offset: -1
+scale_by_bc_number: true
+weight_init: 0.1
+batchsize: 2
+rec_ids:
+- 0
+- 1
+- 2
+num_datapoints_per_scanfield: 64
+val_frac: 0.25
+test_num: 8
+vis: false
+seed_weights: 10
+seed_membrane_conds: 0
+seed_tf_dataloader: 0
+seed_tf_train_loop: 0
+seed_ruler: 0
+eval_every_nth_batch: 100
+start_n_scan: 100
+nseg: 4
+reuse_avg_recordings: false

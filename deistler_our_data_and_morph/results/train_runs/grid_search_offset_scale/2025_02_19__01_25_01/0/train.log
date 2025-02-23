@@ -1,0 +1,17 @@
+[2025-02-19 01:25:01,876][rgc][INFO] - Recording ids [0, 1, 2]
+[2025-02-19 01:25:02,684][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-02-19 01:25:02,685][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+[2025-02-19 01:25:11,121][rgc][INFO] - Recomputing and saving avg_recordings - no intermediate file found
+[2025-02-19 01:25:11,329][rgc][INFO] - number_of_recordings_each_scanfield [8, 3, 5]
+[2025-02-19 01:25:15,865][rgc][INFO] - Inserted 16 recordings
+[2025-02-19 01:25:15,865][rgc][INFO] - number_of_recordings_each_scanfield [8, 3, 5]
+[2025-02-19 01:25:15,871][rgc][INFO] - currents.shape (192, 353)
+[2025-02-19 01:25:15,871][rgc][INFO] - labels.shape (192, 16)
+[2025-02-19 01:25:15,871][rgc][INFO] - loss_weights.shape (192, 16)
+[2025-02-19 01:25:25,640][rgc][INFO] - Weight mean of w_bc_to_rgc: 0.09999999999999999
+[2025-02-19 01:25:26,358][rgc][INFO] - Num train 138, num val 46, num test 8
+[2025-02-19 01:25:27,683][rgc][INFO] - noise_full (192, 15, 20)
+[2025-02-19 01:25:27,683][rgc][INFO] - number of training batches 69
+[2025-02-19 01:25:27,683][rgc][INFO] - lr scheduling dict: {}
+[2025-02-19 01:25:27,765][rgc][INFO] - Starting to train
+[2025-02-19 01:25:27,766][rgc][INFO] - Number of epochs 1

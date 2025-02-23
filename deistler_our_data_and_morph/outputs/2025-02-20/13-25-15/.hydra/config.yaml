@@ -1,0 +1,12 @@
+results_dir: 2020-08-29_64_pts_rec_ids_012_scale_25_offset_-2
+plot_type:
+- all
+cell_id: 2020-08-29_1
+rec_ids:
+- 0
+- 1
+- 2
+start_n_scan: 100
+num_datapoints_per_scanfield: 64
+nseg: 4
+selected_type: train

@@ -1,0 +1,3 @@
+- output_offset=-1.5
+- output_scale=30
+- scale_by_bc_number=false
